@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>One Shortcut - VAT Refund</title>
+<style>
+  :root {
+    --bg: #000;
+    --surface: #111;
+    --surface2: #1c1c1e;
+    --surface3: #2c2c2e;
+    --border: rgba(255,255,255,0.1);
+    --text: #f5f5f7;
+    --text2: #aeaeb2;
+    --text3: #636366;
+    --accent: #0a84ff;
+    --green: #30d158;
+    --edu: #ff9f0a;
+    --radius: 14px;
+    --font: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  .screen { min-height: 100vh; padding-bottom: 48px; }
+  .sticky-header {
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .header-top { display: flex; align-items: center; padding: 52px 16px 10px; gap: 10px; }
+  .header-body { padding: 2px 16px 14px; }
+  .header-body h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .header-body p { font-size: 14px; color: var(--text2); margin-top: 3px; }
+  .back-btn { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--surface2); border: none; border-radius: 50%; cursor: pointer; color: var(--accent); font-size: 20px; flex-shrink: 0; transition: opacity 0.15s; }
+  .back-btn:active { opacity: 0.6; }
+  .screen-label { font-size: 13px; color: var(--text2); }
+  .vat-pill { background: rgba(48,209,88,0.14); border: 0.5px solid rgba(48,209,88,0.3); color: var(--green); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; margin-left: auto; }
+  .vat-content { padding: 16px; }
+  .vat-card { background: var(--surface2); border-radius: var(--radius); border: 0.5px solid var(--border); padding: 16px; margin-bottom: 12px; }
+  .vat-field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 10px; }
+  .vat-input-row { display: flex; align-items: center; background: var(--surface3); border-radius: 10px; padding: 0 14px; border: 0.5px solid var(--border); }
+  .vat-sym { font-size: 26px; color: var(--text2); margin-right: 8px; }
+  #vat-priceInput { flex: 1; background: transparent; border: none; outline: none; font-size: 30px; font-weight: 600; color: var(--text); padding: 12px 0; appearance: none; caret-color: var(--accent); font-family: var(--font); }
+  #vat-clearBtn { background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 22px; height: 22px; color: var(--text2); cursor: pointer; font-size: 11px; }
+  .vat-result-card { background: var(--surface2); border-radius: var(--radius); border: 0.5px solid var(--border); overflow: hidden; margin-bottom: 12px; }
+  .vat-hero { padding: 24px 16px; text-align: center; border-bottom: 0.5px solid var(--border); }
+  .vat-hero-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 8px; }
+  #vat-heroAmount { font-size: 44px; font-weight: 700; color: var(--text3); }
+  #vat-heroMethod { font-size: 13px; color: var(--text2); margin-top: 6px; }
+  #vat-eligBadge { margin-top: 10px; }
+  .vat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 0.5px solid var(--border); font-size: 14px; }
+  .vat-row:last-child { border-bottom: none; background: rgba(48,209,88,0.04); }
+  .vat-row-label { color: var(--text2); }
+  .vat-row-val { font-weight: 600; }
+  .footer { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 12px; font-weight: 500; letter-spacing: -0.1px; }
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding: 4px;
+    border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.04);
+  }
+  .lang-btn {
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: var(--surface3); color: var(--text); }
+</style>
+</head>
+<body>
+<div id="screen-vat-refund" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="goHome()">‹</button>
+      <span class="screen-label" data-i18n="screen_label">Product Zone</span>
+      <span class="vat-pill">7% VAT</span>
+      <div class="lang-switcher" aria-label="Language switcher">
+        <button class="lang-btn" id="lang-en" onclick="setLang('en')">Eng</button>
+        <button class="lang-btn" id="lang-th" onclick="setLang('th')">ไทย</button>
+      </div>
+    </div>
+    <div class="header-body">
+      <h1 data-i18n="title">VAT Refund</h1>
+      <p data-i18n="subtitle">Thailand Airport Refund · PP10 Form</p>
+    </div>
+  </div>
+  <div class="vat-content">
+    <div class="vat-card">
+      <div class="vat-field-label" data-i18n="purchase_label">Purchase Price (THB)</div>
+      <div class="vat-input-row">
+        <span class="vat-sym">฿</span>
+        <input id="vat-priceInput" type="number" inputmode="decimal" placeholder="0">
+        <button id="vat-clearBtn" onclick="vat_clearInput()" style="opacity:0;">✕</button>
+      </div>
+      <div class="vat-field-label" style="margin-top:16px;margin-bottom:8px;" data-i18n="quick_select">Quick Select</div>
+      <div id="vat-presets" style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px;"></div>
+    </div>
+    <div class="vat-result-card">
+      <div class="vat-hero">
+        <div class="vat-hero-label" data-i18n="refund_amount">VAT Refund Amount</div>
+        <div id="vat-heroAmount">฿ —</div>
+        <div id="vat-heroMethod" data-i18n="enter_prompt">Enter a price to calculate</div>
+        <div id="vat-eligBadge"></div>
+      </div>
+      <div class="vat-row"><span class="vat-row-label" data-i18n="purchase_row">Purchase Price</span><span class="vat-row-val" id="vat-bdPurchase">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" data-i18n="before_row">Price Before VAT</span><span class="vat-row-val" id="vat-bdBefore">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" data-i18n="vat_row">VAT (7%)</span><span class="vat-row-val" id="vat-bdVat">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" style="font-weight:600;color:var(--text);" data-i18n="refund_row">VAT Refund</span><span class="vat-row-val" id="vat-bdNet" style="color:var(--green);">—</span></div>
+    </div>
+  </div>
+  <div class="footer" data-i18n="footer_text">VAT refund calculator · One Shortcut</div>
+</div>
+
+<script>
+  const I18N = {
+    en: {
+      title: 'One Shortcut - VAT Refund',
+      screen_label: 'Product Zone',
+      title: 'VAT Refund',
+      subtitle: 'Thailand Airport Refund · PP10 Form',
+      purchase_label: 'Purchase Price (THB)',
+      quick_select: 'Quick Select',
+      refund_amount: 'VAT Refund Amount',
+      enter_prompt: 'Enter a price to calculate',
+      purchase_row: 'Purchase Price',
+      before_row: 'Price Before VAT',
+      vat_row: 'VAT (7%)',
+      refund_row: 'VAT Refund',
+      below_minimum: 'Below minimum',
+      min_required: 'Min ฿2,000 required',
+      eligible: 'Eligible',
+      rate_label: 'Rate: 6.1%',
+      table_label: 'VAT Refund Table',
+      footer_text: 'VAT refund calculator · One Shortcut'
+    },
+    th: {
+      title: 'One Shortcut - คืน VAT',
+      screen_label: 'โซนสินค้า',
+      title: 'VAT Refund',
+      subtitle: 'คืนภาษีสนามบินในไทย · แบบฟอร์ม PP10',
+      purchase_label: 'ราคาซื้อ (THB)',
+      quick_select: 'เลือกด่วน',
+      refund_amount: 'ยอดคืน VAT',
+      enter_prompt: 'กรอกราคาเพื่อคำนวณ',
+      purchase_row: 'ราคาซื้อ',
+      before_row: 'ราคาก่อน VAT',
+      vat_row: 'VAT (7%)',
+      refund_row: 'ยอดคืน VAT',
+      below_minimum: 'ต่ำกว่าขั้นต่ำ',
+      min_required: 'ขั้นต่ำ ฿2,000',
+      eligible: 'มีสิทธิ์',
+      rate_label: 'อัตรา: 6.1%',
+      table_label: 'ตารางคืน VAT',
+      footer_text: 'เครื่องมือคืน VAT · One Shortcut'
+    }
+  };
+  const LANG_KEY = 'one_shortcut_lang';
+  let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+
+  function t(key) {
+    return I18N[currentLang][key] || I18N.en[key] || key;
+  }
+
+  function applyLang() {
+    document.documentElement.lang = currentLang === 'th' ? 'th' : 'en';
+    document.title = I18N[currentLang].title || 'One Shortcut - VAT Refund';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const value = I18N[currentLang][key];
+      if (value) el.textContent = value;
+    });
+    document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
+    document.getElementById('lang-th').classList.toggle('active', currentLang === 'th');
+  }
+
+  function setLang(lang) {
+    currentLang = lang === 'th' ? 'th' : 'en';
+    localStorage.setItem(LANG_KEY, currentLang);
+    applyLang();
+    vat_calculate();
+  }
+
+  function getBaseUrl(file) {
+    const href = window.location.href;
+    if (href.includes('/raw/')) return href.split('/raw/')[0] + '/raw/' + file;
+    const lastSlash = href.lastIndexOf('/');
+    return lastSlash >= 0 ? href.slice(0, lastSlash + 1) + file : file;
+  }
+
+  function goHome() {
+    window.location.href = getBaseUrl('staff-tool.html');
+  }
+
+  const vat_priceRanges = [
+    { from: 2000, to: 2499.99, refund: 80 }, { from: 2500, to: 2999.99, refund: 100 },
+    { from: 3000, to: 3499.99, refund: 120 }, { from: 3500, to: 3999.99, refund: 150 },
+    { from: 4000, to: 4499.99, refund: 180 }, { from: 4500, to: 4999.99, refund: 220 },
+    { from: 5000, to: 5999.99, refund: 250 }, { from: 6000, to: 6999.99, refund: 300 },
+    { from: 7000, to: 7999.99, refund: 350 }, { from: 8000, to: 8999.99, refund: 400 },
+    { from: 9000, to: 9999.99, refund: 450 }, { from: 10000, to: 10999.99, refund: 500 },
+    { from: 11000, to: 11999.99, refund: 550 }, { from: 12000, to: 12999.99, refund: 600 },
+    { from: 13000, to: 13999.99, refund: 650 }, { from: 14000, to: 14999.99, refund: 700 },
+    { from: 15000, to: 15999.99, refund: 750 }, { from: 16000, to: 16999.99, refund: 800 },
+    { from: 17000, to: 17999.99, refund: 850 }, { from: 18000, to: 18999.99, refund: 900 },
+    { from: 19000, to: 19999.99, refund: 950 }, { from: 20000, to: 21999.99, refund: 1060 },
+    { from: 22000, to: 23999.99, refund: 1170 }, { from: 24000, to: 25999.99, refund: 1280 },
+    { from: 26000, to: 27999.99, refund: 1390 }, { from: 28000, to: 29999.99, refund: 1500 },
+    { from: 30000, to: 31999.99, refund: 1610 }, { from: 32000, to: 33999.99, refund: 1720 },
+    { from: 34000, to: 35999.99, refund: 1830 }, { from: 36000, to: 37999.99, refund: 1940 },
+    { from: 38000, to: 39999.99, refund: 2050 }, { from: 40000, to: 41999.99, refund: 2160 },
+    { from: 42000, to: 43999.99, refund: 2270 }, { from: 44000, to: 45999.99, refund: 2380 },
+    { from: 46000, to: 47999.99, refund: 2490 }, { from: 48000, to: 49999.99, refund: 2600 },
+    { from: 50000, to: 51999.99, refund: 2710 }, { from: 52000, to: 53999.99, refund: 2820 },
+    { from: 54000, to: 55999.99, refund: 2940 }, { from: 56000, to: 57999.99, refund: 3060 },
+    { from: 58000, to: 59999.99, refund: 3180 }, { from: 60000, to: 62999.99, refund: 3370 },
+    { from: 63000, to: 65999.99, refund: 3560 }, { from: 66000, to: 68999.99, refund: 3750 },
+    { from: 69000, to: 71999.99, refund: 3940 }, { from: 72000, to: 74999.99, refund: 4130 },
+    { from: 75000, to: 77999.99, refund: 4320 }, { from: 78000, to: 80999.99, refund: 4510 },
+    { from: 81000, to: 83999.99, refund: 4700 }, { from: 84000, to: 86999.99, refund: 4890 },
+    { from: 87000, to: 89999.99, refund: 5080 }, { from: 90000, to: 92999.99, refund: 5270 },
+    { from: 93000, to: 95999.99, refund: 5460 }, { from: 96000, to: 99999.99, refund: 5720 },
+    { from: 100000, to: 103999.99, refund: 5980 }, { from: 104000, to: 107999.99, refund: 6240 },
+    { from: 108000, to: 111999.99, refund: 6500 }, { from: 112000, to: 115999.99, refund: 6760 },
+    { from: 116000, to: 119999.99, refund: 7020 }, { from: 120000, to: 123999.99, refund: 7280 },
+    { from: 124000, to: 127999.99, refund: 7540 }, { from: 128000, to: 131999.99, refund: 7800 },
+    { from: 132000, to: 135999.99, refund: 8060 }, { from: 136000, to: 139999.99, refund: 8320 },
+    { from: 140000, to: 143999.99, refund: 8580 }, { from: 144000, to: 147999.99, refund: 8840 },
+    { from: 148000, to: 151999.99, refund: 9100 }, { from: 152000, to: 155999.99, refund: 9360 },
+    { from: 156000, to: 159999.99, refund: 9620 }, { from: 160000, to: 163999.99, refund: 9860 },
+    { from: 164000, to: 167999.99, refund: 10100 }, { from: 168000, to: 171999.99, refund: 10340 },
+    { from: 172000, to: 175999.99, refund: 10580 }, { from: 176000, to: 179999.99, refund: 10820 },
+    { from: 180000, to: 183999.99, refund: 11060 }, { from: 184000, to: 187999.99, refund: 11300 },
+    { from: 188000, to: 191999.99, refund: 11540 }, { from: 192000, to: 195999.99, refund: 11780 },
+    { from: 196000, to: 199999.99, refund: 12000 }
+  ];
+
+  function vat_calculate() {
+    const input = document.getElementById('vat-priceInput');
+    const raw = parseFloat(input.value);
+    const price = isNaN(raw) || raw <= 0 ? 0 : raw;
+    document.getElementById('vat-clearBtn').style.opacity = price > 0 ? '1' : '0';
+    const hero = document.getElementById('vat-heroAmount');
+    const method = document.getElementById('vat-heroMethod');
+    const badge = document.getElementById('vat-eligBadge');
+    const purchase = document.getElementById('vat-bdPurchase');
+    const beforeVat = document.getElementById('vat-bdBefore');
+    const vatAmount = document.getElementById('vat-bdVat');
+    const net = document.getElementById('vat-bdNet');
+    if (price === 0) {
+      hero.textContent = '฿ —';
+      hero.style.color = 'var(--text3)';
+      method.textContent = t('enter_prompt');
+      badge.innerHTML = '';
+      purchase.textContent = '—';
+      beforeVat.textContent = '—';
+      vatAmount.textContent = '—';
+      net.textContent = '—';
+      return;
+    }
+    let refund = 0;
+    if (price >= 200000) refund = price * 0.061;
+    else {
+      const r = vat_priceRanges.find(x => price >= x.from && price <= x.to);
+      refund = r ? r.refund : 0;
+    }
+    const f = n => '฿' + n.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    const fInt = n => '฿' + Math.floor(n).toLocaleString('th-TH');
+    purchase.textContent = fInt(price);
+    const netPrice = price / 1.07;
+    beforeVat.textContent = f(netPrice);
+    vatAmount.textContent = f(price - netPrice);
+    if (refund === 0) {
+      hero.textContent = t('below_minimum');
+      hero.style.color = '#ff453a';
+      method.textContent = t('min_required');
+      badge.innerHTML = `<span style="background:rgba(255,69,58,0.15);color:#ff453a;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✕ ${t('below_minimum')}</span>`;
+      net.textContent = '—';
+    } else {
+      hero.textContent = fInt(refund);
+      hero.style.color = 'var(--green)';
+      method.textContent = price >= 200000 ? t('rate_label') : t('table_label');
+      badge.innerHTML = `<span style="background:rgba(48,209,88,0.15);color:var(--green);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✓ ${t('eligible')}</span>`;
+      net.textContent = fInt(refund);
+    }
+  }
+
+  function vat_clearInput() {
+    const input = document.getElementById('vat-priceInput');
+    input.value = '';
+    vat_calculate();
+    input.focus();
+  }
+
+  window.addEventListener('load', () => {
+    applyLang();
+    const el = document.getElementById('vat-presets');
+    if (el) {
+      el.innerHTML = '';
+      [{ l: 'iPhone 17 Pro Max', p: 48900 }, { l: 'iPhone 17 Pro', p: 43900 }, { l: 'AirPods Pro 3', p: 8490 }, { l: 'AirPods 4 ANC', p: 6290 }].forEach(p => {
+        const b = document.createElement('button');
+        b.textContent = p.l;
+        b.style.cssText = 'background:#2c2c2e;border:0.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:6px 14px;font-size:13px;white-space:nowrap;color:#aeaeb2;cursor:pointer;font-family:-apple-system,sans-serif;touch-action:manipulation;flex-shrink:0;';
+        const fn = () => { document.getElementById('vat-priceInput').value = p.p; vat_calculate(); };
+        b.addEventListener('click', fn);
+        b.addEventListener('touchend', e => { e.preventDefault(); fn(); });
+        el.appendChild(b);
+      });
+    }
+    const input = document.getElementById('vat-priceInput');
+    if (input) input.oninput = vat_calculate;
+  });
+</script>
+</body>
+</html>

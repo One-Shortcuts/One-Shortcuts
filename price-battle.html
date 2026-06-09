@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>One Shortcut - Price Battle</title>
+<style>
+  :root {
+    --bg: #000;
+    --surface: #111;
+    --surface2: #1c1c1e;
+    --surface3: #2c2c2e;
+    --border: rgba(255,255,255,0.1);
+    --text: #f5f5f7;
+    --text2: #aeaeb2;
+    --text3: #636366;
+    --accent: #0a84ff;
+    --green: #30d158;
+    --orange: #ff9f0a;
+    --radius: 16px;
+    --font: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(10,132,255,0.12), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(255,159,10,0.12), transparent 24%),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+  }
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 18px 14px calc(28px + env(safe-area-inset-bottom));
+  }
+  .hero {
+    padding: calc(22px + env(safe-area-inset-top)) 8px 18px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: clamp(32px, 9vw, 52px);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+    margin-bottom: 12px;
+  }
+  .lead {
+    max-width: 42rem;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text2);
+  }
+  .meta {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: var(--text3);
+    font-size: 12px;
+    align-items: center;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+    padding: 7px 12px;
+    color: var(--text2);
+  }
+  .lang-switcher {
+    margin-top: 14px;
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    gap: 4px;
+  }
+  .lang-btn {
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .lang-btn.active {
+    background: var(--surface3);
+    color: var(--text);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .card-head {
+    padding: 16px 16px 14px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .tag-blue { background: rgba(10,132,255,0.14); color: var(--accent); }
+  .tag-orange { background: rgba(255,159,10,0.14); color: var(--orange); }
+  .card-head h2 {
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .card-head p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    padding: 17px 16px;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s ease;
+    min-height: 82px;
+  }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:active { background: var(--surface3); }
+  .menu-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: rgba(10,132,255,0.16); }
+  .icon-orange { background: rgba(255,159,10,0.16); }
+  .item-text { flex: 1; min-width: 0; }
+  .item-text strong {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+  .item-text span {
+    display: block;
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.38;
+  }
+  .chevron {
+    color: var(--text3);
+    font-size: 24px;
+    padding-left: 4px;
+    flex-shrink: 0;
+  }
+  .footer {
+    padding: 16px 6px 0;
+    color: var(--text3);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  #loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-label { font-size: 14px; color: var(--text2); font-weight: 500; }
+</style>
+</head>
+<body>
+  <div id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-label" data-i18n="loading">Loading tool…</div>
+  </div>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow" data-i18n="eyebrow">Price Comparison</div>
+      <h1 data-i18n="title">Price Battle</h1>
+      <p class="lead" data-i18n="lead">Open the price comparison tools that were split out of the main launcher.</p>
+      <div class="meta">
+        <span class="pill" data-i18n="pill_one">Gist-hosted HTML</span>
+        <span class="pill" data-i18n="pill_two">Open in Safari</span>
+      </div>
+      <div class="lang-switcher" aria-label="Language switcher">
+        <button class="lang-btn" id="lang-en" onclick="setLang('en')">Eng</button>
+        <button class="lang-btn" id="lang-th" onclick="setLang('th')">ไทย</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-head">
+          <div class="tag tag-blue" data-i18n="tag_primary">Global</div>
+          <h2 data-i18n="card_primary_title">Price Battle</h2>
+          <p data-i18n="card_primary_desc">Apple Store prices vs. 40 countries.</p>
+        </div>
+        <button class="menu-item" onclick="openExternal('https://gist.githubusercontent.com/i3udokai/53cb90e738e544fcb10d8f4c8807204c/raw/Price%20Battle.html')">
+          <div class="menu-icon icon-blue">🌏</div>
+          <div class="item-text">
+            <strong data-i18n="open_primary">Open Price Battle</strong>
+            <span data-i18n="open_primary_desc">Launch the global comparison sheet</span>
+          </div>
+          <div class="chevron">›</div>
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div class="tag tag-orange" data-i18n="tag_secondary">Domestic</div>
+          <h2 data-i18n="card_secondary_title">Domestic Price Battle</h2>
+          <p data-i18n="card_secondary_desc">Carrier TCO and reseller deal analyzer.</p>
+        </div>
+        <button class="menu-item" onclick="openExternal('https://gist.githubusercontent.com/i3udokai/3d156144d54855c7437669f2fee07ae6/raw/Domestic%20Price%20Battle.html')">
+          <div class="menu-icon icon-orange">🏪</div>
+          <div class="item-text">
+            <strong data-i18n="open_secondary">Open Domestic Battle</strong>
+            <span data-i18n="open_secondary_desc">Launch the Thailand comparison sheet</span>
+          </div>
+          <div class="chevron">›</div>
+        </button>
+      </article>
+    </section>
+
+    <div class="footer" data-i18n="footer_text">Price Battle tools · One Shortcut</div>
+  </main>
+
+  <script>
+    const I18N = {
+      en: {
+        title: 'Price Battle',
+        eyebrow: 'Price Comparison',
+        lead: 'Open the price comparison tools that were split out of the main launcher.',
+        pill_one: 'Gist-hosted HTML',
+        pill_two: 'Open in Safari',
+        tag_primary: 'Global',
+        card_primary_title: 'Price Battle',
+        card_primary_desc: 'Apple Store prices vs. 40 countries.',
+        open_primary: 'Open Price Battle',
+        open_primary_desc: 'Launch the global comparison sheet',
+        tag_secondary: 'Domestic',
+        card_secondary_title: 'Domestic Price Battle',
+        card_secondary_desc: 'Carrier TCO and reseller deal analyzer.',
+        open_secondary: 'Open Domestic Battle',
+        open_secondary_desc: 'Launch the Thailand comparison sheet',
+        footer_text: 'Price Battle tools · One Shortcut',
+        loading: 'Loading tool…'
+      },
+      th: {
+        title: 'Price Battle',
+        eyebrow: 'เปรียบเทียบราคา',
+        lead: 'เปิดเครื่องมือเปรียบเทียบราคาที่แยกออกมาจากหน้าหลัก',
+        pill_one: 'ไฟล์ HTML บน Gist',
+        pill_two: 'เปิดใน Safari',
+        tag_primary: 'ทั่วโลก',
+        card_primary_title: 'Price Battle',
+        card_primary_desc: 'เทียบราคาหน้า Apple Store กับ 40 ประเทศ',
+        open_primary: 'เปิด Price Battle',
+        open_primary_desc: 'เปิดตารางเปรียบเทียบทั่วโลก',
+        tag_secondary: 'ในประเทศ',
+        card_secondary_title: 'Domestic Price Battle',
+        card_secondary_desc: 'วิเคราะห์ TCO ของเครือข่ายและดีลร้านตัวแทน',
+        open_secondary: 'เปิด Domestic Battle',
+        open_secondary_desc: 'เปิดตารางเปรียบเทียบในไทย',
+        footer_text: 'เครื่องมือ Price Battle · One Shortcut',
+        loading: 'กำลังโหลดเครื่องมือ…'
+      }
+    };
+
+    const LANG_KEY = 'one_shortcut_lang';
+    let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+
+    function applyLang() {
+      document.documentElement.lang = currentLang === 'th' ? 'th' : 'en';
+      document.title = I18N[currentLang].title || 'Price Battle';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const value = I18N[currentLang][key];
+        if (value) el.textContent = value;
+      });
+      document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
+      document.getElementById('lang-th').classList.toggle('active', currentLang === 'th');
+    }
+
+    function setLang(lang) {
+      currentLang = lang === 'th' ? 'th' : 'en';
+      localStorage.setItem(LANG_KEY, currentLang);
+      applyLang();
+    }
+
+    function openExternal(url) {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay) overlay.style.display = 'flex';
+      fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.text())
+        .then(html => {
+          document.open();
+          document.write(html);
+          document.close();
+        })
+        .catch(() => {
+          if (overlay) overlay.style.display = 'none';
+          window.location.href = url;
+        });
+    }
+
+    window.addEventListener('load', applyLang);
+  </script>
+</body>
+</html>
