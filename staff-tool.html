@@ -350,6 +350,146 @@
     white-space: nowrap;
   }
   .tab.active { background: var(--accent); color: #fff; }
+  .col-header {
+    display: grid;
+    grid-template-columns: minmax(170px, 1fr) 85px 85px 80px 80px 65px;
+    min-width: 650px;
+    padding: 6px 16px;
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border);
+    position: sticky;
+    top: 132px;
+    z-index: 18;
+  }
+  .col-header span {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .col-header span:not(:first-child) { text-align: right; }
+  .col-header .edu-col { color: var(--orange); }
+  .col-header .ac-col { color: var(--accent); }
+  .col-header .acedu-col { color: #5e5ce6; }
+  .price-content {
+    padding: 12px 12px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .device-section {
+    min-width: 650px;
+    margin-bottom: 16px;
+  }
+  .device-name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0;
+    padding: 6px 4px 8px;
+  }
+  .device-card {
+    background: var(--surface2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: minmax(170px, 1fr) 85px 85px 80px 80px 65px;
+    align-items: center;
+    padding: 11px 14px;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:active { background: var(--surface3); }
+  .row.open { background: rgba(10,132,255,0.06); }
+  .row-label {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    padding-right: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 6px;
+    letter-spacing: 0.2px;
+  }
+  .badge-cell { background: rgba(48,209,88,0.15); color: var(--green); }
+  .badge-nano { background: rgba(10,132,255,0.12); color: var(--accent); }
+  .price-col { text-align: right; }
+  .p-reg { font-size: 14px; font-weight: 500; letter-spacing: 0; }
+  .p-edu { font-size: 14px; font-weight: 600; color: var(--orange); letter-spacing: 0; }
+  .p-save { font-size: 12px; color: var(--green); letter-spacing: 0; }
+  .p-ac { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: 0; }
+  .p-acedu { font-size: 13px; font-weight: 600; color: #5e5ce6; letter-spacing: 0; }
+  .p-na { font-size: 13px; color: var(--text3); }
+  .detail {
+    display: none;
+    background: #0a0a0c;
+    border-top: 0.5px solid var(--border);
+    padding: 14px;
+  }
+  .detail.open { display: block; }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ditem {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 11px 12px;
+  }
+  .dlabel {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .dval { font-size: 18px; font-weight: 600; letter-spacing: 0; }
+  .dval.edu { color: var(--orange); }
+  .dval.green { color: var(--green); }
+  .dval.blue { color: var(--accent); }
+  .ditem-edu { background: rgba(255,159,10,0.08); border: 0.5px solid rgba(255,159,10,0.15); }
+  .ditem-ac { background: rgba(10,132,255,0.08); border: 0.5px solid rgba(10,132,255,0.15); }
+  .ditem-save { background: rgba(48,209,88,0.08); border: 0.5px solid rgba(48,209,88,0.15); }
+  .ditem-adapter { background: rgba(94,92,230,0.08); border: 0.5px solid rgba(94,92,230,0.15); }
+  .compare-table {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .ctitle {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .crow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .crow:last-child { border-bottom: none; }
+  .crow-name { font-size: 13px; color: var(--text2); }
+  .crow-val { font-size: 13px; font-weight: 600; letter-spacing: 0; }
+  .crow-val.edu { color: var(--orange); }
+  .crow-val.green { color: var(--green); }
   .price-list { display: grid; gap: 10px; }
   .price-section-title {
     font-size: 18px;
