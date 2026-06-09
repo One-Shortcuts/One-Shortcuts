@@ -357,7 +357,9 @@
       fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
         .then(r => r.text())
         .then(html => {
-          window.location.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+          document.open();
+          document.write(html);
+          document.close();
         })
         .catch(() => {
           if (overlay) overlay.style.display = 'none';

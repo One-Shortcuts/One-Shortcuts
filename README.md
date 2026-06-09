@@ -4,12 +4,8 @@ Retail store daily operation tools for Apple Retail Thailand.
 
 ## Files
 
-- `staff-tool.html` - launcher page
-- `price-battle.html` - price comparison hub
-- `education-price.html` - education pricing lookup
-- `vat-refund.html` - VAT refund calculator
-- `belkin-claim.html` - Belkin screen claim QR page
-- `deploy_ShortcutTools.sh` - publish all HTML files to one gist
+- `staff-tool.html` - single-file launcher and tool views
+- `deploy_ShortcutTools.sh` - publish `staff-tool.html` to one gist
 
 ## Workflow
 
@@ -20,7 +16,6 @@ Retail store daily operation tools for Apple Retail Thailand.
 
 ## Notes
 
-- Each tool is a standalone HTML file.
-- `price-battle.html` is the hub for the split Price Battle tools.
-- The launcher derives sibling tool URLs from the same raw gist base.
+- `staff-tool.html` contains the launcher, Price Battle hub, Education Price, VAT Refund, and Belkin claim views.
+- The iOS Shortcut should open only `staff-tool.html`.
 - The repo is intentionally framework-free and uses only static HTML/CSS/JS.

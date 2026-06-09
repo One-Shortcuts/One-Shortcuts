@@ -157,15 +157,13 @@
     return DEFAULT_RAW_BASE + file;
   }
 
-  function toDataUrl(html) {
-    return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
-  }
-
   function openRemote(url) {
     fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
       .then(r => r.text())
       .then(html => {
-        window.location.href = toDataUrl(html);
+        document.open();
+        document.write(html);
+        document.close();
       })
       .catch(() => {
         window.location.href = url;
