@@ -39,7 +39,9 @@ if [[ -z "$gist_ref" ]]; then
   printf '%s\n' "$gist_ref" > "$gist_id_file"
 else
   gist_id="${gist_ref##*/}"
-  gh gist edit "$gist_id" "${files[@]}"
+  for file in "${files[@]}"; do
+    gh gist edit "$gist_id" --filename "$(basename "$file")" "$file"
+  done
 fi
 
 gist_id="${gist_ref##*/}"

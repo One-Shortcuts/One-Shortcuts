@@ -282,6 +282,7 @@
   </main>
 
   <script>
+    const DEFAULT_RAW_BASE = 'https://gist.githubusercontent.com/i3udokai/2a7cd2861cacaae67e8c6f8454fb1886/raw/';
     const I18N = {
       en: {
         title: 'Price Battle',
@@ -324,7 +325,13 @@
     };
 
     const LANG_KEY = 'one_shortcut_lang';
-    let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+    function safeGetLang() {
+      try { return localStorage.getItem(LANG_KEY) || 'en'; } catch (e) { return 'en'; }
+    }
+    function safeSetLang(lang) {
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    }
+    let currentLang = safeGetLang();
 
     function applyLang() {
       document.documentElement.lang = currentLang === 'th' ? 'th' : 'en';
@@ -340,7 +347,7 @@
 
     function setLang(lang) {
       currentLang = lang === 'th' ? 'th' : 'en';
-      localStorage.setItem(LANG_KEY, currentLang);
+      safeSetLang(currentLang);
       applyLang();
     }
 
@@ -350,9 +357,7 @@
       fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
         .then(r => r.text())
         .then(html => {
-          document.open();
-          document.write(html);
-          document.close();
+          window.location.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
         })
         .catch(() => {
           if (overlay) overlay.style.display = 'none';

@@ -127,6 +127,7 @@
 </div>
 
 <script>
+  const DEFAULT_RAW_BASE = 'https://gist.githubusercontent.com/i3udokai/2a7cd2861cacaae67e8c6f8454fb1886/raw/';
   const I18N = {
     en: {
       title: 'One Shortcut - VAT Refund',
@@ -170,7 +171,13 @@
     }
   };
   const LANG_KEY = 'one_shortcut_lang';
-  let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+  function safeGetLang() {
+    try { return localStorage.getItem(LANG_KEY) || 'en'; } catch (e) { return 'en'; }
+  }
+  function safeSetLang(lang) {
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  }
+  let currentLang = safeGetLang();
 
   function t(key) {
     return I18N[currentLang][key] || I18N.en[key] || key;
@@ -190,7 +197,7 @@
 
   function setLang(lang) {
     currentLang = lang === 'th' ? 'th' : 'en';
-    localStorage.setItem(LANG_KEY, currentLang);
+    safeSetLang(currentLang);
     applyLang();
     vat_calculate();
   }
@@ -198,12 +205,30 @@
   function getBaseUrl(file) {
     const href = window.location.href;
     if (href.includes('/raw/')) return href.split('/raw/')[0] + '/raw/' + file;
-    const lastSlash = href.lastIndexOf('/');
-    return lastSlash >= 0 ? href.slice(0, lastSlash + 1) + file : file;
+    if (href.startsWith('file:')) {
+      const lastSlash = href.lastIndexOf('/');
+      return lastSlash >= 0 ? href.slice(0, lastSlash + 1) + file : file;
+    }
+    return DEFAULT_RAW_BASE + file;
+  }
+
+  function toDataUrl(html) {
+    return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+  }
+
+  function openRemote(url) {
+    fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(r => r.text())
+      .then(html => {
+        window.location.href = toDataUrl(html);
+      })
+      .catch(() => {
+        window.location.href = url;
+      });
   }
 
   function goHome() {
-    window.location.href = getBaseUrl('staff-tool.html');
+    openRemote(getBaseUrl('staff-tool.html'));
   }
 
   const vat_priceRanges = [
