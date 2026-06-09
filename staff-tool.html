@@ -857,8 +857,6 @@
 
   let priceListInitialized = false;
   let activePriceTab = 'MacBook';
-  const fmt = n => n != null ? '฿' + Number(n).toLocaleString('th-TH') : '—';
-  const t = key => I18N[currentLang][key] || I18N.en[key] || key;
 
   const priceData = {
     MacBook: [
