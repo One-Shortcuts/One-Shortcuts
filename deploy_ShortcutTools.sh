@@ -52,7 +52,6 @@ git clone "https://github.com/$deploy_repo.git" "$workdir" >/dev/null 2>&1
 
 cd "$workdir"
 git checkout -B "$branch" >/dev/null 2>&1
-find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 
 for file in "${html_files[@]}"; do
   cp "$repo_root/$file" "$workdir/$file"
