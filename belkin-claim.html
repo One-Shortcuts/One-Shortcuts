@@ -156,6 +156,11 @@
       const lastSlash = href.lastIndexOf('/');
       return lastSlash >= 0 ? href.slice(0, lastSlash + 1) + file : file;
     }
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      const path = window.location.pathname;
+      const dir = path.endsWith('/') ? path : path.slice(0, path.lastIndexOf('/') + 1);
+      return window.location.origin + dir + file;
+    }
     return DEFAULT_RAW_BASE + file;
   }
 
