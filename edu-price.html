@@ -511,7 +511,7 @@
       btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
     });
   }
-  function goHome() { fetch('https://gist.githubusercontent.com/LengPro/4dcfc11217eca522ed37d55d801ed237/raw/staff-tool.html?t='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(html=>{document.open();document.write(html);document.close();}).catch(()=>{}); }
+  function goHome() { window.location.href = 'staff-tool.html'; }
 </script>
 
 </body>

@@ -2,8 +2,8 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-repo_owner="${PAGES_REPO_OWNER:-}"
-repo_name="${PAGES_REPO_NAME:-One-Shortcut}"
+repo_owner="${PAGES_REPO_OWNER:-One-Shortcuts}"
+repo_name="${PAGES_REPO_NAME:-One-Shortcuts}"
 branch="${PAGES_REPO_BRANCH:-main}"
 description="One Shortcut tools GitHub Pages"
 html_files=(
@@ -14,7 +14,6 @@ html_files=(
   support.html
   other.html
   edu-price.html
-  education-price.html
   vat-refund.html
   belkin-claim.html
 )
