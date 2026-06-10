@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
 <title>EasyPlay</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -235,32 +237,37 @@
   <div class="home-header-body">
   <div class="section-list">
     <div class="section-card">
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/c4e79e0b6c5dd24cbf3a9d787244dd35/raw/highlight.html')">
+      <button class="menu-item" onclick="showScreen('screen-highlight')">
         <div class="menu-icon icon-orange">⭐</div>
         <div class="menu-item-text"><strong data-en="Today's Highlight" data-th="ไฮไลต์วันนี้" style="font-weight:700;">Today's Highlight</strong><span data-en="Events and promotions" data-th="อีเวนต์และโปรโมชั่น">Events and promotions</span></div>
         <span class="chevron">›</span>
       </button>
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/e7ca4da6a0dd0a1e572298881bccd3ad/raw/price-battle.html')">
+      <button class="menu-item" onclick="openURL('price-battle.html')">
         <div class="menu-icon icon-blue">🌏</div>
         <div class="menu-item-text"><strong data-en="Price Battle" data-th="Price Battle" style="font-weight:700;">Price Battle</strong><span data-en="Apple Store prices vs. 40 countries" data-th="เปรียบราคา Apple Store ใน 40 ประเทศ">Apple Store prices vs. 40 countries</span></div>
         <span class="chevron">›</span>
       </button>
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/20c5c8909f55761fcd1b47489dcbf657/raw/edu-price.html')">
+      <button class="menu-item" onclick="showScreen('screen-edu-price')">
         <div class="menu-icon icon-blue">🎓</div>
         <div class="menu-item-text"><strong data-en="Education Price" data-th="ราคาการศึกษา" style="font-weight:700;">Education Price</strong><span data-en="EDU pricing list by product" data-th="รายการราคา EDU แยกตามสินค้า">EDU pricing list by product</span></div>
         <span class="chevron">›</span>
       </button>
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/dbde5f30a68f3cc457881e82295f5d51/raw/vat-refund.html')">
+      <button class="menu-item" onclick="showScreen('screen-vat-refund')">
         <div class="menu-icon icon-blue">💰</div>
         <div class="menu-item-text"><strong data-en="VAT Refund" data-th="คืนภาษีมูลค่าเพิ่ม" style="font-weight:700;">VAT Refund</strong><span data-en="Airport refund calculator" data-th="คำนวณคืน VAT ที่สนามบิน">Airport refund calculator</span></div>
         <span class="chevron">›</span>
       </button>
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/0fc0f9777bfdf1924f05bfacfc74ae10/raw/support.html')">
+      <button class="menu-item" onclick="showScreen('screen-belkin')">
+        <div class="menu-icon icon-green">🛡️</div>
+        <div class="menu-item-text"><strong data-en="Claim Belkin Screen" data-th="เคลม Belkin Screen" style="font-weight:700;">Claim Belkin Screen</strong><span data-en="Screen protector replacement claim" data-th="เคลมเปลี่ยนฟิล์มกันรอย">Screen protector replacement claim</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="showScreen('screen-support')">
         <div class="menu-icon icon-green">🛠️</div>
         <div class="menu-item-text"><strong data-en="Support" data-th="ซัพพอร์ต" style="font-weight:700;">Support</strong><span data-en="Service and troubleshooting" data-th="บริการและแก้ปัญหา">Service and troubleshooting</span></div>
         <span class="chevron">›</span>
       </button>
-      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/73c7217cd038d70225ad0ac78e157318/raw/other.html')">
+      <button class="menu-item" onclick="showScreen('screen-other')">
         <div class="menu-icon icon-orange">📁</div>
         <div class="menu-item-text"><strong data-en="Other" data-th="อื่นๆ" style="font-weight:700;">Other</strong><span data-en="Additional tools and links" data-th="เครื่องมือและลิงก์เพิ่มเติม">Additional tools and links</span></div>
         <span class="chevron">›</span>
@@ -462,17 +469,6 @@
     if (h && c) c.style.top = h.offsetHeight + 'px';
   }
   function openURL(url) { window.location.href = url; }
-
-  function openTool(url) {
-    if (url.startsWith('LINK_')) {
-      alert('🔗 Coming soon\nLink not set yet for this section.');
-      return;
-    }
-    fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(r => r.text())
-      .then(html => { document.open(); document.write(html); document.close(); })
-      .catch(() => {});
-  }
 
   let belkinQRInitialized = false;
   function initBelkinQR() {

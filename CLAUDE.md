@@ -4,15 +4,17 @@ This file gives working guidance for this repository.
 
 ## Project
 
-**One Shortcut** is a single HTML launcher that contains the retail store daily operation tools.
+**One Shortcut** is a static HTML launcher that contains the retail store daily operation tools.
 
-The only entry point is `staff-tool.html`. iOS Shortcuts should open the raw gist URL in Safari.
+The GitHub Pages entry point is `index.html`, which redirects to `staff-tool.html`. iOS Shortcuts should open the GitHub Pages URL in Safari.
 
 ## Files
 
 ```
 /
+├── index.html
 ├── staff-tool.html
+├── price-battle.html
 ├── deploy_ShortcutTools.sh
 ├── .gist-id-shortcut
 └── README.md
@@ -22,12 +24,19 @@ The only entry point is `staff-tool.html`. iOS Shortcuts should open the raw gis
 
 - Pure static HTML, CSS, and vanilla JavaScript.
 - No build step and no package manager.
-- All tool views live inside `staff-tool.html` and switch without leaving the page.
-- Price Battle still opens the legacy comparison sheets, but from inside the single launcher page.
+- Main tool views live inside `staff-tool.html` and switch without leaving the page.
+- Price Battle opens as a same-site GitHub Pages HTML page, not through raw Gist fetch/document.write.
 - One external dependency remains: `QRCode.js` from cdnjs for the Belkin claim page.
+- Public pages include `noindex` meta tags to discourage search indexing. This is not access control.
 
 ## Deployment
 
+For GitHub Pages:
+- Push the repo to GitHub.
+- Enable Pages for the repo branch.
+- Open the Pages URL from the iOS Shortcut.
+
+For the legacy Gist workflow:
 Run `./deploy_ShortcutTools.sh` from the repo root.
 
 Requirements:
@@ -44,6 +53,7 @@ The script publishes `staff-tool.html` into one public gist, stores the gist ID 
 
 ## Behavioral expectations
 
-- `staff-tool.html` is the launcher and the tool container.
-- The page should work when opened directly from a raw gist URL or locally from the repo folder.
+- `staff-tool.html` is the launcher and main tool container.
+- Internal launcher buttons must not fetch raw Gist HTML and replace the document.
+- The page should work when opened from GitHub Pages or locally from the repo folder.
 - Keep the content self-contained and avoid external app dependencies unless already required.
