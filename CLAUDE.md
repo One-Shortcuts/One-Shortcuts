@@ -6,7 +6,7 @@ This file gives working guidance for this repository.
 
 **One Shortcut** is a static HTML launcher that contains the retail store daily operation tools.
 
-The GitHub Pages entry point is `index.html`, which redirects to `staff-tool.html`. iOS Shortcuts should open the GitHub Pages URL in Safari.
+The GitHub Pages entry point is `index.html`, which redirects to `staff-tool.html`. iOS Shortcuts should open the public Pages URL in Safari.
 
 ## Files
 
@@ -32,18 +32,13 @@ The GitHub Pages entry point is `index.html`, which redirects to `staff-tool.htm
 ## Deployment
 
 For GitHub Pages:
-- Push the repo to GitHub.
-- Enable Pages for the repo branch.
-- Open the Pages URL from the iOS Shortcut.
-
-For the legacy Gist workflow:
 Run `./deploy_ShortcutTools.sh` from the repo root.
 
 Requirements:
 - `gh` CLI installed
 - authenticated GitHub session via `gh auth login`
 
-The script publishes `staff-tool.html` into one public gist, stores the gist ID in `.gist-id-shortcut`, and prints the raw URL for the launcher.
+The script publishes only deployable HTML files into the public `One-Shorcut` repo, enables GitHub Pages from the repo root, and prints the Pages URL.
 
 ## Visual style
 
