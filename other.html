@@ -85,7 +85,7 @@
 
 <div class="sticky-header">
   <div class="header-top">
-    <a class="back-btn" onclick="goHome()" href="#">&#x2039;</a>
+    <a class="back-btn" onclick="event.preventDefault();goHome()">&#x2039;</a>
     <span class="screen-label" data-en="Other" data-th="อื่นๆ">Other</span>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('en')">EN</button>

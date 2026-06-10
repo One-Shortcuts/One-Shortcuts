@@ -140,7 +140,7 @@
 
 <div class="sticky-header">
   <div class="header-top">
-    <a class="back-btn" onclick="goHome()" href="#">‹</a>
+    <a class="back-btn" onclick="event.preventDefault();goHome()">‹</a>
     <span class="screen-label" data-en="VAT Refund" data-th="คืนภาษีมูลค่าเพิ่ม">VAT Refund</span>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
