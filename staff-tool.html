@@ -2,1001 +2,508 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>One Shortcut</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EasyPlay</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
   :root {
-    --bg: #000;
-    --surface: #111;
-    --surface2: #1c1c1e;
-    --surface3: #2c2c2e;
-    --border: rgba(255,255,255,0.1);
-    --text: #f5f5f7;
-    --text2: #aeaeb2;
-    --text3: #636366;
-    --accent: #0a84ff;
-    --green: #30d158;
-    --orange: #ff9f0a;
-    --red: #ff453a;
-    --radius: 16px;
-    --font: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, sans-serif;
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --surface2: #ffffff;
+    --surface3: #e8e8ed;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --text3: #a1a1a6;
+    --accent: #0071e3;
+    --green: #1a7f37;
+    --green-bg: #f0faf4;
+    --edu: #bf5200;
+    --edu-bg: #fff8f0;
+    --red: #c0392b;
+    --purple: #5856d6;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font-en: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    --font-th: "Sukhumvit Set", "Noto Sans Thai", sans-serif;
+    --font: var(--font-en);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    min-height: 100vh;
-    background:
-      radial-gradient(circle at top left, rgba(10,132,255,0.14), transparent 26%),
-      radial-gradient(circle at bottom right, rgba(48,209,88,0.12), transparent 28%),
-      var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-  }
-  button, input, textarea, select { font: inherit; }
-  .app {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 18px 14px calc(28px + env(safe-area-inset-bottom));
-  }
-  .view { display: none; }
-  .view.active { display: block; }
-  .hero {
-    padding: calc(22px + env(safe-area-inset-top)) 8px 18px;
-  }
-  .home-hero {
-    padding-right: 62px;
-  }
-  .eyebrow {
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  h1 {
-    font-size: clamp(34px, 9vw, 54px);
-    line-height: 0.94;
-    letter-spacing: -0.05em;
-    margin-bottom: 12px;
-  }
-  .lead {
-    max-width: 42rem;
-    font-size: 16px;
-    line-height: 1.55;
-    color: var(--text2);
-  }
-  .meta {
-    margin-top: 14px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    color: var(--text3);
-    font-size: 12px;
-    align-items: center;
-  }
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 0.5px solid var(--border);
-    background: rgba(255,255,255,0.04);
-    border-radius: 999px;
-    padding: 7px 12px;
-    color: var(--text2);
-  }
-  .lang-switcher {
-    position: fixed;
-    top: calc(12px + env(safe-area-inset-top));
-    right: 12px;
-    z-index: 60;
-    display: inline-flex;
-    padding: 4px;
-    border-radius: 999px;
-    border: 0.5px solid var(--border);
-    background: rgba(20,20,20,0.82);
-    gap: 4px;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-  .lang-btn {
-    border: none;
-    background: transparent;
-    color: var(--text2);
-    font-size: 15px;
-    font-weight: 700;
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  .lang-btn.active {
-    background: var(--surface3);
-    color: var(--text);
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 8px;
-  }
-  .card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-  .card-head {
-    padding: 16px 16px 14px;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-    border-radius: 999px;
-    margin-bottom: 10px;
-  }
-  .tag-blue { background: rgba(10,132,255,0.14); color: var(--accent); }
-  .tag-green { background: rgba(48,209,88,0.14); color: var(--green); }
-  .tag-orange { background: rgba(255,159,10,0.14); color: var(--orange); }
-  .card-head h2 {
-    font-size: 18px;
-    letter-spacing: -0.03em;
-    margin-bottom: 4px;
-  }
-  .card-head p {
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.45;
-  }
-  .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: var(--text);
-    text-align: left;
-    padding: 17px 16px;
-    border-bottom: 0.5px solid var(--border);
-    cursor: pointer;
-    transition: background 0.12s ease;
-    min-height: 82px;
-  }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  .screen { display: none; min-height: 100vh; padding-bottom: 48px; }
+  .screen.active { display: block; animation: fadeIn 0.22s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Home */
+  .home-header { padding: 56px 20px 20px; background: var(--bg); }
+  .home-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .home-header h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; color: var(--text); }
+  .home-header p { font-size: 15px; color: var(--text2); margin-top: 6px; line-height: 1.4; }
+  .section-list { padding: 4px 4px; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .section-card { background: var(--surface2); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .section-card-header { padding: 14px 18px 10px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .section-card-header .tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; margin-bottom: 6px; }
+  .tag-blue { background: rgba(0,113,227,0.1); color: var(--accent); }
+  .tag-green { background: rgba(26,127,55,0.1); color: var(--green); }
+  .section-card-header h2 { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; color: var(--text); }
+  .section-card-header p { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .menu-item { display: flex; align-items: center; padding: 20px 18px; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; transition: background 0.1s; gap: 14px; border-bottom: 1px solid var(--border); color: var(--text); font-family: var(--font); }
   .menu-item:last-child { border-bottom: none; }
-  .menu-item:active { background: var(--surface3); }
-  .menu-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .icon-blue { background: rgba(10,132,255,0.16); }
-  .icon-green { background: rgba(48,209,88,0.16); }
-  .icon-orange { background: rgba(255,159,10,0.16); }
-  .item-text { flex: 1; min-width: 0; }
-  .item-text strong {
-    display: block;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin-bottom: 2px;
-  }
-  .item-text span {
-    display: block;
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.38;
-  }
-  .chevron {
-    color: var(--text3);
-    font-size: 24px;
-    padding-left: 4px;
-    flex-shrink: 0;
-  }
-  .note {
-    margin-top: 14px;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.55;
-  }
-  .note strong { color: var(--text); }
-  .footer {
-    padding: 16px 6px 0;
-    color: var(--text3);
-    font-size: 12px;
-    line-height: 1.5;
-    text-align: center;
-  }
-  .tool-head {
-    position: sticky;
-    top: 0;
-    z-index: 20;
+  .menu-item:active { background: var(--surface); }
+  .menu-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .icon-blue { background: rgba(0,113,227,0.1); }
+  .icon-green { background: rgba(26,127,55,0.1); }
+  .icon-orange { background: rgba(191,82,0,0.1); }
+  .menu-item-text { flex: 1; }
+  .menu-item-text strong { display: block; font-size: 17px; font-weight: 500; color: var(--text); }
+  .menu-item-text span { display: block; font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .chevron { color: var(--text3); font-size: 22px; font-weight: 600; }
+
+  /* Shared sticky header */
+  .sticky-header {
+    background: rgba(255,255,255,0.92);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    background: rgba(0,0,0,0.88);
-    border-bottom: 0.5px solid var(--border);
+    position: sticky; isolation: isolate;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
   }
-  .tool-top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 52px 16px 10px;
-  }
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 999px;
-    background: var(--surface2);
-    color: var(--accent);
-    font-size: 20px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  .tool-label {
-    font-size: 13px;
-    color: var(--text2);
-    min-width: 0;
-  }
-  .tool-title {
-    padding: 2px 16px 14px;
-  }
-  .tool-title h2 {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-  .tool-title p {
-    font-size: 14px;
-    color: var(--text2);
-    margin-top: 3px;
-  }
-  .tool-body {
-    padding: 16px;
-  }
-  .tool-card {
-    background: var(--surface2);
-    border-radius: var(--radius);
-    border: 0.5px solid var(--border);
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .tool-grid {
-    display: grid;
-    gap: 12px;
-  }
-  .subtle {
-    color: var(--text3);
-    font-size: 12px;
-    line-height: 1.45;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-secondary { background: var(--surface3); color: var(--text); border: 0.5px solid var(--border); }
-  .btn-danger { background: rgba(255,69,58,0.14); color: var(--red); border: 0.5px solid rgba(255,69,58,0.2); }
-  .btn-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .legacy-link {
-    display: block;
-    margin-top: 8px;
-    word-break: break-word;
-    color: var(--text2);
-    font-size: 12px;
-  }
-  .search-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .search-row input {
-    flex: 1;
-    min-width: 180px;
-    border: 0.5px solid var(--border);
-    background: var(--surface3);
-    color: var(--text);
-    border-radius: 12px;
-    padding: 12px 14px;
-    outline: none;
-  }
-  .tabs-scroll {
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 0 16px 12px;
-    -webkit-overflow-scrolling: touch;
-  }
+  .header-top { display: flex; align-items: center; padding: 16px 16px 10px; gap: 10px; }
+  .header-body { padding: 2px 16px 14px; }
+  .header-body h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; color: var(--text); }
+  .header-body p { font-size: 13px; color: var(--text2); margin-top: 3px; }
+  .back-btn { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; cursor: pointer; color: var(--accent); font-size: 20px; flex-shrink: 0; transition: background 0.1s; }
+  .back-btn:active { background: var(--surface3); }
+  .screen-label { font-size: 13px; color: var(--text2); }
+
+  /* Edu price tabs */
+  .tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 0 16px 12px; }
   .tabs-scroll::-webkit-scrollbar { display: none; }
-  .tabs { display: flex; gap: 7px; width: max-content; }
-  .tab {
-    background: var(--surface2);
-    color: var(--text2);
-    border: none;
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .tab.active { background: var(--accent); color: #fff; }
+  .tabs { display: flex; gap: 6px; width: max-content; }
+  .tab { background: var(--surface); color: var(--text2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font); }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Column header */
   .col-header {
     display: grid;
-    grid-template-columns: minmax(170px, 1fr) 85px 85px 80px 80px 65px;
-    min-width: 650px;
+    grid-template-columns: 1fr 85px 85px 80px 80px 65px;
     padding: 6px 16px;
     background: var(--surface);
-    border-bottom: 0.5px solid var(--border);
-    position: sticky;
+    border-bottom: 1px solid var(--border);
+    position: sticky; isolation: isolate;
     top: 132px;
-    z-index: 18;
+    z-index: 90;
   }
-  .col-header span {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-  }
+  .col-header span { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text3); }
   .col-header span:not(:first-child) { text-align: right; }
-  .col-header .edu-col { color: var(--orange); }
+  .col-header .edu-col { color: var(--edu); }
   .col-header .ac-col { color: var(--accent); }
-  .col-header .acedu-col { color: #5e5ce6; }
-  .price-content {
-    padding: 12px 12px 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .device-section {
-    min-width: 650px;
-    margin-bottom: 16px;
-  }
-  .device-name {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0;
-    padding: 6px 4px 8px;
-  }
-  .device-card {
-    background: var(--surface2);
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 0.5px solid var(--border);
-  }
-  .row {
-    display: grid;
-    grid-template-columns: minmax(170px, 1fr) 85px 85px 80px 80px 65px;
-    align-items: center;
-    padding: 11px 14px;
-    border-bottom: 0.5px solid var(--border);
-    cursor: pointer;
-    transition: background 0.12s;
-  }
+  .col-header .acedu-col { color: var(--purple); }
+
+  /* Price list */
+  .price-content { padding: 12px 12px 0; }
+  .device-section { margin-bottom: 16px; }
+  .device-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; padding: 6px 4px 8px; color: var(--text); }
+  .device-card { background: var(--surface2); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .row { display: grid; grid-template-columns: 1fr 85px 85px 80px 80px 65px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
   .row:last-child { border-bottom: none; }
-  .row:active { background: var(--surface3); }
-  .row.open { background: rgba(10,132,255,0.06); }
-  .row-label {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0;
-    padding-right: 6px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  .badge {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 5px;
-    border-radius: 6px;
-    letter-spacing: 0.2px;
-  }
-  .badge-cell { background: rgba(48,209,88,0.15); color: var(--green); }
-  .badge-nano { background: rgba(10,132,255,0.12); color: var(--accent); }
+  .row:active { background: var(--surface); }
+  .row.open { background: rgba(0,113,227,0.04); }
+  .row-label { font-size: 14px; font-weight: 500; letter-spacing: -0.2px; padding-right: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; color: var(--text); }
+  .badge { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 5px; letter-spacing: 0.2px; }
+  .badge-cell { background: rgba(26,127,55,0.1); color: var(--green); }
+  .badge-nano { background: rgba(0,113,227,0.1); color: var(--accent); }
   .price-col { text-align: right; }
-  .p-reg { font-size: 14px; font-weight: 500; letter-spacing: 0; }
-  .p-edu { font-size: 14px; font-weight: 600; color: var(--orange); letter-spacing: 0; }
-  .p-save { font-size: 12px; color: var(--green); letter-spacing: 0; }
-  .p-ac { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: 0; }
-  .p-acedu { font-size: 13px; font-weight: 600; color: #5e5ce6; letter-spacing: 0; }
+  .p-reg { font-size: 14px; font-weight: 500; letter-spacing: -0.3px; color: var(--text); }
+  .p-edu { font-size: 14px; font-weight: 600; color: var(--edu); letter-spacing: -0.3px; }
+  .p-save { font-size: 12px; color: var(--green); letter-spacing: -0.2px; }
+  .p-ac { font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: -0.3px; }
+  .p-acedu { font-size: 13px; font-weight: 600; color: var(--purple); letter-spacing: -0.3px; }
   .p-na { font-size: 13px; color: var(--text3); }
-  .detail {
-    display: none;
-    background: #0a0a0c;
-    border-top: 0.5px solid var(--border);
-    padding: 14px;
-  }
+
+  /* Detail expand */
+  .detail { display: none; background: var(--surface); border-top: 1px solid var(--border); padding: 14px; }
   .detail.open { display: block; }
-  .detail-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .ditem {
-    background: var(--surface2);
-    border-radius: 10px;
-    padding: 11px 12px;
-  }
-  .dlabel {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: var(--text3);
-    margin-bottom: 4px;
-  }
-  .dval { font-size: 18px; font-weight: 600; letter-spacing: 0; }
-  .dval.edu { color: var(--orange); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .ditem { background: var(--surface2); border-radius: var(--radius-sm); padding: 11px 12px; border: 1px solid var(--border); }
+  .dlabel { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text3); margin-bottom: 4px; }
+  .dval { font-size: 17px; font-weight: 600; letter-spacing: -0.4px; color: var(--text); }
+  .dval.edu { color: var(--edu); }
   .dval.green { color: var(--green); }
   .dval.blue { color: var(--accent); }
-  .ditem-edu { background: rgba(255,159,10,0.08); border: 0.5px solid rgba(255,159,10,0.15); }
-  .ditem-ac { background: rgba(10,132,255,0.08); border: 0.5px solid rgba(10,132,255,0.15); }
-  .ditem-save { background: rgba(48,209,88,0.08); border: 0.5px solid rgba(48,209,88,0.15); }
-  .ditem-adapter { background: rgba(94,92,230,0.08); border: 0.5px solid rgba(94,92,230,0.15); }
-  .compare-table {
-    background: var(--surface2);
-    border-radius: 10px;
-    padding: 12px;
-  }
-  .ctitle {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: var(--text3);
-    margin-bottom: 8px;
-  }
-  .crow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 0.5px solid var(--border);
-  }
+  .ditem-edu { background: rgba(191,82,0,0.05); border: 1px solid rgba(191,82,0,0.15); }
+  .ditem-ac { background: rgba(0,113,227,0.05); border: 1px solid rgba(0,113,227,0.12); }
+  .ditem-save { background: rgba(26,127,55,0.05); border: 1px solid rgba(26,127,55,0.15); }
+  .ditem-adapter { background: rgba(88,86,214,0.05); border: 1px solid rgba(88,86,214,0.15); }
+  .compare-table { background: var(--surface); border-radius: var(--radius-sm); padding: 12px; border: 1px solid var(--border); }
+  .ctitle { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text3); margin-bottom: 8px; }
+  .crow { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
   .crow:last-child { border-bottom: none; }
   .crow-name { font-size: 13px; color: var(--text2); }
-  .crow-val { font-size: 13px; font-weight: 600; letter-spacing: 0; }
-  .crow-val.edu { color: var(--orange); }
+  .crow-val { font-size: 13px; font-weight: 600; letter-spacing: -0.2px; color: var(--text); }
+  .crow-val.edu { color: var(--edu); }
   .crow-val.green { color: var(--green); }
-  .price-list { display: grid; gap: 10px; }
-  .price-section-title {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin: 4px 2px 0;
-  }
-  .price-item {
-    background: #0a0a0c;
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .price-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    padding: 13px 14px;
-    border-top: 0.5px solid var(--border);
-  }
-  .price-row:first-child { border-top: none; }
-  .price-name { font-size: 14px; font-weight: 600; }
-  .price-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .price-values { text-align: right; white-space: nowrap; }
-  .price-regular { font-size: 14px; font-weight: 600; }
-  .price-edu { font-size: 13px; color: var(--orange); font-weight: 600; }
-  .price-save { font-size: 12px; color: var(--green); margin-top: 2px; }
-  .calc-row {
-    display: grid;
-    gap: 10px;
-  }
-  .vat-input-row {
-    display: flex;
-    align-items: center;
-    background: var(--surface3);
-    border-radius: 10px;
-    padding: 0 14px;
-    border: 0.5px solid var(--border);
-  }
-  .vat-sym {
-    font-size: 26px;
-    color: var(--text2);
-    margin-right: 8px;
-  }
-  #vat-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 30px;
-    font-weight: 600;
-    color: var(--text);
-    padding: 12px 0;
-    appearance: none;
-    caret-color: var(--accent);
-  }
-  #vat-clear {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    color: var(--text2);
-    cursor: pointer;
-    font-size: 11px;
-  }
-  .vat-hero {
-    padding: 24px 16px;
-    text-align: center;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .vat-hero-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text3);
-    margin-bottom: 8px;
-  }
-  #vat-hero-amount {
-    font-size: 44px;
-    font-weight: 700;
-    color: var(--text3);
-  }
-  #vat-hero-method {
-    font-size: 13px;
-    color: var(--text2);
-    margin-top: 6px;
-  }
-  .vat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 0.5px solid var(--border);
-    font-size: 14px;
-  }
-  .vat-row:last-child {
-    border-bottom: none;
-    background: rgba(48,209,88,0.04);
-  }
+
+  /* VAT */
+  .vat-pill { background: rgba(26,127,55,0.1); border: 1px solid rgba(26,127,55,0.2); color: var(--green); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; margin-left: auto; }
+  .vat-content { padding: 16px; }
+  .vat-card { background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 16px; margin-bottom: 12px; }
+  .vat-field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 10px; }
+  .vat-input-row { display: flex; align-items: center; background: var(--surface); border-radius: 10px; padding: 0 14px; border: 1px solid var(--border2); }
+  .vat-sym { font-size: 26px; color: var(--text2); margin-right: 8px; }
+  #vat-priceInput { flex: 1; background: transparent; border: none; outline: none; font-size: 30px; font-weight: 600; color: var(--text); padding: 12px 0; appearance: none; caret-color: var(--accent); font-family: var(--font); }
+  #vat-clearBtn { background: var(--surface3); border: none; border-radius: 50%; width: 22px; height: 22px; color: var(--text2); cursor: pointer; font-size: 11px; }
+  .vat-result-card { background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 12px; }
+  .vat-hero { padding: 24px 16px; text-align: center; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .vat-hero-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); margin-bottom: 8px; }
+  #vat-heroAmount { font-size: 44px; font-weight: 700; color: var(--text3); }
+  #vat-heroMethod { font-size: 13px; color: var(--text2); margin-top: 6px; }
+  #vat-eligBadge { margin-top: 10px; }
+  .vat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .vat-row:last-child { border-bottom: none; background: rgba(26,127,55,0.03); }
   .vat-row-label { color: var(--text2); }
-  .vat-row-val { font-weight: 600; }
-  .qrcode-box {
-    display: grid;
-    place-items: center;
-    min-height: 220px;
-    border: 1px dashed rgba(255,255,255,0.16);
-    border-radius: 16px;
-    background: rgba(255,255,255,0.03);
-    margin: 18px 0 12px;
-    padding: 18px;
-  }
-  .qrcode-fallback {
-    color: var(--text2);
-    font-size: 13px;
-    text-align: center;
-    line-height: 1.5;
-    max-width: 260px;
-  }
-  .overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid rgba(255,255,255,0.15);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
+  .vat-row-val { font-weight: 600; color: var(--text); }
+
+  /* Belkin */
+  .qr-wrap { margin: 16px; background: var(--surface2); border-radius: var(--radius); padding: 28px 20px; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; }
+  .qr-wrap h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .qr-wrap p { font-size: 14px; color: var(--text2); margin-bottom: 20px; }
+  #qrcode canvas, #qrcode img { width: 200px !important; height: 200px !important; border-radius: 12px; margin: 0 auto; }
+  .btn-primary { display: block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; font-family: var(--font); }
+  .btn-primary:active { opacity: 0.85; }
+
+  /* Loading overlay */
+  #loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+  .loading-spinner { width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-label { font-size: 14px; color: var(--text2); font-weight: 500; }
-  @media (min-width: 760px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .hero { padding-top: 28px; }
-  }
+
+  /* Footer */
+  .footer { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 12px; font-weight: 500; letter-spacing: -0.1px; }
+
+  /* Responsive */
   @media (max-width: 680px) {
-    .tool-top { padding-top: 48px; }
-    .tool-title h2 { font-size: 24px; }
-    #vat-hero-amount { font-size: 38px; }
+    .col-header { display: none; }
+    .row { grid-template-columns: repeat(2, 1fr); gap: 10px 12px; padding: 16px; }
+    .row-label { grid-column: 1 / -1; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .price-col { text-align: left !important; display: flex; flex-direction: column; gap: 2px; }
+    .price-col::before { content: attr(data-label); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); }
+    .p-reg, .p-edu, .p-ac, .p-acedu { font-size: 15px; }
+    .p-save { font-size: 14px; }
+    .detail-grid { grid-template-columns: 1fr; }
   }
+
+  /* Language toggle */
+  .lang-toggle { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px; margin-left: auto; flex-shrink: 0; }
+  .lang-btn { background: transparent; border: none; border-radius: 16px; padding: 4px 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text3); transition: all 0.15s; letter-spacing: 0.02em; font-family: var(--font-en); }
+  .lang-btn.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+  /* Global font switch when TH active */
+  body.lang-th { font-family: var(--font-th); }
+  body.lang-th .lang-btn { font-family: var(--font-en); }
+
+  /* Home header top bar */
+  .home-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 0; }
+  .home-topbar-left { display: flex; flex-direction: column; }
+  .home-header-body { padding: 2px 20px 20px; }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-  <div id="overlay" class="overlay" aria-hidden="true">
-    <div class="spinner"></div>
-    <div class="loading-label" data-i18n="loading">Loading tool…</div>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-label">Loading tool…</div>
+</div>
+
+<!-- Home -->
+<div id="screen-home" class="screen active">
+  <div class="home-topbar">
+    <div class="home-topbar-left">
+      <h1>EasyPlay</h1>
+      <p id="app-version" style="font-size:11px;color:var(--text3);margin-top:2px;"></p>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('th')">TH</button>
+    </div>
   </div>
-  <div class="lang-switcher" aria-label="Language switcher">
-    <button class="lang-btn" id="lang-en" onclick="setLang('en')">🇺🇸</button>
-    <button class="lang-btn" id="lang-th" onclick="setLang('th')">🇹🇭</button>
+  <div class="home-header-body">
+  <div class="section-list">
+    <div class="section-card">
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/c4e79e0b6c5dd24cbf3a9d787244dd35/raw/highlight.html')">
+        <div class="menu-icon icon-orange">⭐</div>
+        <div class="menu-item-text"><strong data-en="Today's Highlight" data-th="ไฮไลต์วันนี้" style="font-weight:700;">Today's Highlight</strong><span data-en="Events and promotions" data-th="อีเวนต์และโปรโมชั่น">Events and promotions</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/e7ca4da6a0dd0a1e572298881bccd3ad/raw/price-battle.html')">
+        <div class="menu-icon icon-blue">🌏</div>
+        <div class="menu-item-text"><strong data-en="Price Battle" data-th="Price Battle" style="font-weight:700;">Price Battle</strong><span data-en="Apple Store prices vs. 40 countries" data-th="เปรียบราคา Apple Store ใน 40 ประเทศ">Apple Store prices vs. 40 countries</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/20c5c8909f55761fcd1b47489dcbf657/raw/edu-price.html')">
+        <div class="menu-icon icon-blue">🎓</div>
+        <div class="menu-item-text"><strong data-en="Education Price" data-th="ราคาการศึกษา" style="font-weight:700;">Education Price</strong><span data-en="EDU pricing list by product" data-th="รายการราคา EDU แยกตามสินค้า">EDU pricing list by product</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/dbde5f30a68f3cc457881e82295f5d51/raw/vat-refund.html')">
+        <div class="menu-icon icon-blue">💰</div>
+        <div class="menu-item-text"><strong data-en="VAT Refund" data-th="คืนภาษีมูลค่าเพิ่ม" style="font-weight:700;">VAT Refund</strong><span data-en="Airport refund calculator" data-th="คำนวณคืน VAT ที่สนามบิน">Airport refund calculator</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/0fc0f9777bfdf1924f05bfacfc74ae10/raw/support.html')">
+        <div class="menu-icon icon-green">🛠️</div>
+        <div class="menu-item-text"><strong data-en="Support" data-th="ซัพพอร์ต" style="font-weight:700;">Support</strong><span data-en="Service and troubleshooting" data-th="บริการและแก้ปัญหา">Service and troubleshooting</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openTool('https://gist.githubusercontent.com/LengPro/73c7217cd038d70225ad0ac78e157318/raw/other.html')">
+        <div class="menu-icon icon-orange">📁</div>
+        <div class="menu-item-text"><strong data-en="Other" data-th="อื่นๆ" style="font-weight:700;">Other</strong><span data-en="Additional tools and links" data-th="เครื่องมือและลิงก์เพิ่มเติม">Additional tools and links</span></div>
+        <span class="chevron">›</span>
+      </button>
+      <button class="menu-item" onclick="openURL('mailto:leng_pp2@icloud.com,aseak.j@icloud.com,imac.app@icloud.com,annop_com7@icloud.com,v3vatboy@hotmail.com?subject=EasyPlay%20Feedback')">
+        <div class="menu-icon icon-green">✉️</div>
+        <div class="menu-item-text"><strong data-en="Feedback" data-th="ส่งความคิดเห็น" style="font-weight:700;">Feedback</strong><span data-en="Send feedback to the team" data-th="ส่งความคิดเห็นถึงทีม">Send feedback to the team</span></div>
+        <span class="chevron">›</span>
+      </button>
+    </div>
   </div>
+</div>
 
-  <main class="app">
-    <section id="view-home" class="view active">
-      <div class="hero home-hero">
-        <div class="eyebrow" data-i18n="home_eyebrow">Retail store daily operations</div>
-        <h1 data-i18n="home_title">One Shortcut</h1>
+<!-- Highlight -->
+<div id="screen-highlight" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</span>
+      <div class="lang-toggle" style="margin-left:auto;">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
       </div>
+    </div>
+    <div class="header-body">
+      <h1 data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</h1>
+      <p data-en="Events and promotions" data-th="อีเวนต์และโปรโมชั่น">Events and promotions</p>
+    </div>
+  </div>
+  <div style="padding:32px 20px;text-align:center;color:var(--text3);">
+    <div style="font-size:40px;margin-bottom:12px;">⭐</div>
+    <div style="font-size:15px;font-weight:500;" data-en="Coming soon" data-th="เร็วๆ นี้">Coming soon</div>
+  </div>
+</div>
 
-      <section class="grid" style="margin-top:0;">
-        <article class="card">
-          <div class="card-head">
-            <div class="tag tag-blue" data-i18n="card_product_tag">Product</div>
-            <h2 data-i18n="card_product_title">Pricing</h2>
-          </div>
-          <button class="menu-item" data-view="education">
-            <div class="menu-icon icon-blue">🎓</div>
-            <div class="item-text">
-              <strong data-i18n="tool_edu_title">Education Price</strong>
-              <span data-i18n="tool_edu_desc">Open price lookup</span>
-            </div>
-            <div class="chevron">›</div>
-          </button>
-        </article>
-
-        <article class="card">
-          <div class="card-head">
-            <div class="tag tag-blue" data-i18n="section_price_battle_tag">Price</div>
-            <h2 data-i18n="section_price_battle_title">Price Battle</h2>
-          </div>
-          <button class="menu-item" data-action="open-price-battle">
-            <div class="menu-icon icon-blue">🌏</div>
-            <div class="item-text">
-              <strong data-i18n="tool_price_battle_title">Open Price Battle</strong>
-              <span data-i18n="tool_price_battle_desc">Launch immediately</span>
-            </div>
-            <div class="chevron">›</div>
-          </button>
-        </article>
-
-        <article class="card">
-          <div class="card-head">
-            <div class="tag tag-green" data-i18n="card_ops_tag">Operations</div>
-            <h2 data-i18n="card_ops_title">Store tools</h2>
-          </div>
-          <button class="menu-item" data-view="vat">
-            <div class="menu-icon icon-green">💰</div>
-            <div class="item-text">
-              <strong data-i18n="tool_vat_title">VAT Refund</strong>
-              <span data-i18n="tool_vat_desc">Open calculator</span>
-            </div>
-            <div class="chevron">›</div>
-          </button>
-          <button class="menu-item" data-view="belkin">
-            <div class="menu-icon icon-orange">🛡️</div>
-            <div class="item-text">
-              <strong data-i18n="tool_belkin_title">Claim Belkin Screen</strong>
-              <span data-i18n="tool_belkin_desc">Open QR claim form</span>
-            </div>
-            <div class="chevron">›</div>
-          </button>
-        </article>
-      </section>
-    </section>
-
-    <section id="view-price-battle" class="view">
-      <header class="tool-head">
-        <div class="tool-top">
-          <button class="back-btn" onclick="showView('home')">‹</button>
-          <span class="tool-label" data-i18n="price_battle_label">Price comparison</span>
-        </div>
-        <div class="tool-title">
-          <h2 data-i18n="price_battle_title">Price Battle</h2>
-          <p data-i18n="price_battle_subtitle">Open the legacy comparison sheets from inside this single page.</p>
-        </div>
-      </header>
-      <div class="tool-body">
-        <div class="tool-card">
-          <div class="tag tag-blue" data-i18n="price_battle_global_tag">Global</div>
-          <h3 style="font-size:17px;letter-spacing:-0.02em;margin-bottom:6px;" data-i18n="price_battle_global_title">Price Battle</h3>
-          <p class="subtle" data-i18n="price_battle_global_desc">Apple Store prices vs. 40 countries.</p>
-          <div class="btn-row" style="margin-top:14px;">
-            <button class="btn btn-primary" onclick="openLegacy('https://gist.githubusercontent.com/i3udokai/53cb90e738e544fcb10d8f4c8807204c/raw/Price%20Battle.html')" data-i18n="open_global">Open Price Battle</button>
-          </div>
-          <span class="legacy-link">https://gist.githubusercontent.com/i3udokai/53cb90e738e544fcb10d8f4c8807204c/raw/Price%20Battle.html</span>
-        </div>
-        <div class="tool-card">
-          <div class="tag tag-orange" data-i18n="price_battle_domestic_tag">Thailand</div>
-          <h3 style="font-size:17px;letter-spacing:-0.02em;margin-bottom:6px;" data-i18n="price_battle_domestic_title">Domestic Price Battle</h3>
-          <p class="subtle" data-i18n="price_battle_domestic_desc">Thai reseller comparison sheet.</p>
-          <div class="btn-row" style="margin-top:14px;">
-            <button class="btn btn-secondary" onclick="openLegacy('https://gist.githubusercontent.com/i3udokai/3d156144d54855c7437669f2fee07ae6/raw/Domestic%20Price%20Battle.html')" data-i18n="open_domestic">Open Domestic Battle</button>
-          </div>
-          <span class="legacy-link">https://gist.githubusercontent.com/i3udokai/3d156144d54855c7437669f2fee07ae6/raw/Domestic%20Price%20Battle.html</span>
-        </div>
-        <div class="note" data-i18n="price_battle_note">These legacy sheets are still external, but they open from inside the launcher so the Shortcut path stays simple.</div>
+<!-- Support -->
+<div id="screen-support" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Support" data-th="ซัพพอร์ต">Support</span>
+      <div class="lang-toggle" style="margin-left:auto;">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
       </div>
-    </section>
+    </div>
+    <div class="header-body">
+      <h1 data-en="Support" data-th="ซัพพอร์ต">Support</h1>
+      <p data-en="Service and troubleshooting" data-th="บริการและแก้ปัญหา">Service and troubleshooting</p>
+    </div>
+  </div>
+  <div style="padding:32px 20px;text-align:center;color:var(--text3);">
+    <div style="font-size:40px;margin-bottom:12px;">🛠️</div>
+    <div style="font-size:15px;font-weight:500;" data-en="Coming soon" data-th="เร็วๆ นี้">Coming soon</div>
+  </div>
+</div>
 
-    <section id="view-education" class="view">
-      <header class="tool-head">
-        <div class="tool-top">
-          <button class="back-btn" onclick="showView('home')">‹</button>
-          <span class="tool-label" data-i18n="screen_product_zone">Product Zone</span>
-        </div>
-        <div class="tool-title">
-          <h2 data-i18n="edu_title">Education Price</h2>
-          <p data-i18n="edu_subtitle">Quick reference for common Apple education pricing checks.</p>
-        </div>
-      </header>
-      <div class="tabs-scroll">
-        <div class="tabs" id="edu-tabs">
-          <button class="tab active" data-edu-tab="MacBook">MacBook</button>
-          <button class="tab" data-edu-tab="Mac Desktop">Mac Desktop</button>
-          <button class="tab" data-edu-tab="iPad">iPad</button>
-          <button class="tab" data-edu-tab="Apple Watch">Apple Watch</button>
-          <button class="tab" data-edu-tab="Accessories">Accessories</button>
-          <button class="tab" data-edu-tab="Display">Display</button>
-        </div>
+<!-- Other -->
+<div id="screen-other" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Other" data-th="อื่นๆ">Other</span>
+      <div class="lang-toggle" style="margin-left:auto;">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
       </div>
-      <div class="col-header" id="col-header">
-        <span data-i18n="col_model">Model</span>
-        <span data-i18n="col_regular">Regular</span>
-        <span class="edu-col" data-i18n="col_edu">EDU ✦</span>
-        <span class="ac-col" data-i18n="col_ac">AC+</span>
-        <span class="acedu-col" data-i18n="col_ac_edu">AC+ EDU</span>
-        <span data-i18n="col_save">Save</span>
-      </div>
-      <div class="price-content" id="price-content"></div>
-      <div class="footer" data-i18n="footer_text">Education pricing · One Shortcut</div>
-    </section>
+    </div>
+    <div class="header-body">
+      <h1 data-en="Other" data-th="อื่นๆ">Other</h1>
+      <p data-en="Additional tools and links" data-th="เครื่องมือและลิงก์เพิ่มเติม">Additional tools and links</p>
+    </div>
+  </div>
+  <div style="padding:32px 20px;text-align:center;color:var(--text3);">
+    <div style="font-size:40px;margin-bottom:12px;">📁</div>
+    <div style="font-size:15px;font-weight:500;" data-en="Coming soon" data-th="เร็วๆ นี้">Coming soon</div>
+  </div>
+</div>
 
-    <section id="view-vat" class="view">
-      <header class="tool-head">
-        <div class="tool-top">
-          <button class="back-btn" onclick="showView('home')">‹</button>
-          <span class="tool-label" data-i18n="screen_product_zone">Product Zone</span>
-        </div>
-        <div class="tool-title">
-          <h2 data-i18n="vat_title">VAT Refund</h2>
-          <p data-i18n="vat_subtitle">Thailand Airport Refund · PP10 Form</p>
-        </div>
-      </header>
-      <div class="tool-body">
-        <div class="tool-card">
-          <div class="calc-row">
-            <div class="subtle" data-i18n="purchase_label">Purchase Price (THB)</div>
-            <div class="vat-input-row">
-              <span class="vat-sym">฿</span>
-              <input id="vat-input" type="number" inputmode="decimal" placeholder="0">
-              <button id="vat-clear" onclick="vatClear()" style="opacity:0;">✕</button>
-            </div>
-          </div>
-          <div style="margin-top:16px;" class="subtle" data-i18n="quick_select">Quick Select</div>
-          <div id="vat-presets" class="btn-row" style="margin-top:10px;"></div>
-        </div>
-
-        <div class="tool-card" style="padding:0;overflow:hidden;">
-          <div class="vat-hero">
-            <div class="vat-hero-label" data-i18n="refund_amount">VAT Refund Amount</div>
-            <div id="vat-hero-amount">฿ —</div>
-            <div id="vat-hero-method" data-i18n="enter_prompt">Enter a price to calculate</div>
-            <div id="vat-badge" style="margin-top:10px;"></div>
-          </div>
-          <div class="vat-row"><span class="vat-row-label" data-i18n="purchase_row">Purchase Price</span><span class="vat-row-val" id="vat-purchase">—</span></div>
-          <div class="vat-row"><span class="vat-row-label" data-i18n="before_row">Price Before VAT</span><span class="vat-row-val" id="vat-before">—</span></div>
-          <div class="vat-row"><span class="vat-row-label" data-i18n="vat_row">VAT (7%)</span><span class="vat-row-val" id="vat-vat">—</span></div>
-          <div class="vat-row"><span class="vat-row-label" style="font-weight:600;color:var(--text);" data-i18n="refund_row">VAT Refund</span><span class="vat-row-val" id="vat-net" style="color:var(--green);">—</span></div>
-        </div>
+<!-- Education Price -->
+<div id="screen-edu-price" class="screen">
+  <div class="sticky-header" id="edu-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Product Zone" data-th="โซนสินค้า">Product Zone</span>
+      <div class="lang-toggle" style="margin-left:auto;">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
       </div>
-    </section>
-
-    <section id="view-belkin" class="view">
-      <header class="tool-head">
-        <div class="tool-top">
-          <button class="back-btn" onclick="showView('home')">‹</button>
-          <span class="tool-label" data-i18n="screen_operations">Operation &amp; Process</span>
-        </div>
-        <div class="tool-title">
-          <h2 data-i18n="belkin_title">Claim Belkin Screen</h2>
-          <p data-i18n="belkin_subtitle">Screen protector replacement claim</p>
-        </div>
-      </header>
-      <div class="tool-body">
-        <div class="tool-card">
-          <h3 style="font-size:17px;letter-spacing:-0.02em;margin-bottom:6px;" data-i18n="scan_title">Scan to open claim form</h3>
-          <p class="subtle" data-i18n="scan_desc">Customer can scan this QR code with their camera.</p>
-          <div class="qrcode-box">
-            <div id="qrcode"></div>
-            <div id="qrcode-fallback" class="qrcode-fallback" style="display:none;" data-i18n="qr_fallback">QR generation is unavailable. Use the open button below.</div>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-primary" onclick="openClaim()" data-i18n="open_form">Open Claim Form</button>
-          </div>
-          <span class="legacy-link">https://belkin.my.salesforce-sites.com/caforms/AppleFormEnglish</span>
-        </div>
+    </div>
+    <div class="tabs-scroll">
+      <div class="tabs" id="price-tabs">
+        <button class="tab active" onclick="setPriceTab('MacBook')">MacBook</button>
+        <button class="tab" onclick="setPriceTab('Mac Desktop')">Mac Desktop</button>
+        <button class="tab" onclick="setPriceTab('iPad')">iPad</button>
+        <button class="tab" onclick="setPriceTab('Apple Watch')">Apple Watch</button>
+        <button class="tab" onclick="setPriceTab('Accessories')">Accessories</button>
+        <button class="tab" onclick="setPriceTab('Display')">Display</button>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
+  <div class="col-header" id="col-header">
+    <span>Model</span>
+    <span>Regular</span>
+    <span class="edu-col">EDU ✦</span>
+    <span class="ac-col">AC+</span>
+    <span class="acedu-col">AC+ EDU</span>
+    <span>Save</span>
+  </div>
+  <div class="price-content" id="price-content"></div>
+  <div class="footer" data-en="Education pricing · Apple Retail Thailand" data-th="ราคาการศึกษา · Apple Retail ประเทศไทย">Education pricing · Apple Retail Thailand</div>
+</div>
+
+<!-- VAT Refund -->
+<div id="screen-vat-refund" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Product Zone" data-th="โซนสินค้า">Product Zone</span>
+      <span class="vat-pill">7% VAT</span>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
+      </div>
+    </div>
+    <div class="header-body">
+      <h1 data-en="VAT Refund" data-th="คืนภาษีมูลค่าเพิ่ม">VAT Refund</h1>
+      <p data-en="Thailand Airport Refund · PP10 Form" data-th="คืน VAT สนามบินไทย · แบบฟอร์ม PP10">Thailand Airport Refund · PP10 Form</p>
+    </div>
+  </div>
+  <div class="vat-content">
+    <div class="vat-card">
+      <div class="vat-field-label" data-en="Purchase Price (THB)" data-th="ราคาที่ซื้อ (บาท)">Purchase Price (THB)</div>
+      <div class="vat-input-row">
+        <span class="vat-sym">฿</span>
+        <input id="vat-priceInput" type="number" inputmode="decimal" placeholder="0">
+        <button id="vat-clearBtn" onclick="vat_clearInput()" style="opacity:0;">✕</button>
+      </div>
+      <div class="vat-field-label" style="margin-top:16px;margin-bottom:8px;" data-en="Quick Select" data-th="เลือกสินค้า">Quick Select</div>
+      <div id="vat-presets" style="display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px;"></div>
+    </div>
+    <div class="vat-result-card">
+      <div class="vat-hero">
+        <div class="vat-hero-label" data-en="VAT Refund Amount" data-th="ยอดคืน VAT">VAT Refund Amount</div>
+        <div id="vat-heroAmount">฿ —</div>
+        <div id="vat-heroMethod">Enter a price to calculate</div>
+        <div id="vat-eligBadge"></div>
+      </div>
+      <div class="vat-row"><span class="vat-row-label" data-en="Purchase Price" data-th="ราคาซื้อ">Purchase Price</span><span class="vat-row-val" id="vat-bdPurchase">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" data-en="Price Before VAT" data-th="ราคาก่อน VAT">Price Before VAT</span><span class="vat-row-val" id="vat-bdBefore">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" data-en="VAT (7%)" data-th="VAT (7%)">VAT (7%)</span><span class="vat-row-val" id="vat-bdVat">—</span></div>
+      <div class="vat-row"><span class="vat-row-label" style="font-weight:600;color:var(--text);" data-en="VAT Refund" data-th="ยอดคืน VAT">VAT Refund</span><span class="vat-row-val" id="vat-bdNet" style="color:var(--green);">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Belkin -->
+<div id="screen-belkin" class="screen">
+  <div class="sticky-header">
+    <div class="header-top">
+      <button class="back-btn" onclick="showScreen('screen-home')">‹</button>
+      <span class="screen-label" data-en="Operation &amp; Process" data-th="งานปฏิบัติการ">Operation &amp; Process</span>
+      <div class="lang-toggle" style="margin-left:auto;">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('th')">TH</button>
+      </div>
+    </div>
+    <div class="header-body">
+      <h1 data-en="Claim Belkin Screen" data-th="เคลม Belkin Screen">Claim Belkin Screen</h1>
+      <p>Screen protector replacement claim</p>
+    </div>
+  </div>
+  <div class="qr-wrap">
+    <h3 data-en="Scan to open claim form" data-th="สแกนเพื่อเปิดแบบฟอร์มเคลม">Scan to open claim form</h3>
+    <p data-en="Customer can scan this QR code with their camera." data-th="ลูกค้าสแกน QR code ด้วยกล้องได้เลย">Customer can scan this QR code with their camera.</p>
+    <div id="qrcode"></div>
+    <button class="btn-primary" onclick="openURL('https://belkin.my.salesforce-sites.com/caforms/AppleFormEnglish')" data-en="Open Claim Form" data-th="เปิดแบบฟอร์มเคลม">Open Claim Form</button>
+  </div>
+</div>
 
 <script>
-  const DEFAULT_RAW_BASE = 'https://gist.githubusercontent.com/i3udokai/2a7cd2861cacaae67e8c6f8454fb1886/raw/';
-  const LANG_KEY = 'one_shortcut_lang';
-  const CLAIM_URL = 'https://belkin.my.salesforce-sites.com/caforms/AppleFormEnglish';
-  const PRICE_BATTLE_GLOBAL = 'https://gist.githubusercontent.com/i3udokai/53cb90e738e544fcb10d8f4c8807204c/raw/Price%20Battle.html';
-  const PRICE_BATTLE_DOMESTIC = 'https://gist.githubusercontent.com/i3udokai/3d156144d54855c7437669f2fee07ae6/raw/Domestic%20Price%20Battle.html';
+  document.getElementById('app-version').textContent = '2026.06.09';
 
-  const I18N = {
-    en: {
-      loading: 'Loading tool…',
-      home_eyebrow: 'Retail store daily operations',
-      home_title: 'One Shortcut',
-      home_lead: 'Tap a tool below. Everything lives in this one HTML file so the iPhone Shortcut only has to open one page.',
-      pill_single: 'Single HTML',
-      pill_iphone: 'iPhone-first',
-      pill_safari: 'Open in Safari',
-      card_product_tag: 'Product',
-      card_product_title: 'Pricing and comparison',
-      card_product_desc: 'Education pricing, comparison tables, and device references.',
-      tool_edu_title: 'Education Price',
-      tool_edu_desc: 'Tap to open the price list',
-      section_price_battle_tag: 'Price Comparison',
-      section_price_battle_title: 'Price Battle Tools',
-      section_price_battle_desc: 'Compare Apple prices globally and against Thai resellers.',
-      tool_price_battle_title: 'Price Battle',
-      tool_price_battle_desc: 'Tap to open the comparison hub',
-      card_ops_tag: 'Operations',
-      card_ops_title: 'Store process tools',
-      card_ops_desc: 'VAT refund calculation and Belkin claim handling for the sales floor.',
-      tool_vat_title: 'VAT Refund',
-      tool_vat_desc: 'Tap to calculate a refund',
-      tool_belkin_title: 'Claim Belkin Screen',
-      tool_belkin_desc: 'Tap to open QR and claim form',
-      deploy_label: 'Shortcut flow:',
-      deploy_text: 'Open this single file from iOS Shortcuts. All tools switch inside the same page, so Safari never has to render a separate raw HTML page.',
-      footer_text: 'One Shortcut is designed for quick launch from the shop floor.',
-      price_battle_label: 'Price comparison',
-      price_battle_title: 'Price Battle',
-      price_battle_subtitle: 'Open the legacy comparison sheets from inside this single page.',
-      price_battle_global_tag: 'Global',
-      price_battle_global_title: 'Price Battle',
-      price_battle_global_desc: 'Apple Store prices vs. 40 countries.',
-      open_global: 'Open Price Battle',
-      price_battle_domestic_tag: 'Thailand',
-      price_battle_domestic_title: 'Domestic Price Battle',
-      price_battle_domestic_desc: 'Thai reseller comparison sheet.',
-      open_domestic: 'Open Domestic Battle',
-      price_battle_note: 'These legacy sheets are still external, but they open from inside the launcher so the Shortcut path stays simple.',
-      screen_product_zone: 'Product Zone',
-      edu_title: 'Education Price',
-      edu_subtitle: 'Quick reference for common Apple education pricing checks.',
-      vat_title: 'VAT Refund',
-      vat_subtitle: 'Thailand Airport Refund · PP10 Form',
-      purchase_label: 'Purchase Price (THB)',
-      quick_select: 'Quick Select',
-      refund_amount: 'VAT Refund Amount',
-      enter_prompt: 'Enter a price to calculate',
-      purchase_row: 'Purchase Price',
-      before_row: 'Price Before VAT',
-      vat_row: 'VAT (7%)',
-      refund_row: 'VAT Refund',
-      below_minimum: 'Below minimum',
-      min_required: 'Min ฿2,000 required',
-      eligible: 'Eligible',
-      rate_label: 'Rate: 6.1%',
-      table_label: 'VAT refund table',
-      screen_operations: 'Operation & Process',
-      belkin_title: 'Claim Belkin Screen',
-      belkin_subtitle: 'Screen protector replacement claim',
-      scan_title: 'Scan to open claim form',
-      scan_desc: 'Customer can scan this QR code with their camera.',
-      open_form: 'Open Claim Form',
-      qr_fallback: 'QR generation is unavailable. Use the open button below.',
-    },
-    th: {
-      loading: 'กำลังโหลดเครื่องมือ…',
-      home_eyebrow: 'งานประจำร้านค้าปลีก',
-      home_title: 'One Shortcut',
-      home_lead: 'แตะเครื่องมือด้านล่าง ทั้งหมดอยู่ในไฟล์ HTML เดียว เพื่อให้ iPhone Shortcut เปิดได้เพียงหน้าเดียว',
-      pill_single: 'ไฟล์เดียว',
-      pill_iphone: 'ออกแบบสำหรับ iPhone',
-      pill_safari: 'เปิดด้วย Safari',
-      card_product_tag: 'สินค้า',
-      card_product_title: 'ราคาและการเปรียบเทียบ',
-      card_product_desc: 'ราคาเพื่อการศึกษา ตารางเปรียบเทียบ และข้อมูลอ้างอิงอุปกรณ์',
-      tool_edu_title: 'ราคาเพื่อการศึกษา',
-      tool_edu_desc: 'แตะเพื่อเปิดรายการราคา',
-      section_price_battle_tag: 'เปรียบเทียบราคา',
-      section_price_battle_title: 'เครื่องมือ Price Battle',
-      section_price_battle_desc: 'เปรียบเทียบราคา Apple ทั่วโลกและร้านตัวแทนในไทย',
-      tool_price_battle_title: 'Price Battle',
-      tool_price_battle_desc: 'แตะเพื่อเปิดหน้ารวมการเปรียบเทียบ',
-      card_ops_tag: 'งานปฏิบัติการ',
-      card_ops_title: 'เครื่องมือหน้างาน',
-      card_ops_desc: 'คำนวณ VAT Refund และจัดการเคสเคลม Belkin สำหรับหน้าร้าน',
-      tool_vat_title: 'VAT Refund',
-      tool_vat_desc: 'แตะเพื่อคำนวณเงินคืน',
-      tool_belkin_title: 'เคลมฟิล์ม Belkin',
-      tool_belkin_desc: 'แตะเพื่อเปิด QR และฟอร์มเคลม',
-      deploy_label: 'การใช้งาน Shortcut:',
-      deploy_text: 'เปิดไฟล์เดียวนี้จาก iOS Shortcuts เครื่องมือทั้งหมดจะสลับอยู่ในหน้าเดียว Safari จึงไม่ต้องแสดง raw HTML แยกหน้า',
-      footer_text: 'One Shortcut ออกแบบมาให้เปิดได้เร็วจากหน้างาน',
-      price_battle_label: 'เปรียบเทียบราคา',
-      price_battle_title: 'Price Battle',
-      price_battle_subtitle: 'เปิดชีตเปรียบเทียบเดิมจากภายในหน้าเดียวนี้',
-      price_battle_global_tag: 'ทั่วโลก',
-      price_battle_global_title: 'Price Battle',
-      price_battle_global_desc: 'ราคา Apple Store เทียบ 40 ประเทศ',
-      open_global: 'เปิด Price Battle',
-      price_battle_domestic_tag: 'ประเทศไทย',
-      price_battle_domestic_title: 'Domestic Price Battle',
-      price_battle_domestic_desc: 'ชีตเปรียบเทียบร้านตัวแทนในไทย',
-      open_domestic: 'เปิด Domestic Battle',
-      price_battle_note: 'ชีตเดิมยังเป็นภายนอก แต่เปิดจากใน launcher ได้เพื่อให้เส้นทาง Shortcut สั้น',
-      screen_product_zone: 'โซนสินค้า',
-      edu_title: 'ราคาเพื่อการศึกษา',
-      edu_subtitle: 'ข้อมูลอ้างอิงด่วนสำหรับเช็คราคาเพื่อการศึกษาที่พบบ่อย',
-      vat_title: 'VAT Refund',
-      vat_subtitle: 'คืนภาษีสนามบินในไทย · แบบฟอร์ม PP10',
-      purchase_label: 'ราคาซื้อ (THB)',
-      quick_select: 'เลือกด่วน',
-      refund_amount: 'ยอดคืน VAT',
-      enter_prompt: 'กรอกราคาเพื่อคำนวณ',
-      purchase_row: 'ราคาซื้อ',
-      before_row: 'ราคาก่อน VAT',
-      vat_row: 'VAT (7%)',
-      refund_row: 'ยอดคืน VAT',
-      below_minimum: 'ต่ำกว่าขั้นต่ำ',
-      min_required: 'ขั้นต่ำ ฿2,000',
-      eligible: 'มีสิทธิ์',
-      rate_label: 'อัตรา: 6.1%',
-      table_label: 'ตารางคืน VAT',
-      screen_operations: 'งานปฏิบัติการ',
-      belkin_title: 'เคลมฟิล์ม Belkin',
-      belkin_subtitle: 'แบบฟอร์มเคลมสำหรับเปลี่ยนฟิล์มหน้าจอ',
-      scan_title: 'สแกนเพื่อเปิดฟอร์มเคลม',
-      scan_desc: 'ลูกค้าสามารถใช้กล้องสแกน QR code นี้ได้',
-      open_form: 'เปิดฟอร์มเคลม',
-      qr_fallback: 'ไม่สามารถสร้าง QR ได้ ให้ใช้ปุ่มเปิดฟอร์มด้านล่าง',
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+    if (id === 'screen-edu-price') {
+      if (!priceListInitialized) { renderPriceList(); priceListInitialized = true; }
+      requestAnimationFrame(syncColHeader);
     }
-  };
+    if (id === 'screen-belkin') {
+      initBelkinQR();
+    }
+  }
+  function syncColHeader() {
+    const h = document.getElementById('edu-header');
+    const c = document.getElementById('col-header');
+    if (h && c) c.style.top = h.offsetHeight + 'px';
+  }
+  function openURL(url) { window.location.href = url; }
+
+  function openTool(url) {
+    if (url.startsWith('LINK_')) {
+      alert('🔗 Coming soon\nLink not set yet for this section.');
+      return;
+    }
+    fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(r => r.text())
+      .then(html => { document.open(); document.write(html); document.close(); })
+      .catch(() => {});
+  }
+
+  let belkinQRInitialized = false;
+  function initBelkinQR() {
+    if (belkinQRInitialized) return;
+    const el = document.getElementById('qrcode');
+    if (!el || typeof QRCode === 'undefined') return;
+    try {
+      el.innerHTML = '';
+      new QRCode(el, {
+        text: 'https://belkin.my.salesforce-sites.com/caforms/AppleFormEnglish',
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      belkinQRInitialized = true;
+      setTimeout(() => {
+        el.querySelectorAll('canvas').forEach(c => c.remove());
+        el.querySelectorAll('img').forEach((img, i) => { if (i > 0) img.remove(); });
+      }, 100);
+    } catch(e) {}
+  }
+
+  window.addEventListener('load', function() {
+    initBelkinQR();
+  });
 
   let priceListInitialized = false;
   let activePriceTab = 'MacBook';
+  const fmt = n => n != null ? '฿' + Number(n).toLocaleString('th-TH') : '—';
 
   const priceData = {
     MacBook: [
@@ -1140,18 +647,18 @@
     ],
     Display: [
       { name: 'Studio Display', options: [
-        { label: 'Standard - Tilt adj.', price: 52900, eduPrice: 49600, acPlus: 5490, acEdu: 4690 },
-        { label: 'Standard - Height adj.', price: 64900, eduPrice: 61700, acPlus: 5490, acEdu: 4690 },
-        { label: 'Standard - VESA', price: 52900, eduPrice: 49600, acPlus: 5490, acEdu: 4690 },
-        { label: 'Nano-Texture - Tilt adj.', price: 62900, eduPrice: 59600, acPlus: 5490, acEdu: 4690, nano: true },
-        { label: 'Nano-Texture - Height adj.', price: 74900, eduPrice: 71600, acPlus: 5490, acEdu: 4690, nano: true },
-        { label: 'Nano-Texture - VESA', price: 62900, eduPrice: 59600, acPlus: 5490, acEdu: 4690, nano: true },
+        { label: 'Standard — Tilt adj.', price: 52900, eduPrice: 49600, acPlus: 5490, acEdu: 4690 },
+        { label: 'Standard — Height adj.', price: 64900, eduPrice: 61700, acPlus: 5490, acEdu: 4690 },
+        { label: 'Standard — VESA', price: 52900, eduPrice: 49600, acPlus: 5490, acEdu: 4690 },
+        { label: 'Nano-Texture — Tilt adj.', price: 62900, eduPrice: 59600, acPlus: 5490, acEdu: 4690, nano: true },
+        { label: 'Nano-Texture — Height adj.', price: 74900, eduPrice: 71600, acPlus: 5490, acEdu: 4690, nano: true },
+        { label: 'Nano-Texture — VESA', price: 62900, eduPrice: 59600, acPlus: 5490, acEdu: 4690, nano: true },
       ]},
       { name: 'Pro Display XDR', options: [
-        { label: 'Standard - Height adj.', price: 109900, eduPrice: 106600, acPlus: 10490, acEdu: 9390 },
-        { label: 'Standard - VESA', price: 97900, eduPrice: 94500, acPlus: 10490, acEdu: 9390 },
-        { label: 'Nano-Texture - Height adj.', price: 119900, eduPrice: 116600, acPlus: 10490, acEdu: 9390, nano: true },
-        { label: 'Nano-Texture - VESA', price: 107900, eduPrice: 104500, acPlus: 10490, acEdu: 9390, nano: true },
+        { label: 'Standard — Height adj.', price: 109900, eduPrice: 106600, acPlus: 10490, acEdu: 9390 },
+        { label: 'Standard — VESA', price: 97900, eduPrice: 94500, acPlus: 10490, acEdu: 9390 },
+        { label: 'Nano-Texture — Height adj.', price: 119900, eduPrice: 116600, acPlus: 10490, acEdu: 9390, nano: true },
+        { label: 'Nano-Texture — VESA', price: 107900, eduPrice: 104500, acPlus: 10490, acEdu: 9390, nano: true },
       ]},
     ],
     Accessories: [
@@ -1173,7 +680,80 @@
     ],
   };
 
-  const VAT_RANGES = [
+  function setPriceTab(tab) {
+    activePriceTab = tab;
+    document.querySelectorAll('#price-tabs .tab').forEach(t => t.classList.toggle('active', t.textContent.trim() === tab));
+    renderPriceList();
+  }
+
+  function togglePriceRow(id) {
+    const d = document.getElementById('pd' + id);
+    const r = document.getElementById('pr' + id);
+    if (!d) return;
+    const wasOpen = d.classList.contains('open');
+    document.querySelectorAll('.detail.open').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.row.open').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) { d.classList.add('open'); r.classList.add('open'); }
+  }
+
+  function renderPriceList() {
+    const sections = priceData[activePriceTab];
+    if (!sections) { document.getElementById('price-content').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3)">No data</div>'; return; }
+    let html = ''; let id = 0;
+    sections.forEach(section => {
+      html += `<div class="device-section"><div class="device-name">${section.name}</div><div class="device-card">`;
+      section.options.forEach(opt => {
+        const saving = (opt.eduPrice && opt.price) ? opt.price - opt.eduPrice : null;
+        const badges = [
+          opt.cell ? `<span class="badge badge-cell">Cell</span>` : '',
+          opt.nano ? `<span class="badge badge-nano">Nano</span>` : '',
+        ].join('');
+        html += `
+          <div id="pr${id}" class="row" onclick="togglePriceRow(${id})">
+            <div class="row-label">${opt.label} ${badges}</div>
+            <div class="price-col" data-label="Regular"><div class="p-reg">${fmt(opt.price)}</div></div>
+            <div class="price-col" data-label="EDU"><div class="${opt.eduPrice ? 'p-edu' : 'p-na'}">${fmt(opt.eduPrice)}</div></div>
+            <div class="price-col" data-label="AC+"><div class="${opt.acPlus ? 'p-ac' : 'p-na'}">${fmt(opt.acPlus)}</div></div>
+            <div class="price-col" data-label="AC+ EDU"><div class="${opt.acEdu ? 'p-acedu' : 'p-na'}">${fmt(opt.acEdu)}</div></div>
+            <div class="price-col" data-label="Save"><div class="p-save">${saving ? '-' + fmt(saving) : '—'}</div></div>
+          </div>
+          <div id="pd${id}" class="detail">
+            <div class="detail-grid">
+              <div class="ditem"><div class="dlabel">Regular</div><div class="dval">${fmt(opt.price)}</div></div>
+              <div class="ditem ditem-edu"><div class="dlabel">Education</div><div class="dval edu">${opt.eduPrice ? fmt(opt.eduPrice) : '—'}</div></div>
+              ${saving ? `<div class="ditem ditem-save"><div class="dlabel">You Save</div><div class="dval green">-${fmt(saving)}</div></div>` : ''}
+              ${opt.acPlus ? `<div class="ditem ditem-ac"><div class="dlabel">AppleCare+</div><div class="dval blue">${fmt(opt.acPlus)}</div></div>` : ''}
+              ${opt.acEdu ? `<div class="ditem ditem-ac"><div class="dlabel">AC+ (EDU)</div><div class="dval blue">${fmt(opt.acEdu)}</div></div>` : ''}
+              ${opt.adapterTo ? `
+              <div class="ditem ditem-adapter">
+                <div class="dlabel">${opt.adapterCost > 0 ? `Upgrade (${opt.adapterFrom} → ${opt.adapterTo})` : 'Adapter Options'}</div>
+                <div class="dval" style="color: var(--purple);">${opt.adapterCost > 0 ? '+ ' + fmt(opt.adapterCost) : (opt.adapterFrom === '35W/70W' ? '35W / 70W' : opt.adapterFrom)}</div>
+              </div>` : ''}
+              ${opt.nanoPrice ? `<div class="ditem"><div class="dlabel">Nano Texture</div><div class="dval">${fmt(opt.nanoPrice)}</div></div>` : ''}
+              ${opt.nanoEdu ? `<div class="ditem ditem-edu"><div class="dlabel">Nano (EDU)</div><div class="dval edu">${fmt(opt.nanoEdu)}</div></div>` : ''}
+            </div>
+            ${opt.nanoPrice ? `
+            <div class="compare-table" style="margin-bottom: 10px;">
+              <div class="ctitle">With Nano-Texture Display</div>
+              <div class="crow"><span class="crow-name">Regular Model + Nano</span><span class="crow-val">${fmt(opt.price + opt.nanoPrice)}</span></div>
+              ${(opt.eduPrice && opt.nanoEdu) ? `<div class="crow"><span class="crow-name">EDU Model + Nano</span><span class="crow-val edu">${fmt(opt.eduPrice + opt.nanoEdu)}</span></div>` : ''}
+            </div>` : ''}
+            ${opt.acPlus ? `
+            <div class="compare-table">
+              <div class="ctitle">With AppleCare+</div>
+              <div class="crow"><span class="crow-name">Regular + AC+</span><span class="crow-val">${fmt(opt.price + opt.acPlus)}</span></div>
+              ${(opt.eduPrice && opt.acEdu) ? `<div class="crow"><span class="crow-name">EDU + AC+</span><span class="crow-val edu">${fmt(opt.eduPrice + opt.acEdu)}</span></div>` : ''}
+              ${(opt.price && opt.acPlus && opt.eduPrice && opt.acEdu) ? `<div class="crow"><span class="crow-name">Total Saving (EDU)</span><span class="crow-val green">-${fmt((opt.price + opt.acPlus) - (opt.eduPrice + opt.acEdu))}</span></div>` : ''}
+            </div>` : ''}
+          </div>`;
+        id++;
+      });
+      html += '</div></div>';
+    });
+    document.getElementById('price-content').innerHTML = html;
+  }
+
+  const vat_priceRanges = [
     { from: 2000, to: 2499.99, refund: 80 }, { from: 2500, to: 2999.99, refund: 100 },
     { from: 3000, to: 3499.99, refund: 120 }, { from: 3500, to: 3999.99, refund: 150 },
     { from: 4000, to: 4499.99, refund: 180 }, { from: 4500, to: 4999.99, refund: 220 },
@@ -1216,320 +796,105 @@
     { from: 196000, to: 199999.99, refund: 12000 }
   ];
 
-  function safeGetLang() {
-    try { return localStorage.getItem(LANG_KEY) || 'en'; } catch (e) { return 'en'; }
-  }
-  function safeSetLang(lang) {
-    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
-  }
-  function getI18n() { return I18N[currentLang] || I18N.en; }
-  function t(key) { return getI18n()[key] || I18N.en[key] || key; }
-  function fmt(n) { return n == null ? '—' : '฿' + Number(n).toLocaleString('th-TH'); }
-
-  let currentLang = safeGetLang();
-  let activeView = 'home';
-
-  function setLang(lang) {
-    currentLang = lang === 'th' ? 'th' : 'en';
-    safeSetLang(currentLang);
-    applyLang();
-    renderPriceList();
-    vatCalculate();
-    renderBelkin();
-  }
-
-  function applyLang() {
-    document.documentElement.lang = currentLang === 'th' ? 'th' : 'en';
-    document.title = currentViewTitle();
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      const value = t(key);
-      if (value) el.textContent = value;
-    });
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      const isActive = btn.id.includes('-th') ? currentLang === 'th' : currentLang === 'en';
-      btn.classList.toggle('active', isActive);
-    });
-  }
-
-  function currentViewTitle() {
-    const map = {
-      home: t('home_title'),
-      education: t('edu_title'),
-      'price-battle': t('price_battle_title'),
-      vat: t('vat_title'),
-      belkin: t('belkin_title')
-    };
-    return map[activeView] || t('home_title');
-  }
-
-  function setHash(view) {
-    if (location.protocol !== 'http:' && location.protocol !== 'https:' && location.protocol !== 'file:') return;
-    const next = view === 'home' ? '' : '#' + view;
-    if (location.hash !== next) {
-      history.replaceState(null, '', next || location.pathname + location.search);
-    }
-  }
-
-  function showView(view, opts = { push: true }) {
-    activeView = view;
-    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    const target = document.getElementById('view-' + view);
-    if (target) target.classList.add('active');
-    document.title = currentViewTitle();
-    if (opts.push) setHash(view);
-    if (view === 'education') {
-      renderPriceList();
-      syncColHeader();
-    }
-    if (view === 'vat') vatCalculate();
-    if (view === 'belkin') renderBelkin();
-    applyLang();
-  }
-
-  function syncViewFromHash() {
-    const view = (location.hash || '').replace('#', '') || 'home';
-    showView(document.getElementById('view-' + view) ? view : 'home', { push: false });
-  }
-
-  function openLegacy(url) {
-    const overlay = document.getElementById('overlay');
-    overlay.style.display = 'flex';
-    fetch(url + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(r => r.text())
-      .then(html => {
-        document.open();
-        document.write(html);
-        document.close();
-      })
-      .catch(() => {
-        overlay.style.display = 'none';
-        window.location.href = url;
-      });
-  }
-
-  function setPriceTab(tab) {
-    activePriceTab = tab;
-    document.querySelectorAll('#edu-tabs .tab').forEach(t => t.classList.toggle('active', t.dataset.eduTab === tab));
-    renderPriceList();
-  }
-
-  function togglePriceRow(id) {
-    const d = document.getElementById('pd' + id);
-    const r = document.getElementById('pr' + id);
-    if (!d) return;
-    const wasOpen = d.classList.contains('open');
-    document.querySelectorAll('.detail.open').forEach(el => el.classList.remove('open'));
-    document.querySelectorAll('.row.open').forEach(el => el.classList.remove('open'));
-    if (!wasOpen) {
-      d.classList.add('open');
-      r.classList.add('open');
-    }
-  }
-
-  function renderPriceList() {
-    const sections = priceData[activePriceTab];
-    const host = document.getElementById('price-content');
-    if (!host) return;
-    if (!sections) {
-      host.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3)">' + t('no_data') + '</div>';
-      return;
-    }
-    let html = '';
-    let id = 0;
-    sections.forEach(section => {
-      html += `<div class="device-section"><div class="device-name">${section.name}</div><div class="device-card">`;
-      section.options.forEach(opt => {
-        const saving = (opt.eduPrice && opt.price) ? opt.price - opt.eduPrice : null;
-        const badges = [
-          opt.cell ? `<span class="badge badge-cell">Cell</span>` : '',
-          opt.nano ? `<span class="badge badge-nano">Nano</span>` : '',
-        ].join('');
-        html += `
-          <div id="pr${id}" class="row" onclick="togglePriceRow(${id})">
-            <div class="row-label">${opt.label} ${badges}</div>
-            <div class="price-col" data-label="Regular"><div class="p-reg">${fmt(opt.price)}</div></div>
-            <div class="price-col" data-label="EDU"><div class="${opt.eduPrice ? 'p-edu' : 'p-na'}">${fmt(opt.eduPrice)}</div></div>
-            <div class="price-col" data-label="AC+"><div class="${opt.acPlus ? 'p-ac' : 'p-na'}">${fmt(opt.acPlus)}</div></div>
-            <div class="price-col" data-label="AC+ EDU"><div class="${opt.acEdu ? 'p-acedu' : 'p-na'}">${fmt(opt.acEdu)}</div></div>
-            <div class="price-col" data-label="Save"><div class="p-save">${saving ? '-' + fmt(saving) : '—'}</div></div>
-          </div>
-          <div id="pd${id}" class="detail">
-            <div class="detail-grid">
-              <div class="ditem"><div class="dlabel">Regular</div><div class="dval">${fmt(opt.price)}</div></div>
-              <div class="ditem ditem-edu"><div class="dlabel">Education</div><div class="dval edu">${opt.eduPrice ? fmt(opt.eduPrice) : '—'}</div></div>
-              ${saving ? `<div class="ditem ditem-save"><div class="dlabel">${t('you_save')}</div><div class="dval green">-${fmt(saving)}</div></div>` : ''}
-              ${opt.acPlus ? `<div class="ditem ditem-ac"><div class="dlabel">${t('applecare')}</div><div class="dval blue">${fmt(opt.acPlus)}</div></div>` : ''}
-              ${opt.acEdu ? `<div class="ditem ditem-ac"><div class="dlabel">${t('ac_edu')}</div><div class="dval blue">${fmt(opt.acEdu)}</div></div>` : ''}
-              ${opt.adapterTo ? `
-              <div class="ditem ditem-adapter">
-                <div class="dlabel">${opt.adapterCost > 0 ? `${t('upgrade')} (${opt.adapterFrom} -> ${opt.adapterTo})` : t('adapter_options')}</div>
-                <div class="dval" style="color:#5e5ce6;">${opt.adapterCost > 0 ? '+ ' + fmt(opt.adapterCost) : (opt.adapterFrom === '35W/70W' ? '35W / 70W' : opt.adapterFrom)}</div>
-              </div>` : ''}
-              ${opt.nanoPrice ? `<div class="ditem"><div class="dlabel">${t('nano_texture')}</div><div class="dval">${fmt(opt.nanoPrice)}</div></div>` : ''}
-              ${opt.nanoEdu ? `<div class="ditem ditem-edu"><div class="dlabel">${t('nano_edu')}</div><div class="dval edu">${fmt(opt.nanoEdu)}</div></div>` : ''}
-            </div>
-            ${opt.nanoPrice ? `
-            <div class="compare-table" style="margin-bottom: 10px;">
-              <div class="ctitle">${t('with_nano')}</div>
-              <div class="crow"><span class="crow-name">${t('regular_plus_nano')}</span><span class="crow-val">${fmt(opt.price + opt.nanoPrice)}</span></div>
-              ${(opt.eduPrice && opt.nanoEdu) ? `<div class="crow"><span class="crow-name">${t('edu_plus_nano')}</span><span class="crow-val edu">${fmt(opt.eduPrice + opt.nanoEdu)}</span></div>` : ''}
-            </div>` : ''}
-            ${opt.acPlus ? `
-            <div class="compare-table">
-              <div class="ctitle">${t('with_ac')}</div>
-              <div class="crow"><span class="crow-name">${t('regular_plus_ac')}</span><span class="crow-val">${fmt(opt.price + opt.acPlus)}</span></div>
-              ${(opt.eduPrice && opt.acEdu) ? `<div class="crow"><span class="crow-name">${t('edu_plus_ac')}</span><span class="crow-val edu">${fmt(opt.eduPrice + opt.acEdu)}</span></div>` : ''}
-              ${(opt.price && opt.acPlus && opt.eduPrice && opt.acEdu) ? `<div class="crow"><span class="crow-name">${t('total_saving')}</span><span class="crow-val green">-${fmt((opt.price + opt.acPlus) - (opt.eduPrice + opt.acEdu))}</span></div>` : ''}
-            </div>` : ''}
-          </div>`;
-        id++;
-      });
-      html += '</div></div>';
-    });
-    host.innerHTML = html;
-  }
-
-  function syncColHeader() {
-    const h = document.getElementById('view-education')?.querySelector('.tool-head');
-    const c = document.getElementById('col-header');
-    if (h && c) c.style.top = h.offsetHeight + 'px';
-  }
-
-  function vatCalculate() {
-    const input = document.getElementById('vat-input');
-    if (!input) return;
+  function vat_calculate() {
+    const input = document.getElementById('vat-priceInput');
     const raw = parseFloat(input.value);
     const price = isNaN(raw) || raw <= 0 ? 0 : raw;
-    const clear = document.getElementById('vat-clear');
-    if (clear) clear.style.opacity = price > 0 ? '1' : '0';
-    const hero = document.getElementById('vat-hero-amount');
-    const method = document.getElementById('vat-hero-method');
-    const badge = document.getElementById('vat-badge');
-    const purchase = document.getElementById('vat-purchase');
-    const beforeVat = document.getElementById('vat-before');
-    const vatAmount = document.getElementById('vat-vat');
-    const net = document.getElementById('vat-net');
-
+    document.getElementById('vat-clearBtn').style.opacity = price > 0 ? '1' : '0';
+    const hero = document.getElementById('vat-heroAmount');
+    const method = document.getElementById('vat-heroMethod');
+    const badge = document.getElementById('vat-eligBadge');
+    const purchase = document.getElementById('vat-bdPurchase');
+    const beforeVat = document.getElementById('vat-bdBefore');
+    const vatAmount = document.getElementById('vat-bdVat');
+    const net = document.getElementById('vat-bdNet');
     if (price === 0) {
-      if (hero) hero.textContent = '฿ —';
-      if (hero) hero.style.color = 'var(--text3)';
-      if (method) method.textContent = t('enter_prompt');
-      if (badge) badge.innerHTML = '';
-      if (purchase) purchase.textContent = '—';
-      if (beforeVat) beforeVat.textContent = '—';
-      if (vatAmount) vatAmount.textContent = '—';
-      if (net) net.textContent = '—';
-      return;
+      hero.textContent = '฿ —'; hero.style.color = 'var(--text3)';
+      method.textContent = 'Enter a price to calculate'; badge.innerHTML = '';
+      purchase.textContent = '—'; beforeVat.textContent = '—'; vatAmount.textContent = '—'; net.textContent = '—'; return;
     }
-
     let refund = 0;
     if (price >= 200000) refund = price * 0.061;
-    else {
-      const match = VAT_RANGES.find(x => price >= x.from && price <= x.to);
-      refund = match ? match.refund : 0;
-    }
+    else { const r = vat_priceRanges.find(x => price >= x.from && price <= x.to); refund = r ? r.refund : 0; }
     const f = n => '฿' + n.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
     const fInt = n => '฿' + Math.floor(n).toLocaleString('th-TH');
-    if (purchase) purchase.textContent = fInt(price);
+    purchase.textContent = fInt(price);
     const netPrice = price / 1.07;
-    if (beforeVat) beforeVat.textContent = f(netPrice);
-    if (vatAmount) vatAmount.textContent = f(price - netPrice);
+    beforeVat.textContent = f(netPrice);
+    vatAmount.textContent = f(price - netPrice);
     if (refund === 0) {
-      if (hero) hero.textContent = t('below_minimum');
-      if (hero) hero.style.color = 'var(--red)';
-      if (method) method.textContent = t('min_required');
-      if (badge) badge.innerHTML = `<span style="background:rgba(255,69,58,0.15);color:var(--red);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✕ ${t('below_minimum')}</span>`;
-      if (net) net.textContent = '—';
+      hero.textContent = 'Not Eligible'; hero.style.color = '#c0392b';
+      method.textContent = 'Min ฿2,000 required';
+      badge.innerHTML = '<span style="background:rgba(192,57,43,0.1);color:#c0392b;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✕ Below minimum</span>';
+      net.textContent = '—';
     } else {
-      if (hero) hero.textContent = fInt(refund);
-      if (hero) hero.style.color = 'var(--green)';
-      if (method) method.textContent = price >= 200000 ? t('rate_label') : t('table_label');
-      if (badge) badge.innerHTML = `<span style="background:rgba(48,209,88,0.15);color:var(--green);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✓ ${t('eligible')}</span>`;
-      if (net) net.textContent = fInt(refund);
+      hero.textContent = fInt(refund); hero.style.color = 'var(--green)';
+      method.textContent = price >= 200000 ? 'Rate: 6.1%' : 'VAT Refund Table';
+      badge.innerHTML = '<span style="background:rgba(26,127,55,0.1);color:var(--green);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;">✓ Eligible</span>';
+      net.textContent = fInt(refund);
     }
   }
 
-  function vatClear() {
-    const input = document.getElementById('vat-input');
-    if (!input) return;
-    input.value = '';
-    vatCalculate();
-    input.focus();
+  function vat_clearInput() {
+    const input = document.getElementById('vat-priceInput');
+    input.value = ''; vat_calculate(); input.focus();
   }
 
-  function renderBelkin() {
-    const el = document.getElementById('qrcode');
-    const fallback = document.getElementById('qrcode-fallback');
-    if (!el) return;
-    el.innerHTML = '';
-    if (typeof QRCode === 'undefined') {
-      if (fallback) fallback.style.display = 'block';
-      return;
-    }
-    if (fallback) fallback.style.display = 'none';
-    try {
-      new QRCode(el, {
-        text: CLAIM_URL,
-        width: 200,
-        height: 200,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    } catch (e) {
-      if (fallback) fallback.style.display = 'block';
-    }
-  }
-
-  function openClaim() {
-    window.location.href = CLAIM_URL;
-  }
-
-  document.addEventListener('click', (event) => {
-    const actionButton = event.target.closest('[data-action]');
-    if (actionButton && actionButton.dataset.action === 'open-price-battle') {
-      openLegacy(PRICE_BATTLE_GLOBAL);
-      return;
-    }
-    const button = event.target.closest('[data-view]');
-    if (button) showView(button.dataset.view);
-  });
-
-  document.addEventListener('click', (event) => {
-    const tab = event.target.closest('[data-edu-tab]');
-    if (!tab) return;
-    setPriceTab(tab.dataset.eduTab);
-  });
-
-  window.addEventListener('hashchange', syncViewFromHash);
   window.addEventListener('load', () => {
-    document.getElementById('vat-input').addEventListener('input', vatCalculate);
-    const presets = document.getElementById('vat-presets');
-    [
-      { label: 'iPhone 17 Pro Max', price: 48900 },
-      { label: 'iPhone 17 Pro', price: 43900 },
-      { label: 'AirPods Pro 3', price: 8490 },
-      { label: 'AirPods 4 ANC', price: 6290 }
-    ].forEach(item => {
-      const btn = document.createElement('button');
-      btn.className = 'btn btn-secondary';
-      btn.type = 'button';
-      btn.textContent = item.label;
-      btn.addEventListener('click', () => {
-        document.getElementById('vat-input').value = item.price;
-        vatCalculate();
-      });
-      presets.appendChild(btn);
-    });
-    syncViewFromHash();
-    applyLang();
-    renderPriceList();
-    syncColHeader();
-    vatCalculate();
-    renderBelkin();
+    initVatPresets();
+    const input = document.getElementById('vat-priceInput');
+    if (input) input.oninput = vat_calculate;
   });
-  window.addEventListener('resize', syncColHeader);
+
+  // ── Language System ──────────────────────────────────────────────────────
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    // Font switch
+    document.body.classList.toggle('lang-th', lang === 'th');
+    // Update all translated elements
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+      // Only update text if element has no significant child elements
+      if (el.children.length === 0) {
+        el.textContent = val;
+      } else {
+        // For elements like buttons with children, update innerHTML carefully
+        el.innerHTML = val;
+      }
+    });
+    // Sync all lang-btn active states across all toggles
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+    // Re-init VAT presets with correct language
+    if (document.getElementById('vat-presets')) {
+      initVatPresets();
+    }
+  }
+
+  function initVatPresets() {
+    const el = document.getElementById('vat-presets');
+    if (!el) return;
+    const presets = [
+      { en: 'iPhone 17 Pro Max', th: 'iPhone 17 Pro Max', p: 48900 },
+      { en: 'iPhone 17 Pro',     th: 'iPhone 17 Pro',     p: 43900 },
+      { en: 'AirPods Pro 3',     th: 'AirPods Pro 3',     p: 8490  },
+      { en: 'AirPods 4 ANC',     th: 'AirPods 4 ANC',     p: 6290  }
+    ];
+    el.innerHTML = '';
+    presets.forEach(p => {
+      const b = document.createElement('button');
+      b.textContent = currentLang === 'th' ? p.th : p.en;
+      b.style.cssText = 'background:#f5f5f7;border:1px solid rgba(0,0,0,0.1);border-radius:20px;padding:6px 14px;font-size:13px;white-space:nowrap;color:#6e6e73;cursor:pointer;font-family:Helvetica,Arial,sans-serif;touch-action:manipulation;flex-shrink:0;';
+      const fn = () => { document.getElementById('vat-priceInput').value = p.p; vat_calculate(); };
+      b.addEventListener('click', fn);
+      b.addEventListener('touchend', e => { e.preventDefault(); fn(); });
+      el.appendChild(b);
+    });
+  }
+
 </script>
 </body>
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Today's Highlight</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --surface2: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --text3: #a1a1a6;
+    --accent: #0071e3;
+    --green: #1a8c3a;
+    --radius: 12px;
+    --font-en: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    --font-th: "Sukhumvit Set", "Noto Sans Thai", sans-serif;
+    --font: var(--font-en);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  body.lang-th { font-family: var(--font-th); }
+  body.lang-th .lang-btn { font-family: var(--font-en); }
+
+  .sticky-header {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: sticky; isolation: isolate;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top { display: flex; align-items: center; padding: 16px 16px 10px; gap: 10px; }
+  .header-body { padding: 2px 16px 10px; }
+  .header-body h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; color: var(--text); margin-bottom: 6px; }
+
+  .back-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 50%; cursor: pointer; color: var(--accent);
+    font-size: 32px; line-height: 1; padding-bottom: 2px;
+    flex-shrink: 0; transition: background 0.1s; text-decoration: none;
+  }
+  .back-btn:active { background: #e8e8ed; }
+  .screen-label { font-size: 13px; color: var(--text2); }
+
+  .lang-toggle { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px; margin-left: auto; flex-shrink: 0; }
+  .lang-btn { background: transparent; border: none; border-radius: 16px; padding: 4px 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text3); transition: all 0.15s; letter-spacing: 0.02em; font-family: var(--font-en); }
+  .lang-btn.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+
+  .tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 0 16px 12px; }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+  .tabs { display: flex; gap: 6px; width: max-content; }
+  .tab { background: var(--surface); color: var(--text2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font); }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .tab-panel { display: none; padding: 12px 12px 48px; }
+  .tab-panel.active { display: block; }
+
+  .table-card {
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <div class="header-top">
+    <a class="back-btn" onclick="goHome()" href="#">‹</a>
+    <span class="screen-label" data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</span>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('th')">TH</button>
+    </div>
+  </div>
+  <div class="header-body">
+    <h1 data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</h1>
+  </div>
+  <div class="tabs-scroll">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('tab-btu')" data-en="Back to University" data-th="Back to University">Back to University</button>
+      <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: BACK TO UNIVERSITY -->
+<div id="tab-btu" class="tab-panel active">
+</div>
+
+<!-- TAB: UNIDAYS -->
+<div id="tab-unidays" class="tab-panel">
+  <div class="table-card" style="padding: 32px 20px; text-align: center;">
+    <div style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 6px;" data-en="Verify status via" data-th="ยืนยันสถานะผ่าน">Verify status via</div>
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); margin-bottom: 4px;">UNiDAYS</div>
+    <div style="font-size: 14px; color: var(--text2); margin-bottom: 28px;" data-en="Scan QR code to open verification page" data-th="สแกน QR code เพื่อเปิดหน้ายืนยันตัวตน">Scan QR code to open verification page</div>
+    <div id="unidays-qr" style="display: flex; justify-content: center; margin-bottom: 28px;"></div>
+    <a href="https://apple.co/4dG7fd3" style="display: block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: var(--font-en);" data-en="Open this website" data-th="เปิดเว็บไซต์">Open this website</a>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+    if (id === 'tab-unidays') initQR();
+  }
+
+  let qrGenerated = false;
+  function initQR() {
+    if (qrGenerated) return;
+    qrGenerated = true;
+    new QRCode(document.getElementById('unidays-qr'), {
+      text: 'https://apple.co/4dG7fd3',
+      width: 200,
+      height: 200,
+      colorDark: '#1d1d1f',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  let currentLang = 'en';
+  function setLang(lang) {
+    currentLang = lang;
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+      if (el.children.length === 0) el.textContent = val;
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+  }
+  function goHome() { fetch('https://gist.githubusercontent.com/LengPro/4dcfc11217eca522ed37d55d801ed237/raw/staff-tool.html?t='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(html=>{document.open();document.write(html);document.close();}).catch(()=>{}); }
+</script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Education Price</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --surface2: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --text3: #a1a1a6;
+    --accent: #0071e3;
+    --edu: #d4620a;
+    --red: #d70015;
+    --green: #1a8c3a;
+    --radius: 12px;
+    --font-en: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    --font-th: "Sukhumvit Set", "Noto Sans Thai", sans-serif;
+    --font: var(--font-en);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  body.lang-th { font-family: var(--font-th); }
+  body.lang-th .lang-btn { font-family: var(--font-en); }
+
+  /* Sticky header */
+  .sticky-header {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: sticky; isolation: isolate;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    padding: 16px 16px 10px;
+    gap: 10px;
+  }
+  .header-body { padding: 2px 16px 10px; }
+  .header-body h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; color: var(--text); margin-bottom: 6px; }
+  .header-body p { font-size: 15px; color: var(--text2); margin-top: 0; margin-bottom: 4px; }
+
+  /* Back button */
+  .back-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 50%; cursor: pointer; color: var(--accent);
+    font-size: 32px; line-height: 1; padding-bottom: 2px;
+    flex-shrink: 0; transition: background 0.1s;
+    text-decoration: none;
+  }
+  .back-btn:active { background: #e8e8ed; }
+  .screen-label { font-size: 13px; color: var(--text2); }
+
+  /* Lang toggle */
+  .lang-toggle { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px; margin-left: auto; flex-shrink: 0; }
+  .lang-btn { background: transparent; border: none; border-radius: 16px; padding: 4px 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text3); transition: all 0.15s; letter-spacing: 0.02em; font-family: var(--font-en); }
+  .lang-btn.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+
+  /* Tabs */
+  .tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 0 16px 12px; }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+  .tabs { display: flex; gap: 6px; width: max-content; }
+  .tab { background: var(--surface); color: var(--text2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font); }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Tab panels */
+  .tab-panel { display: none; padding: 12px 12px 48px; }
+  .tab-panel.active { display: block; }
+
+  /* Table card */
+  .table-card {
+    background: var(--surface2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .table-section-title { display: none; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 17px; table-layout: fixed; }
+  thead tr { background: var(--surface); }
+  th {
+    padding: 9px 6px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    word-break: keep-all;
+  }
+  th:first-child { text-align: left; width: 38%; }
+  th:not(:first-child) { width: 20.6%; }
+  td { padding: 16px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+
+  td.product-main {
+    font-weight: 700; font-size: 18px; letter-spacing: -0.2px;
+    color: var(--text);
+    background: var(--surface);
+    padding: 10px 14px;
+  }
+  td.product-sub {
+    font-weight: 500; color: var(--text);
+    padding-left: 20px;
+  }
+  td.price-col {
+    text-align: right; font-weight: 500;
+    color: var(--text); white-space: normal; word-break: break-all;
+  }
+  td.discount-col {
+    text-align: right; font-weight: 700;
+    color: var(--red); white-space: normal; word-break: break-all;
+  }
+  td.final-col {
+    text-align: right; font-weight: 700;
+    color: var(--green); white-space: normal; word-break: break-all;
+  }
+  td.wifi-col, td.cell-col {
+    text-align: center; font-weight: 700;
+    color: var(--red); white-space: normal; word-break: break-all;
+  }
+  td.span-col {
+    text-align: center; font-weight: 600;
+    color: var(--red); white-space: normal;
+  }
+
+  /* New label */
+  .new-label {
+    background: var(--red); color: white;
+    font-size: 10px; font-weight: 700; padding: 2px 7px;
+    border-radius: 20px; margin-left: 6px;
+    vertical-align: middle; letter-spacing: 0.03em;
+  }
+
+  /* Note */
+  .note { font-size: 14px; color: var(--red); font-weight: 600; padding: 10px 14px 4px; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 24px 16px; color: var(--text3); font-size: 12px; }
+
+  /* Responsive — mobile */
+  @media (max-width: 480px) {
+    .tab-panel { padding: 10px 8px 48px; }
+    table { font-size: 15px; }
+    td, th { padding: 16px 6px; }
+    td.product-sub { padding-left: 12px; }
+    td.product-main { padding: 16px 10px; font-size: 16px; }
+    td.span-col { font-size: 15px; }
+    th { font-size: 13px; letter-spacing: 0; }
+    td.price-col, td.discount-col, td.final-col,
+    td.wifi-col, td.cell-col { font-size: 15px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="sticky-header">
+  <div class="header-top">
+    <a class="back-btn" onclick="goHome()" href="#">‹</a>
+    <span class="screen-label" data-en="Education Price" data-th="ราคาการศึกษา">Education Price</span>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('th')">TH</button>
+    </div>
+  </div>
+  <div class="header-body">
+    <h1 data-en="Education Price" data-th="ราคาการศึกษา">Education Price</h1>
+    <p>
+      <span data-en="See terms and conditions for education" data-th="ดูข้อกำหนดและเงื่อนไขสำหรับการศึกษา">See terms and conditions for education</span>
+      <a href="https://www.apple.com/th-edu/shop/browse/open/salespolicies/edu" style="color: var(--accent); text-decoration: none; font-weight: 600;" data-en=" here" data-th=" ที่นี่"> here</a>
+    </p>
+  </div>
+  <div class="tabs-scroll">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('tab-ipad')" data-en="iPad" data-th="iPad">iPad</button>
+      <button class="tab" onclick="showTab('tab-mac')" data-en="Mac" data-th="Mac">Mac</button>
+      <button class="tab" onclick="showTab('tab-watch')" data-en="Apple Watch" data-th="Apple Watch">Apple Watch</button>
+      <button class="tab" onclick="showTab('tab-ac')" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</button>
+      <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB: iPAD
+══════════════════════════════════════ -->
+<div id="tab-ipad" class="tab-panel active">
+
+  <!-- iPad Pro -->
+  <div class="table-card">
+    <div class="table-section-title">iPad Pro</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Wi-Fi" data-th="Wi-Fi">Wi-Fi</th><th data-en="Cellular" data-th="Cellular">Cellular</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="3">iPad Pro 11" M5</td></tr>
+        <tr><td class="product-sub">256GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">512GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">1TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">2TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">1TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">2TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</td><td class="span-col" colspan="2">4,990 − 500 = 4,490฿</td></tr>
+        <tr><td class="product-main" colspan="3">iPad Pro 13" M5</td></tr>
+        <tr><td class="product-sub">256GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">512GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">1TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">2TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">1TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub">2TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
+        <tr><td class="product-sub" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</td><td class="span-col" colspan="2">5,690 − 600 = 5,090฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- iPad Air -->
+  <div class="table-card">
+    <div class="table-section-title">iPad Air</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th>Wi-Fi</th><th>Cellular</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="3">iPad Air 11" M4 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">128GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
+        <tr><td class="product-sub">256GB</td><td class="wifi-col">1,900฿</td><td class="cell-col">1,900฿</td></tr>
+        <tr><td class="product-sub">512GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
+        <tr><td class="product-sub">1TB</td><td class="wifi-col">3,600฿</td><td class="cell-col">3,700฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,790 − 300 = 2,490฿</td></tr>
+        <tr><td class="product-main" colspan="3">iPad Air 13" M4 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">128GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,800฿</td></tr>
+        <tr><td class="product-sub">256GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
+        <tr><td class="product-sub">512GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,800฿</td></tr>
+        <tr><td class="product-sub">1TB</td><td class="wifi-col">3,600฿</td><td class="cell-col">3,700฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">3,490 − 300 = 3,190฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- iPad / iPad mini -->
+  <div class="table-card">
+    <div class="table-section-title">iPad &amp; iPad mini</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th>Wi-Fi</th><th>Cellular</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="3">iPad A16</td></tr>
+        <tr><td class="product-sub">128GB</td><td class="wifi-col">700฿</td><td class="cell-col">800฿</td></tr>
+        <tr><td class="product-sub">256GB</td><td class="wifi-col">800฿</td><td class="cell-col">800฿</td></tr>
+        <tr><td class="product-sub">512GB</td><td class="wifi-col">700฿</td><td class="cell-col">700฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,590 − 300 = 2,290฿</td></tr>
+        <tr><td class="product-main" colspan="3">iPad mini</td></tr>
+        <tr><td class="product-sub" data-en="All models" data-th="ทุกรุ่น">All models</td><td class="wifi-col">2,000฿</td><td class="cell-col">2,000฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,590 − 300 = 2,290฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Apple Pencil & Keyboards -->
+  <div class="table-card">
+    <div class="table-section-title" data-en="Accessories" data-th="อุปกรณ์เสริม">Accessories</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th colspan="2" style="text-align:right;" data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="3">Apple Pencil</td></tr>
+        <tr><td class="product-sub">Pencil Pro</td><td class="span-col" colspan="2">4,490 − 400 = 4,090฿</td></tr>
+        <tr><td class="product-sub">USB-C</td><td class="span-col" colspan="2">2,990 − 400 = 2,590฿</td></tr>
+        <tr><td class="product-sub">2nd Gen</td><td class="span-col" colspan="2">4,490 − 400 = 4,090฿</td></tr>
+        <tr><td class="product-sub">1st Gen</td><td class="span-col" colspan="2">3,990 − 500 = 3,490฿</td></tr>
+        <tr><td class="product-main" colspan="3">Magic Keyboard</td></tr>
+        <tr><td class="product-sub">Pro 11" (M5, M4)</td><td class="span-col" colspan="2">10,990 − 800 = 10,190฿</td></tr>
+        <tr><td class="product-sub">Pro 13" (M5, M4)</td><td class="span-col" colspan="2">12,490 − 800 = 11,690฿</td></tr>
+        <tr><td class="product-sub">Air 11" (M4, M3, M2)</td><td class="span-col" colspan="2">9,990 − 790 = 9,200฿</td></tr>
+        <tr><td class="product-sub">Air 13" (M4, M3, M2)</td><td class="span-col" colspan="2">10,990 − 690 = 10,300฿</td></tr>
+        <tr><td class="product-sub">Folio A16, 10th</td><td class="span-col" colspan="2">8,990 − 800 = 8,190฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab-ipad -->
+
+<!-- ══════════════════════════════════════
+     TAB: MAC
+══════════════════════════════════════ -->
+<div id="tab-mac" class="tab-panel">
+
+  <div class="table-card">
+    <div class="table-section-title">MacBook</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="4">MacBook Neo <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">256/8GB</td><td class="price-col">19,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">16,900฿</td></tr>
+        <tr><td class="product-sub">512/8GB Touch ID</td><td class="price-col">22,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">19,900฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">MacBook Air 13" M5 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">512/16GB</td><td class="price-col">36,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">33,490฿</td></tr>
+        <tr><td class="product-sub">512/24GB</td><td class="price-col">43,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">40,490฿</td></tr>
+        <tr><td class="product-sub">1TB/16GB</td><td class="price-col">43,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">40,490฿</td></tr>
+        <tr><td class="product-sub">1TB/24GB</td><td class="price-col">50,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">47,490฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">6,990฿</td><td class="discount-col">800฿</td><td class="final-col">6,190฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">MacBook Air 15" M5 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">512/16GB</td><td class="price-col">44,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">41,390฿</td></tr>
+        <tr><td class="product-sub">1TB/16GB</td><td class="price-col">51,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">48,390฿</td></tr>
+        <tr><td class="product-sub">512/24GB</td><td class="price-col">51,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">48,390฿</td></tr>
+        <tr><td class="product-sub">1TB/24GB</td><td class="price-col">58,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">55,390฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">7,990฿</td><td class="discount-col">900฿</td><td class="final-col">7,090฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">MacBook Pro 14" M5 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">M5 1TB/16GB</td><td class="price-col">56,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">53,590฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/16GB Nano</td><td class="price-col">62,150฿</td><td class="discount-col">3,835฿</td><td class="final-col">58,315฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/24GB</td><td class="price-col">63,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">60,590฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/24GB Nano</td><td class="price-col">69,150฿</td><td class="discount-col">3,835฿</td><td class="final-col">65,315฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/32GB</td><td class="price-col">70,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">67,590฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 15C/1TB/24GB</td><td class="price-col">74,900฿</td><td class="discount-col">5,110฿</td><td class="final-col">69,790฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 15C/2TB/24GB</td><td class="price-col">88,900฿</td><td class="discount-col">6,510฿</td><td class="final-col">82,390฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 18C/2TB/24GB</td><td class="price-col">94,900฿</td><td class="discount-col">6,810฿</td><td class="final-col">88,090฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 18C/2TB/48GB</td><td class="price-col">114,150฿</td><td class="discount-col">13,460฿</td><td class="final-col">100,690฿</td></tr>
+        <tr><td class="product-sub">M5 Max 2TB/36GB</td><td class="price-col">124,900฿</td><td class="discount-col">10,410฿</td><td class="final-col">114,490฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">9,990฿</td><td class="discount-col">1,100฿</td><td class="final-col">8,890฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">MacBook Pro 16" M5 <span class="new-label">New</span></td></tr>
+        <tr><td class="product-sub">M5 Pro 1TB/24GB</td><td class="price-col">92,900฿</td><td class="discount-col">6,910฿</td><td class="final-col">85,990฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 1TB/48GB</td><td class="price-col">106,900฿</td><td class="discount-col">6,910฿</td><td class="final-col">99,990฿</td></tr>
+        <tr><td class="product-sub">M5 Max 2TB/36GB</td><td class="price-col">134,900฿</td><td class="discount-col">10,410฿</td><td class="final-col">124,490฿</td></tr>
+        <tr><td class="product-sub">M5 Max 2TB/48GB</td><td class="price-col">152,400฿</td><td class="discount-col">10,410฿</td><td class="final-col">141,990฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">13,990฿</td><td class="discount-col">1,500฿</td><td class="final-col">12,490฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-card">
+    <div class="table-section-title">Desktop Mac &amp; Display</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="4">iMac</td></tr>
+        <tr><td class="product-sub">256/16GB</td><td class="price-col">44,900฿</td><td class="discount-col">1,750฿</td><td class="final-col">43,150฿</td></tr>
+        <tr><td class="product-sub">256/16GB/4 Port</td><td class="price-col">51,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">48,400฿</td></tr>
+        <tr><td class="product-sub">512/16GB</td><td class="price-col">58,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">55,400฿</td></tr>
+        <tr><td class="product-sub">512/24GB</td><td class="price-col">65,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">62,400฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Mac mini</td></tr>
+        <tr><td class="product-sub">M4 256/16GB</td><td class="price-col">20,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">17,400฿</td></tr>
+        <tr><td class="product-sub">M4 512/16GB</td><td class="price-col">27,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">24,400฿</td></tr>
+        <tr><td class="product-sub">M4 512/24GB</td><td class="price-col">34,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">31,400฿</td></tr>
+        <tr><td class="product-sub">M4 Pro 512/24GB</td><td class="price-col">49,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">46,400฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,900฿</td><td class="discount-col">410฿</td><td class="final-col">3,490฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Mac Studio</td></tr>
+        <tr><td class="product-sub">M4 Max 512/36GB</td><td class="price-col">69,900฿</td><td class="discount-col">7,000฿</td><td class="final-col">62,900฿</td></tr>
+        <tr><td class="product-sub">M3 Ultra 1TB/96GB</td><td class="price-col">139,900฿</td><td class="discount-col">14,000฿</td><td class="final-col">111,900฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Studio Display</td></tr>
+        <tr><td class="product-sub">Standard + Tilt</td><td class="price-col">52,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">49,600฿</td></tr>
+        <tr><td class="product-sub">Standard + Tilt &amp; Height</td><td class="price-col">64,900฿</td><td class="discount-col">3,200฿</td><td class="final-col">61,700฿</td></tr>
+        <tr><td class="product-sub">Nano + Tilt</td><td class="price-col">62,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">59,600฿</td></tr>
+        <tr><td class="product-sub">Nano + Tilt &amp; Height</td><td class="price-col">74,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">71,600฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,290฿</td><td class="discount-col">600฿</td><td class="final-col">4,690฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Studio Display XDR</td></tr>
+        <tr><td class="product-sub">Standard + Tilt &amp; Height</td><td class="price-col">109,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">106,600฿</td></tr>
+        <tr><td class="product-sub">Nano + Tilt &amp; Height</td><td class="price-col">119,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">116,600฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">10,490฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,390฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab-mac -->
+
+<!-- ══════════════════════════════════════
+     TAB: APPLE WATCH
+══════════════════════════════════════ -->
+<div id="tab-watch" class="tab-panel">
+
+  <div class="table-card">
+    <div class="table-section-title">Apple Watch</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="4">Apple Watch SE 3</td></tr>
+        <tr><td class="product-sub">40mm GPS</td><td class="price-col">8,500฿</td><td class="discount-col">600฿</td><td class="final-col">7,900฿</td></tr>
+        <tr><td class="product-sub">44mm GPS</td><td class="price-col">9,500฿</td><td class="discount-col">600฿</td><td class="final-col">8,900฿</td></tr>
+        <tr><td class="product-sub">40mm Cellular</td><td class="price-col">10,500฿</td><td class="discount-col">1,600฿</td><td class="final-col">8,900฿</td></tr>
+        <tr><td class="product-sub">44mm Cellular</td><td class="price-col">11,500฿</td><td class="discount-col">1,600฿</td><td class="final-col">9,900฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Apple Watch Series 11</td></tr>
+        <tr><td class="product-sub">42mm GPS</td><td class="price-col">14,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">12,900฿</td></tr>
+        <tr><td class="product-sub">46mm GPS</td><td class="price-col">15,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">13,900฿</td></tr>
+        <tr><td class="product-sub">42mm Cellular</td><td class="price-col">18,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">16,900฿</td></tr>
+        <tr><td class="product-sub">46mm Cellular</td><td class="price-col">19,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">17,900฿</td></tr>
+        <tr><td class="product-sub">42mm Titanium</td><td class="price-col">25,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">22,900฿</td></tr>
+        <tr><td class="product-sub">46mm Titanium</td><td class="price-col">27,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">24,900฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">Apple Watch Ultra 3</td></tr>
+        <tr><td class="product-sub">Alpine / Ocean / Trail</td><td class="price-col">29,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">26,900฿</td></tr>
+        <tr><td class="product-sub">Titanium</td><td class="price-col">33,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">30,400฿</td></tr>
+      </tbody>
+    </table>
+    <p class="note" data-en="* AppleCare+ for Apple Watch is not eligible for education discount" data-th="* AppleCare+ สำหรับ Apple Watch ไม่มีส่วนลดการศึกษา">* AppleCare+ for Apple Watch is not eligible for education discount</p>
+  </div>
+
+</div><!-- /tab-watch -->
+
+<!-- ══════════════════════════════════════
+     TAB: APPLECARE+
+══════════════════════════════════════ -->
+<div id="tab-ac" class="tab-panel">
+
+  <div class="table-card">
+    <div class="table-section-title">AppleCare+ for iPad</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">iPad</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
+        <tr><td class="product-sub">iPad mini</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
+        <tr><td class="product-sub">iPad Air 11"</td><td class="price-col">2,790฿</td><td class="discount-col">300฿</td><td class="final-col">2,490฿</td></tr>
+        <tr><td class="product-sub">iPad Air 13"</td><td class="price-col">3,490฿</td><td class="discount-col">300฿</td><td class="final-col">3,190฿</td></tr>
+        <tr><td class="product-sub">iPad Pro 11"</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
+        <tr><td class="product-sub">iPad Pro 13"</td><td class="price-col">5,690฿</td><td class="discount-col">600฿</td><td class="final-col">5,090฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-card">
+    <div class="table-section-title">AppleCare+ for Mac</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">MacBook Neo</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
+        <tr><td class="product-sub">MacBook Air 13"</td><td class="price-col">6,990฿</td><td class="discount-col">800฿</td><td class="final-col">6,190฿</td></tr>
+        <tr><td class="product-sub">MacBook Air 15"</td><td class="price-col">7,990฿</td><td class="discount-col">900฿</td><td class="final-col">7,090฿</td></tr>
+        <tr><td class="product-sub">MacBook Pro 14"</td><td class="price-col">9,990฿</td><td class="discount-col">1,100฿</td><td class="final-col">8,890฿</td></tr>
+        <tr><td class="product-sub">MacBook Pro 16"</td><td class="price-col">13,990฿</td><td class="discount-col">1,500฿</td><td class="final-col">12,490฿</td></tr>
+        <tr><td class="product-sub">iMac</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+        <tr><td class="product-sub">Mac mini</td><td class="price-col">3,900฿</td><td class="discount-col">410฿</td><td class="final-col">3,490฿</td></tr>
+        <tr><td class="product-sub">Mac Studio</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+        <tr><td class="product-sub">Mac Pro</td><td class="price-col">17,900฿</td><td class="discount-col">1,810฿</td><td class="final-col">16,090฿</td></tr>
+        <tr><td class="product-sub">Studio Display</td><td class="price-col">5,290฿</td><td class="discount-col">600฿</td><td class="final-col">4,690฿</td></tr>
+        <tr><td class="product-sub">Studio Display XDR</td><td class="price-col">10,490฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,390฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab-ac -->
+
+<!-- ══════════════════════════════════════
+     TAB: UNIDAYS
+══════════════════════════════════════ -->
+<div id="tab-unidays" class="tab-panel">
+  <div class="table-card" style="padding: 32px 20px; text-align: center;">
+    <div style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 6px;" data-en="Verify status via" data-th="ยืนยันสถานะผ่าน">Verify status via</div>
+    <div style="font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); margin-bottom: 4px;">UNiDAYS</div>
+    <div style="font-size: 14px; color: var(--text2); margin-bottom: 28px;" data-en="Scan QR code to open verification page" data-th="สแกน QR code เพื่อเปิดหน้ายืนยันตัวตน">Scan QR code to open verification page</div>
+    <div id="unidays-qr" style="display: flex; justify-content: center; margin-bottom: 28px;"></div>
+    <a href="https://apple.co/4dG7fd3" style="display: block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: var(--font-en);" data-en="Open this website" data-th="เปิดเว็บไซต์">Open this website</a>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+    if (id === 'tab-unidays') initQR();
+  }
+
+  let qrGenerated = false;
+  function initQR() {
+    if (qrGenerated) return;
+    qrGenerated = true;
+    new QRCode(document.getElementById('unidays-qr'), {
+      text: 'https://apple.co/4dG7fd3',
+      width: 200,
+      height: 200,
+      colorDark: '#1d1d1f',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  let currentLang = 'en';
+  function setLang(lang) {
+    currentLang = lang;
+    document.body.classList.toggle('lang-th', lang === 'th');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+      if (el.children.length === 0) el.textContent = val;
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+  }
+  function goHome() { fetch('https://gist.githubusercontent.com/LengPro/4dcfc11217eca522ed37d55d801ed237/raw/staff-tool.html?t='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(html=>{document.open();document.write(html);document.close();}).catch(()=>{}); }
+</script>
+
+</body>
+</html>
