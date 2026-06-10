@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_owner="${PAGES_REPO_OWNER:-}"
-repo_name="${PAGES_REPO_NAME:-One-Shorcut}"
+repo_name="${PAGES_REPO_NAME:-One-Shortcut}"
 branch="${PAGES_REPO_BRANCH:-main}"
 description="One Shortcut tools GitHub Pages"
 html_files=(
@@ -46,7 +46,7 @@ if ! gh repo view "$deploy_repo" >/dev/null 2>&1; then
   gh repo create "$deploy_repo" --public --description "$description" --disable-issues --disable-wiki
 fi
 
-workdir="$(mktemp -d "${TMPDIR:-/tmp}/one-shorcut-pages.XXXXXX")"
+workdir="$(mktemp -d "${TMPDIR:-/tmp}/one-shortcut-pages.XXXXXX")"
 trap 'rm -rf "$workdir"' EXIT
 
 git clone "https://github.com/$deploy_repo.git" "$workdir" >/dev/null 2>&1

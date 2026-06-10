@@ -2,13 +2,13 @@
 
 ## Project Structure & Module Organization
 
-This repository is a framework-free static HTML tool suite for retail store daily operations. The production deployment is the public GitHub Pages repo `i3udokai/One-Shorcut`, served at `https://i3udokai.github.io/One-Shorcut/`.
+This repository is a framework-free static HTML tool suite for retail store daily operations. The production deployment is the public GitHub Pages repo `i3udokai/One-Shortcut`, served at `https://i3udokai.github.io/One-Shortcut/`.
 
 The local source entry point is `staff-tool.html`, which contains the launcher and most active tool views. The GitHub Pages entry point is `index.html`, which redirects to `staff-tool.html`.
 
 Supporting files:
 
-- `deploy_ShortcutTools.sh` publishes deployable `.html` files to the public `i3udokai/One-Shorcut` GitHub Pages repo and enables Pages from the repo root when needed.
+- `deploy_ShortcutTools.sh` publishes deployable `.html` files to the public `i3udokai/One-Shortcut` GitHub Pages repo and enables Pages from the repo root when needed.
 - `price-battle.html` is a same-site production page opened by the launcher.
 - `education-price.html`, `vat-refund.html`, `belkin-claim.html`, `highlight.html`, `support.html`, `other.html`, and `edu-price.html` are deployable standalone/reference pages. Keep `noindex` tags in public HTML.
 - `README.md` and `CLAUDE.md` document workflow.
@@ -38,7 +38,7 @@ There is no automated test framework. Before deploy, validate:
 - shell syntax with `bash -n deploy_ShortcutTools.sh`
 - whitespace with `git diff --check`
 - manual Safari behavior for tool taps, language switching, VAT input, Education Price tabs, and Belkin QR rendering
-- after deployment, confirm `https://i3udokai.github.io/One-Shorcut/` returns HTTP 200 and the GitHub Pages status is built
+- after deployment, confirm `https://i3udokai.github.io/One-Shortcut/` returns HTTP 200 and the GitHub Pages status is built
 
 ## Commit & Pull Request Guidelines
 
@@ -48,7 +48,7 @@ Pull requests should include a concise description, manual test notes, screensho
 
 ## Deployment Notes
 
-iOS Shortcuts should open `https://i3udokai.github.io/One-Shorcut/` directly. Do not Base64-encode the page for Shortcuts.
+iOS Shortcuts should open `https://i3udokai.github.io/One-Shortcut/` directly. Do not Base64-encode the page for Shortcuts.
 
 The public Pages repo should contain only deployable HTML files. Do not push this private source repo, docs, shell scripts, or git metadata into the public Pages repo.
 

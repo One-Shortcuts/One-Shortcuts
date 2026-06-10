@@ -4,14 +4,14 @@ Retail store daily operation tools for Apple Retail Thailand.
 
 Production site:
 
-- `https://i3udokai.github.io/One-Shorcut/`
+- `https://i3udokai.github.io/One-Shortcut/`
 
 ## Files
 
 - `index.html` - GitHub Pages entry point that redirects to `staff-tool.html`
 - `staff-tool.html` - main launcher and embedded tool views
 - `price-battle.html` - same-site Price Battle page
-- `deploy_ShortcutTools.sh` - publishes deployable HTML files to the public `i3udokai/One-Shorcut` GitHub Pages repo
+- `deploy_ShortcutTools.sh` - publishes deployable HTML files to the public `i3udokai/One-Shortcut` GitHub Pages repo
 
 ## Workflow
 
