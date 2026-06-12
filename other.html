@@ -102,6 +102,7 @@
     <div class="tabs">
       <button class="tab active" onclick="showTab('tab-belkin', this)" data-en="Claim Belkin" data-th="เคลม Belkin">Claim Belkin</button>
       <button class="tab" onclick="showTab('tab-apu', this)" data-en="APU Support" data-th="APU Support">APU Support</button>
+      <button class="tab" onclick="showTab('tab-ta-group', this)" data-en="Today at Apple Group Reservations" data-th="Today at Apple การจองกลุ่ม">Today at Apple Group Reservations</button>
       <button class="tab" onclick="showTab('tab-bank', this)" data-en="Bank Transfer" data-th="โอนเงิน">Bank Transfer</button>
       <button class="tab" onclick="showTab('tab-manual', this)" data-en="Manual Full Form" data-th="คู่มือแบบฟอร์ม">Manual Full Form</button>
     </div>
@@ -125,6 +126,16 @@
     <div class="qr-title">APU &amp; Online Order</div>
     <div class="qr-box"><div id="qr-apu"></div></div>
     <a class="open-btn" id="btn-apu" href="https://www.apple.com/th/shop/help/viewing_changing_orders" data-en="Open this link" data-th="เปิดลิงก์นี้">Open this link</a>
+  </div>
+</div>
+
+<!-- TAB: T@A GROUP RESERVATIONS -->
+<div id="tab-ta-group" class="tab-panel">
+  <div class="qr-card">
+    <div class="qr-subtitle" data-en="Scan to show Group Reservations" data-th="สแกนเพื่อแสดงการจองกลุ่ม">Scan to show Group Reservations</div>
+    <div class="qr-title" data-en="Today at Apple Group Reservations" data-th="Today at Apple การจองกลุ่ม">Today at Apple Group Reservations</div>
+    <div class="qr-box"><div id="qr-ta-group"></div></div>
+    <a class="open-btn" id="btn-ta-group" href="https://www.apple.com/today/groups/" data-en="Open this link" data-th="เปิดลิงก์นี้">Open this link</a>
   </div>
 </div>
 
@@ -170,6 +181,14 @@
       qrGenerated['apu'] = true;
       new QRCode(document.getElementById('qr-apu'), {
         text: 'https://www.apple.com/th/shop/help/viewing_changing_orders',
+        width: 200, height: 200, colorDark: '#1d1d1f', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+    if (id === 'tab-ta-group' && !qrGenerated['ta-group']) {
+      qrGenerated['ta-group'] = true;
+      new QRCode(document.getElementById('qr-ta-group'), {
+        text: 'https://www.apple.com/today/groups/',
         width: 200, height: 200, colorDark: '#1d1d1f', colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       });
