@@ -49,6 +49,29 @@ The script publishes only deployable HTML files into the public `One-Shortcuts/O
 - iOS-friendly spacing and sticky headers where needed
 - Use the existing CSS variable style if you extend a page
 
+## Version
+
+Current version stamp: `2026.06.12` (set in `staff-tool.html` via `document.getElementById('app-version').textContent`)
+Update this value whenever changes are deployed.
+
+## Font conventions
+
+- English text → Helvetica (via unified CSS font stack on `--font`)
+- Thai text → Sukhumvit Set / Noto Sans Thai (auto-selected by browser glyph fallback)
+- Font stack: `Helvetica, "Helvetica Neue", Arial, "Sukhumvit Set", "Noto Sans Thai", sans-serif`
+- Do NOT use `body.lang-th { font-family: ... }` override — the unified stack handles both scripts automatically.
+
+## Education price tabs
+
+- Displayed as a 3-per-row CSS grid (not horizontal scroll).
+- 6 tabs total: MacBook, Mac Desktop, iPad, Apple Watch, Accessories, Display.
+
+## VAT Refund — How to Get tab
+
+- Infographic: combined JPEG of SUVARNABHUMI (top) + DON MUEANG (bottom) airports.
+- QR code and link URL: `https://vrtweb.rd.go.th/67.html`
+- Share button (AirDrop via Web Share API) appears above the image.
+
 ## Behavioral expectations
 
 - `staff-tool.html` is the launcher and main tool container.
