@@ -100,6 +100,7 @@
   .product-icon svg { width: 100%; height: 100%; pointer-events: none; }
   .product-name { font-size: 14px; font-weight: 500; color: var(--text); text-align: center; pointer-events: none; }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
@@ -120,6 +121,7 @@
   <div class="tabs-scroll">
     <div class="tabs">
       <button class="tab active" onclick="showTab('tab-repair', this)" data-en="Repair Cost" data-th="ค่าซ่อม">Repair Cost</button>
+      <button class="tab" onclick="showTab('tab-today', this)" data-en="Group Today@Apple" data-th="Group Today@Apple">Group Today@Apple</button>
       <button class="tab" onclick="showTab('tab-article', this)" data-en="Support Article" data-th="บทความซัพพอร์ต">Support Article</button>
     </div>
   </div>
@@ -174,6 +176,16 @@
       <div class="product-name" data-en="iPod" data-th="iPod">iPod</div>
     </a>
 
+  </div>
+</div>
+
+<!-- TAB: GROUP TODAY@APPLE -->
+<div id="tab-today" class="tab-panel">
+  <div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);padding:28px 20px;text-align:center;margin-bottom:14px;">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1a6;margin-bottom:6px;" data-en="Scan to open" data-th="สแกนเพื่อเปิด">Scan to open</div>
+    <div style="font-size:17px;font-weight:700;color:#1d1d1f;margin-bottom:16px;">Today at Apple · Groups</div>
+    <div id="today-qr" style="display:flex;justify-content:center;margin-bottom:20px;"></div>
+    <a href="https://www.apple.com/th/today/groups/" style="display:block;width:100%;padding:14px;background:#0071e3;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;font-family:Helvetica,Arial,sans-serif;" data-en="Open this link" data-th="เปิดลิงก์นี้">Open this link</a>
   </div>
 </div>
 
@@ -256,6 +268,12 @@
   }
 
   window.addEventListener('load', function() {
+    new QRCode(document.getElementById('today-qr'), {
+      text: 'https://www.apple.com/th/today/groups/',
+      width: 200, height: 200,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
     document.querySelectorAll('.product-item, .article-item').forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
