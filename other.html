@@ -84,6 +84,22 @@
   .placeholder-icon { font-size: 44px; margin-bottom: 14px; }
   .placeholder-title { font-size: 17px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
   .placeholder-sub { font-size: 14px; }
+
+  /* Bank transfer table */
+  .bank-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .bank-table { width: 100%; border-collapse: collapse; font-size: 12px; background: var(--surface2); }
+  .bank-table th { background: var(--surface); color: var(--text2); font-weight: 600; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .bank-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  .bank-table tr:last-child td { border-bottom: none; }
+  .bank-table tr.red td { color: #c0392b; font-weight: 600; }
+
+  /* Bank transfer info card */
+  .bank-info-card { background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 20px 16px; margin-top: 14px; }
+  .bank-info-card h2 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .bank-info-card p, .bank-info-card li { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+  .bank-info-card ul { padding-left: 18px; margin-bottom: 0; }
+  .bank-info-card .example-box { background: var(--surface); border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 13px; line-height: 1.7; }
+  .bank-info-card .section-title { font-size: 13px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 6px; }
 </style>
 </head>
 <body>
@@ -143,23 +159,90 @@
 </div>
 
 <!-- TAB: BANK TRANSFER -->
-<div id="tab-bank" class="tab-panel" style="padding:0 0 48px;">
-  <!-- Tap to reveal -->
-  <div id="bank-cover" onclick="document.getElementById('bank-cover').style.display='none';document.getElementById('bank-img').style.display='block';"
-       style="background:var(--surface2);border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);padding:48px 20px;text-align:center;cursor:pointer;">
-    <div style="font-size:40px;margin-bottom:14px;">🏦</div>
-    <div style="font-size:17px;font-weight:600;color:var(--text);margin-bottom:6px;" data-en="Bank Transfer Reference" data-th="ข้อมูลโอนเงิน">Bank Transfer Reference</div>
-    <div style="font-size:13px;color:var(--text2);" data-en="Tap to see" data-th="แตะเพื่อดู">Tap to see</div>
+<div id="tab-bank" class="tab-panel">
+
+  <div class="bank-table-wrap">
+    <table class="bank-table">
+      <thead>
+        <tr>
+          <th>รหัสมาตร์</th>
+          <th>รหัสสาขา</th>
+          <th>ชื่อธนาคาร (ไทย)</th>
+          <th>ชื่อธนาคาร (อังกฤษ)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>001</td><td>0000</td><td>ธนาคารแห่งประเทศไทย</td><td>BANK OF THAILAND</td></tr>
+        <tr class="red"><td>002</td><td>0000</td><td>ธ. กรุงเทพ จำกัด (มหาชน)</td><td>BANGKOK BANK PUBLIC COMPANY LTD.</td></tr>
+        <tr class="red"><td>004</td><td>0000</td><td>ธ. กสิกรไทย จำกัด (มหาชน)</td><td>KASIKORNBANK PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>005</td><td>0000</td><td>ธ. เลยรอยัลสแตนดาร์ดชาร์เตอร์แบงก์ เอ็น.วี.</td><td>THE ROYAL BANK OF SCOTLAND N.V.,</td></tr>
+        <tr class="red"><td>006</td><td>0000</td><td>ธ. กรุงไทย จำกัด (มหาชน)</td><td>KRUNG THAI BANK PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>008</td><td>0000</td><td>ธ. เจพีมอร์แกน เชส</td><td>JPMORGAN CHASE BANK, NATIONAL ASSOCIATION</td></tr>
+        <tr><td>009</td><td>0000</td><td>ธ. โอเวอร์ซี-ไชนีสแบงกิ้งคอร์ปอเรชั่น จำกัด</td><td>OVER SEA-CHINESE BANKING CORPORATION LIMITED</td></tr>
+        <tr><td>010</td><td>0000</td><td>ธ. แห่งโตเกียว-มิตซูบิชิ ยูเอฟเจ จำกัด</td><td>THE BANK OF TOKYO-MITSUBISHI UFJ, LTD.</td></tr>
+        <tr><td>011</td><td>0000</td><td>ธ. ทหารไทย จำกัด (มหาชน)</td><td>TMB BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr class="red"><td>014</td><td>0000</td><td>ธ. ไทยพาณิชย์ จำกัด (มหาชน)</td><td>SIAM COMMERCIAL BANK PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>015</td><td>0000</td><td>ธ. นครหลวงไทย จำกัด (มหาชน)</td><td>THE SIAM CITY BANK PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>017</td><td>0000</td><td>ซิตี้แบงก์</td><td>CITIBANK, N.A.</td></tr>
+        <tr><td>018</td><td>0000</td><td>ธ. สุมิโตโม มิตซุย อีสกิ้ง คอร์ปอเรชั่น</td><td>SUMITOMO MITSUI BANKING CORPORATION</td></tr>
+        <tr><td>020</td><td>0000</td><td>ธ. สแตนดาร์ดชาร์เตอร์ด (ไทย) จำกัด (มหาชน)</td><td>STANDARD CHARTERED BANK (THAI) PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>022</td><td>0000</td><td>ธ. ซีไอเอ็มบี ไทย จำกัด (มหาชน)</td><td>CIMB THAI BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>023</td><td>0000</td><td>ธ. อาร์ เอช บี จำกัด</td><td>RHB BANK BERHAD</td></tr>
+        <tr><td>024</td><td>0000</td><td>ธ. ยูโอบี จำกัด (มหาชน)</td><td>UNITED OVERSEAS BANK (THAI) PUBLIC COMPANY LIMITED</td></tr>
+        <tr class="red"><td>025</td><td>0000</td><td>ธ. กรุงศรีอยุธยา จำกัด (มหาชน)</td><td>BANK OF AYUDHYA PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>026</td><td>0000</td><td>ธ. เมกะ สากลพาณิชย์ จำกัด (มหาชน)</td><td>MEGA INTERNATIONAL COMMERCIAL BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>027</td><td>0000</td><td>ธ. แห่งอเมริกาเนชั่นแนลแอสโซซิเอชั่น</td><td>BANK OF AMERICA, NATIONAL ASSOCIATION</td></tr>
+        <tr><td>028</td><td>0000</td><td>ธ. เครดิต อะกริคอล คอร์ปอเรตแอนด์อินเวสทเมนต์แบงก์</td><td>CREDIT AGRICOLE CORPORATE AND INVESTMENT BANK</td></tr>
+        <tr><td>029</td><td>0000</td><td>ธ. อินเดียนโอเวอร์ซีส์</td><td>INDIAN OVERSEA BANK</td></tr>
+        <tr class="red"><td>030</td><td>0000</td><td>ธ. ออมสิน</td><td>THE GOVERNMENT SAVINGS BANK</td></tr>
+        <tr><td>031</td><td>0000</td><td>ธ. ฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น จำกัด</td><td>THE HONGKONG AND SHANGHAI BANKING CORPORATION LTD.</td></tr>
+        <tr><td>032</td><td>0000</td><td>ธ. ดอยซ์แบงก์</td><td>DEUTSCHE BANK AG.</td></tr>
+        <tr><td>033</td><td>0000</td><td>ธ. อาคารสงเคราะห์</td><td>THE GOVERNMENT HOUSING BANK</td></tr>
+        <tr><td>034</td><td>0000</td><td>ธ. เพื่อการเกษตรและสหกรณ์การเกษตร</td><td>BANK FOR AGRICULTURE AND AGRICULTURAL COOPERATIVES</td></tr>
+        <tr><td>035</td><td>0000</td><td>ธ. เพื่อการส่งออกและนำเข้าแห่งประเทศไทย</td><td>EXPORT-IMPORT BANK OF THAILAND</td></tr>
+        <tr><td>039</td><td>0000</td><td>ธ. มิซูโฮ คอร์ปอเรต จำกัด</td><td>MIZUHO CORPORATE BANK, LTD.</td></tr>
+        <tr><td>045</td><td>0000</td><td>ธ. บีเอ็นพี พาริบาส์</td><td>BNP PARIBAS</td></tr>
+        <tr><td>052</td><td>0000</td><td>ธ. แห่งประเทศจีน จำกัด</td><td>BANK OF CHINA LIMITED</td></tr>
+        <tr class="red"><td>065</td><td>0000</td><td>ธ. ธนชาต จำกัด (มหาชน)</td><td>THANACHART BANK PUBLIC COMPANY LTD.</td></tr>
+        <tr><td>066</td><td>0000</td><td>ธ. อิสลามแห่งประเทศไทย</td><td>ISLAMIC BANK OF THAILAND</td></tr>
+        <tr><td>067</td><td>0000</td><td>ธ. ทิสโก้ จำกัด (มหาชน)</td><td>TISCO BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr class="red"><td>069</td><td>0000</td><td>ธ. เกียรตินาคิน จำกัด (มหาชน)</td><td>KIATNAKIN BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>070</td><td>0000</td><td>ธ. ไอซีบีซี ไทย จำกัด (มหาชน)</td><td>INDUSTRIAL AND COMMERCIAL BANK OF CHINA (THAI) PUBLIC COMPANY</td></tr>
+        <tr><td>071</td><td>0000</td><td>ธ. ไทยเครดิต เพื่อรายย่อย จำกัด (มหาชน)</td><td>THE THAI CREDIT RETAIL BANK PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>073</td><td>0000</td><td>ธ. แลนด์ แอนด์ เฮ้าส์ จำกัด (มหาชน)</td><td>LAND AND HOUSES PUBLIC COMPANY LIMITED</td></tr>
+        <tr><td>093</td><td>0000</td><td>บรรษัทประกันสินเชื่ออุตสาหกรรมขนาดย่อม</td><td>SMALL INDUSTRY CREDIT GUARANTEE CORPORATION</td></tr>
+        <tr><td>094</td><td>0000</td><td>บรรษัทบริหารสินทรัพย์</td><td>THAI ASSET MANAGEMENT CORPORATION</td></tr>
+        <tr><td>096</td><td>0000</td><td>บรรษัทตลาดรองสินเชื่อที่อยู่อาศัย</td><td>SECONDARY MORTGAGE CORPORATION</td></tr>
+        <tr><td>098</td><td>0000</td><td>ธ. พัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย</td><td>SMALL AND MEDIUM ENTERPRISE DEVELOPMENT BANK OF THAILAND</td></tr>
+      </tbody>
+    </table>
   </div>
-  <!-- Image (hidden until tapped) -->
-  <div id="bank-img" style="display:none;overflow:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);">
-    <img src="bank-transfer.jpg"
-         style="width:100%;display:block;touch-action:pinch-zoom;cursor:zoom-in;"
-         alt="Bank Transfer Reference">
+
+  <div class="bank-info-card">
+    <h2>BANK TRANSFER</h2>
+    <p>Bank Key มี 7 หลัก <strong>XXXYYYY</strong></p>
+    <ul>
+      <li>สามหลักแรก <strong>XXX</strong> คือ <strong>Bank Code</strong> (รหัสธนาคาร) ดูได้จากตารางด้านบน</li>
+      <li>สี่หลักหลัง <strong>YYYY</strong> คือ <strong>Branch Code</strong> (รหัสสาขา) ดูได้จากหน้าสมุดบัญชีของลูกค้า ถ้ารหัสสาขาของลูกค้ามีแค่ 2 หลัก ให้ใส่เลข 0 นำหน้าให้ครบ 4 หลัก เช่น รหัสสาขา 31 ให้ใส่เป็น 0031</li>
+      <li>ข้อมูลที่ใส่ต้องเป็น<strong>ภาษาอังกฤษเท่านั้น</strong></li>
+    </ul>
+    <div class="section-title">ตัวอย่าง</div>
+    <div class="example-box">
+      ธนาคารไทยพาณิชย์ จำกัด (มหาชน)<br>
+      SIAM COMMERCIAL BANK PUBLIC COMPANY LIMITED<br><br>
+      รหัสสาขา: <strong>0714</strong><br>
+      เลขที่บัญชี / ACCOUNT NO.: 714-299952-5<br>
+      บัญชีเงินฝากออมทรัพย์ / SAVINGS ACCOUNT
+    </div>
+    <div class="section-title">หมายเหตุ</div>
+    <ul>
+      <li>ถ้าไม่ทราบรหัสสาขาสามารถให้ลูกค้าโทรถาม Call Center ได้</li>
+      <li>ใน Isaac บางบรรทัดที่ไม่สามารถใส่ข้อมูลได้ครบ ก็ไม่เป็นไร ใส่ข้อมูลให้ได้มากที่สุด</li>
+      <li>ช่องที่ใส่ชื่อบรรษัทไม่สามารถเว้นวรรคได้ ก็ให้พิมพ์ติดกันได้เลย</li>
+      <li>ถ้าเป็นลูกค้าต่างชาติที่ไม่มีบัญชีธนาคารในไทย ให้ Partner กับ Manager เพื่อทำการคืนเป็นเงินสด</li>
+    </ul>
   </div>
-</div>
-</div>
-</div>
+
 </div>
 
 <!-- TAB: MANUAL FULL FORM -->
