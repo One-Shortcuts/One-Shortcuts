@@ -144,11 +144,20 @@
 
 <!-- TAB: BANK TRANSFER -->
 <div id="tab-bank" class="tab-panel" style="padding:0 0 48px;">
-  <div style="overflow:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);">
+  <!-- Tap to reveal -->
+  <div id="bank-cover" onclick="document.getElementById('bank-cover').style.display='none';document.getElementById('bank-img').style.display='block';"
+       style="background:var(--surface2);border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);padding:48px 20px;text-align:center;cursor:pointer;">
+    <div style="font-size:40px;margin-bottom:14px;">🏦</div>
+    <div style="font-size:17px;font-weight:600;color:var(--text);margin-bottom:6px;" data-en="Bank Transfer Reference" data-th="ข้อมูลโอนเงิน">Bank Transfer Reference</div>
+    <div style="font-size:13px;color:var(--text2);" data-en="Tap to see" data-th="แตะเพื่อดู">Tap to see</div>
+  </div>
+  <!-- Image (hidden until tapped) -->
+  <div id="bank-img" style="display:none;overflow:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.07);">
     <img src="bank-transfer.jpg"
          style="width:100%;display:block;touch-action:pinch-zoom;cursor:zoom-in;"
          alt="Bank Transfer Reference">
   </div>
+</div>
 </div>
 </div>
 </div>
