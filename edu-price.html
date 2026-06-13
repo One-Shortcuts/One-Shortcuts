@@ -502,9 +502,10 @@
     });
   }
 
-  let currentLang = 'en';
+  let currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
   function setLang(lang) {
     currentLang = lang;
+    try { localStorage.setItem('one_shortcut_lang', lang); } catch(e) {}
     document.body.classList.toggle('lang-th', lang === 'th');
     document.querySelectorAll('[data-en]').forEach(el => {
       const val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
@@ -515,6 +516,7 @@
     });
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
+  if (currentLang !== 'en') setLang(currentLang);
 </script>
 
 </body>

@@ -491,6 +491,7 @@
 
   window.addEventListener('load', function() {
     initBelkinQR();
+    if (currentLang !== 'en') setLang(currentLang);
   });
 
   let priceListInitialized = false;
@@ -839,10 +840,11 @@
   });
 
   // ── Language System ──────────────────────────────────────────────────────
-  let currentLang = 'en';
+  let currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
 
   function setLang(lang) {
     currentLang = lang;
+    try { localStorage.setItem('one_shortcut_lang', lang); } catch(e) {}
     // Font switch
     document.body.classList.toggle('lang-th', lang === 'th');
     // Update all translated elements

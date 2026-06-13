@@ -325,8 +325,10 @@
     if (input) { input.value = ''; }
     filterArticles('');
   }
+  var currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
   function setLang(lang) {
     currentLang = lang;
+    try { localStorage.setItem('one_shortcut_lang', lang); } catch(e) {}
     document.body.classList.toggle('lang-th', lang === 'th');
     document.querySelectorAll('[data-en]').forEach(function(node) {
       var val = node.getAttribute('data-' + lang) || node.getAttribute('data-en');
@@ -336,6 +338,7 @@
       btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
     });
   }
+  if (currentLang !== 'en') setLang(currentLang);
   function goHome() { window.location.href = 'staff-tool.html'; }
 </script>
 

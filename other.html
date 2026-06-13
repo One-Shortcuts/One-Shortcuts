@@ -220,11 +220,13 @@
         if (url) { window.open(url, '_blank'); }
       });
     });
+    if (currentLang !== 'en') setLang(currentLang);
   });
 
-  var currentLang = 'en';
+  var currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
   function setLang(lang) {
     currentLang = lang;
+    try { localStorage.setItem('one_shortcut_lang', lang); } catch(e) {}
     document.body.classList.toggle('lang-th', lang === 'th');
     document.querySelectorAll('[data-en]').forEach(function(node) {
       var val = node.getAttribute('data-' + lang) || node.getAttribute('data-en');
