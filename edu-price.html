@@ -118,19 +118,19 @@
   }
   td.product-sub {
     font-weight: 500; color: var(--text);
-    padding-left: 20px;
+    padding-left: 20px; word-break: normal; overflow-wrap: break-word;
   }
   td.price-col {
     text-align: right; font-weight: 500;
-    color: var(--text); white-space: normal; word-break: break-all;
+    color: var(--text); white-space: nowrap;
   }
   td.discount-col {
     text-align: right; font-weight: 700;
-    color: var(--red); white-space: normal; word-break: break-all;
+    color: var(--red); white-space: nowrap;
   }
   td.final-col {
     text-align: right; font-weight: 700;
-    color: var(--green); white-space: normal; word-break: break-all;
+    color: var(--green); white-space: nowrap;
   }
   td.wifi-col, td.cell-col {
     text-align: center; font-weight: 700;
@@ -301,7 +301,8 @@
 
   <div class="table-card">
     <div class="table-section-title">MacBook</div>
-    <table>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
         <tr><td class="product-main" colspan="4">MacBook Neo <span class="new-label">New</span></td></tr>
@@ -348,7 +349,8 @@
 
   <div class="table-card">
     <div class="table-section-title">Desktop Mac &amp; Display</div>
-    <table>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
         <tr><td class="product-main" colspan="4">iMac</td></tr>
