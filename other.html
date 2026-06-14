@@ -100,6 +100,14 @@
   .bank-info-card ul { padding-left: 18px; margin-bottom: 0; }
   .bank-info-card .example-box { background: var(--surface); border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 13px; line-height: 1.7; }
   .bank-info-card .section-title { font-size: 13px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 6px; }
+
+  /* Bank transfer lang toggle */
+  body:not(.lang-th) .bank-table th:nth-child(3),
+  body:not(.lang-th) .bank-table td:nth-child(3) { display: none; }
+  body.lang-th .bank-table th:nth-child(4),
+  body.lang-th .bank-table td:nth-child(4) { display: none; }
+  body:not(.lang-th) .lang-th-only { display: none; }
+  body.lang-th .lang-en-only { display: none; }
 </style>
 </head>
 <body>
@@ -155,10 +163,10 @@
     <table class="bank-table">
       <thead>
         <tr>
-          <th>รหัสมาตร์</th>
-          <th>รหัสสาขา</th>
-          <th>ชื่อธนาคาร (ไทย)</th>
-          <th>ชื่อธนาคาร (อังกฤษ)</th>
+          <th data-en="Bank Key" data-th="รหัสธนาคาร">Bank Key</th>
+          <th data-en="Branch Code" data-th="รหัสสาขา">Branch Code</th>
+          <th>ชื่อธนาคาร</th>
+          <th>Bank Name</th>
         </tr>
       </thead>
       <tbody>
@@ -210,26 +218,38 @@
 
   <div class="bank-info-card">
     <h2>BANK TRANSFER</h2>
-    <p>Bank Key มี 7 หลัก <strong>XXXYYYY</strong></p>
+    <p>
+      <span class="lang-en-only">Bank Key has 7 digits <strong>XXXYYYY</strong></span>
+      <span class="lang-th-only">Bank Key มี 7 หลัก <strong>XXXYYYY</strong></span>
+    </p>
     <ul>
-      <li>สามหลักแรก <strong>XXX</strong> คือ <strong>Bank Code</strong> (รหัสธนาคาร) ดูได้จากตารางด้านบน</li>
-      <li>สี่หลักหลัง <strong>YYYY</strong> คือ <strong>Branch Code</strong> (รหัสสาขา) ดูได้จากหน้าสมุดบัญชีของลูกค้า ถ้ารหัสสาขาของลูกค้ามีแค่ 2 หลัก ให้ใส่เลข 0 นำหน้าให้ครบ 4 หลัก เช่น รหัสสาขา 31 ให้ใส่เป็น 0031</li>
-      <li>ข้อมูลที่ใส่ต้องเป็น<strong>ภาษาอังกฤษเท่านั้น</strong></li>
+      <li>
+        <span class="lang-en-only">First 3 digits <strong>XXX</strong> = <strong>Bank Key</strong> (รหัสธนาคาร) — see table above</span>
+        <span class="lang-th-only">สามหลักแรก <strong>XXX</strong> คือ <strong>Bank Key</strong> (รหัสธนาคาร) ดูได้จากตารางด้านบน</span>
+      </li>
+      <li>
+        <span class="lang-en-only">Last 4 digits <strong>YYYY</strong> = <strong>Branch Code</strong> (รหัสสาขา) — found in the customer's bank book. If fewer than 4 digits, pad with leading zeros (e.g., branch 31 → <strong>0031</strong>)</span>
+        <span class="lang-th-only">สี่หลักหลัง <strong>YYYY</strong> คือ <strong>Branch Code</strong> (รหัสสาขา) ดูได้จากหน้าสมุดบัญชีของลูกค้า ถ้ารหัสสาขาของลูกค้ามีแค่ 2 หลัก ให้ใส่เลข 0 นำหน้าให้ครบ 4 หลัก เช่น รหัสสาขา 31 ให้ใส่เป็น 0031</span>
+      </li>
+      <li>
+        <span class="lang-en-only">All entries must be in <strong>English only</strong></span>
+        <span class="lang-th-only">ข้อมูลที่ใส่ต้องเป็น<strong>ภาษาอังกฤษเท่านั้น</strong></span>
+      </li>
     </ul>
-    <div class="section-title">ตัวอย่าง</div>
+    <div class="section-title" data-en="Example" data-th="ตัวอย่าง">Example</div>
     <div class="example-box">
       ธนาคารไทยพาณิชย์ จำกัด (มหาชน)<br>
       SIAM COMMERCIAL BANK PUBLIC COMPANY LIMITED<br><br>
-      รหัสสาขา: <strong>0714</strong><br>
-      เลขที่บัญชี / ACCOUNT NO.: 714-299952-5<br>
-      บัญชีเงินฝากออมทรัพย์ / SAVINGS ACCOUNT
+      <span data-en="Branch Code:" data-th="รหัสสาขา:">Branch Code:</span> <strong>0714</strong><br>
+      <span data-en="Account No.:" data-th="เลขที่บัญชี / ACCOUNT NO.:">Account No.:</span> 714-299952-5<br>
+      <span data-en="Savings Account" data-th="บัญชีเงินฝากออมทรัพย์ / SAVINGS ACCOUNT">Savings Account</span>
     </div>
-    <div class="section-title">หมายเหตุ</div>
+    <div class="section-title" data-en="Note" data-th="หมายเหตุ">Note</div>
     <ul>
-      <li>ถ้าไม่ทราบรหัสสาขาสามารถให้ลูกค้าโทรถาม Call Center ได้</li>
-      <li>ใน Isaac บางบรรทัดที่ไม่สามารถใส่ข้อมูลได้ครบ ก็ไม่เป็นไร ใส่ข้อมูลให้ได้มากที่สุด</li>
-      <li>ช่องที่ใส่ชื่อบรรษัทไม่สามารถเว้นวรรคได้ ก็ให้พิมพ์ติดกันได้เลย</li>
-      <li>ถ้าเป็นลูกค้าต่างชาติที่ไม่มีบัญชีธนาคารในไทย ให้ Partner กับ Manager เพื่อทำการคืนเป็นเงินสด</li>
+      <li data-en="If the branch code is unknown, ask the customer to call their bank's Call Center" data-th="ถ้าไม่ทราบรหัสสาขาสามารถให้ลูกค้าโทรถาม Call Center ได้">If the branch code is unknown, ask the customer to call their bank's Call Center</li>
+      <li data-en="In Isaac, some fields may not accept all data — that's fine, fill in as much as possible" data-th="ใน Isaac บางบรรทัดที่ไม่สามารถใส่ข้อมูลได้ครบ ก็ไม่เป็นไร ใส่ข้อมูลให้ได้มากที่สุด">In Isaac, some fields may not accept all data — that's fine, fill in as much as possible</li>
+      <li data-en="The company name field does not accept spaces — type it without spaces" data-th="ช่องที่ใส่ชื่อบรรษัทไม่สามารถเว้นวรรคได้ ก็ให้พิมพ์ติดกันได้เลย">The company name field does not accept spaces — type it without spaces</li>
+      <li data-en="For foreign customers without a Thai bank account, partner with a Manager to process a cash refund" data-th="ถ้าเป็นลูกค้าต่างชาติที่ไม่มีบัญชีธนาคารในไทย ให้ Partner กับ Manager เพื่อทำการคืนเป็นเงินสด">For foreign customers without a Thai bank account, partner with a Manager to process a cash refund</li>
     </ul>
   </div>
 
