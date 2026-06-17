@@ -16,6 +16,7 @@ html_files=(
   edu-price.html
   vat-refund.html
   belkin-claim.html
+  tax-invoice.html
 )
 
 if ! command -v gh >/dev/null 2>&1; then
