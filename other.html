@@ -84,6 +84,8 @@
   .placeholder-icon { font-size: 44px; margin-bottom: 14px; }
   .placeholder-title { font-size: 17px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
   .placeholder-sub { font-size: 14px; }
+  .embed-wrap { background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .embed-wrap iframe { width: 100%; height: min(1300px, calc(100vh - 220px)); border: none; display: block; background: #fff; }
 
   /* Bank transfer table */
   .bank-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
@@ -108,6 +110,10 @@
   body.lang-th .bank-table td:nth-child(4) { display: none; }
   body:not(.lang-th) .lang-th-only { display: none; }
   body.lang-th .lang-en-only { display: none; }
+
+  @media (max-width: 760px) {
+    .embed-wrap iframe { height: calc(100vh - 170px); }
+  }
 </style>
 </head>
 <body>
@@ -257,10 +263,8 @@
 
 <!-- TAB: MANUAL FULL FORM -->
 <div id="tab-manual" class="tab-panel">
-  <div class="placeholder">
-    <div class="placeholder-icon">📋</div>
-    <div class="placeholder-title" data-en="Manual Full Form" data-th="คู่มือแบบฟอร์ม">Manual Full Form</div>
-    <div class="placeholder-sub" data-en="Coming soon" data-th="เร็วๆ นี้">Coming soon</div>
+  <div class="embed-wrap">
+    <iframe src="tax-invoice.html" title="Tax Invoice / Receipt"></iframe>
   </div>
 </div>
 
