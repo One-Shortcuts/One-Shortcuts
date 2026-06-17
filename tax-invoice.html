@@ -494,10 +494,15 @@
     }
 
     .top,
-    .invoice-grid,
     .customer,
     .bottom-row {
       grid-template-columns: 1fr;
+    }
+
+    .invoice-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 8px;
+      align-items: start;
     }
 
     .company {
@@ -507,15 +512,38 @@
     }
 
     .company-text,
-    .small-merchant,
     .pos {
       text-align: left;
+    }
+
+    .right-top {
+      justify-items: stretch;
+      gap: 3px;
     }
 
     .receipt-chip {
       min-width: 0;
       width: 100%;
+      padding: 4px 8px;
       justify-content: flex-start;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 9px;
+      letter-spacing: 0.03em;
+    }
+
+    .number-row {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+    }
+
+    .small-merchant {
+      width: 100%;
+      font-size: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .checks {
