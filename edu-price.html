@@ -160,11 +160,12 @@
     display: none;
     overflow-x: auto; scrollbar-width: none;
     padding: 0 16px 10px;
+    -webkit-overflow-scrolling: touch;
   }
   .sub-tabs-scroll::-webkit-scrollbar { display: none; }
-  .sub-tabs-scroll.visible { display: flex; gap: 6px; width: max-content; min-width: 100%; }
+  .sub-tabs-scroll.visible { display: block; }
   .sub-tabs-inner {
-    display: contents;
+    display: flex; gap: 6px; width: max-content;
   }
   .sub-tab {
     background: transparent;
