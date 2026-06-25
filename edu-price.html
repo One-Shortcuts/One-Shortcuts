@@ -158,11 +158,23 @@
   /* Sub-tabs (iPad model pills) */
   .sub-tabs-scroll {
     display: none;
-    overflow-x: auto; scrollbar-width: none;
-    padding: 0 16px 10px;
+    padding: 18px 16px 10px;
+    position: relative;
   }
-  .sub-tabs-scroll::-webkit-scrollbar { display: none; }
-  .sub-tabs-scroll.visible { display: flex; gap: 6px; }
+  .sub-tabs-scroll.visible { display: block; }
+  #connector-lines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .sub-tabs-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: relative;
+  }
   .sub-tab {
     background: transparent;
     color: var(--accent);
@@ -172,7 +184,6 @@
     font-size: 12px; font-weight: 600;
     cursor: pointer; white-space: nowrap;
     transition: all 0.15s; font-family: var(--font);
-    flex-shrink: 0;
   }
   .sub-tab:active { background: rgba(0,113,227,0.1); }
 
@@ -219,11 +230,14 @@
     </div>
   </div>
   <div class="sub-tabs-scroll" id="ipad-subtabs">
-    <button class="sub-tab" onclick="scrollToSection('section-pro')">iPad Pro</button>
-    <button class="sub-tab" onclick="scrollToSection('section-air')">iPad Air</button>
-    <button class="sub-tab" onclick="scrollToSection('section-ipad')">iPad</button>
-    <button class="sub-tab" onclick="scrollToSection('section-mini')">iPad mini</button>
-    <button class="sub-tab" onclick="scrollToSection('section-acc')">Accessories</button>
+    <svg id="connector-lines"></svg>
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-pro')">iPad Pro</button>
+      <button class="sub-tab" onclick="scrollToSection('section-air')">iPad Air</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ipad')">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-mini')">iPad mini</button>
+      <button class="sub-tab" onclick="scrollToSection('section-acc')">Accessories</button>
+    </div>
   </div>
 </div>
 
@@ -591,8 +605,53 @@
     event.target.classList.add('active');
     window.scrollTo(0, 0);
     const subTabs = document.getElementById('ipad-subtabs');
-    subTabs.classList.toggle('visible', id === 'tab-ipad');
+    const show = id === 'tab-ipad';
+    subTabs.classList.toggle('visible', show);
+    if (show) requestAnimationFrame(drawConnectorLines);
     if (id === 'tab-unidays') initQR();
+  }
+
+  function drawConnectorLines() {
+    const svg = document.getElementById('connector-lines');
+    const ipadBtn = document.querySelector('.tab[onclick*="tab-ipad"]');
+    const pills = document.querySelectorAll('.sub-tab');
+    const container = document.getElementById('ipad-subtabs');
+    if (!svg || !ipadBtn || !pills.length || !container) return;
+    svg.innerHTML = '';
+
+    const cRect = container.getBoundingClientRect();
+    const bRect = ipadBtn.getBoundingClientRect();
+
+    /* origin: center-bottom of iPad pill, projected into sub-tabs coordinate space */
+    const fromX = bRect.left + bRect.width / 2 - cRect.left;
+    const fromY = 0; /* top of sub-tabs container (trunk enters from here) */
+
+    /* small dot at origin */
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', fromX);
+    dot.setAttribute('cy', fromY);
+    dot.setAttribute('r', '2.5');
+    dot.setAttribute('fill', 'rgba(0,113,227,0.45)');
+    svg.appendChild(dot);
+
+    pills.forEach(pill => {
+      const pRect = pill.getBoundingClientRect();
+      const toX = pRect.left + pRect.width / 2 - cRect.left;
+      const toY = pRect.top - cRect.top;
+
+      const midY = fromY + (toY - fromY) * 0.55;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M ${fromX} ${fromY} C ${fromX} ${midY}, ${toX} ${midY}, ${toX} ${toY}`);
+      path.setAttribute('stroke', 'rgba(0,113,227,0.3)');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(path);
+    });
+
+    /* set SVG height to cover the full pill area */
+    const inner = container.querySelector('.sub-tabs-inner');
+    if (inner) svg.style.height = inner.getBoundingClientRect().bottom - cRect.top + 'px';
   }
 
   function scrollToSection(id) {
@@ -632,6 +691,8 @@
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
   document.getElementById('ipad-subtabs').classList.add('visible');
+  window.addEventListener('resize', () => requestAnimationFrame(drawConnectorLines));
+  requestAnimationFrame(drawConnectorLines);
   if (currentLang !== 'en') setLang(currentLang);
 </script>
 
