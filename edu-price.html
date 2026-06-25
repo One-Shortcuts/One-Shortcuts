@@ -155,6 +155,28 @@
   /* Footer */
   .footer { text-align: center; padding: 24px 16px; color: var(--text3); font-size: 12px; }
 
+  /* Sub-tabs (iPad model pills) */
+  .sub-tabs-scroll {
+    display: none;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 16px 10px;
+    border-top: 1px solid var(--border);
+  }
+  .sub-tabs-scroll::-webkit-scrollbar { display: none; }
+  .sub-tabs-scroll.visible { display: flex; gap: 6px; }
+  .sub-tab {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid rgba(0,113,227,0.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.15s; font-family: var(--font);
+    flex-shrink: 0;
+  }
+  .sub-tab:active { background: rgba(0,113,227,0.1); }
+
   /* Responsive — mobile */
   @media (max-width: 480px) {
     .tab-panel { padding: 10px 8px 48px; }
@@ -197,6 +219,13 @@
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
+  <div class="sub-tabs-scroll" id="ipad-subtabs">
+    <button class="sub-tab" onclick="scrollToSection('section-pro')">iPad Pro</button>
+    <button class="sub-tab" onclick="scrollToSection('section-air')">iPad Air</button>
+    <button class="sub-tab" onclick="scrollToSection('section-ipad')">iPad</button>
+    <button class="sub-tab" onclick="scrollToSection('section-mini')">iPad mini</button>
+    <button class="sub-tab" onclick="scrollToSection('section-acc')">Accessories</button>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -204,7 +233,7 @@
 ══════════════════════════════════════ -->
 <div id="tab-ipad" class="tab-panel active">
 
-  <div class="table-card">
+  <div class="table-card" id="section-pro">
     <div class="table-section-title">iPad Pro</div>
     <table style="table-layout:fixed;width:100%;">
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
@@ -244,7 +273,7 @@
     </table>
   </div>
 
-  <div class="table-card">
+  <div class="table-card" id="section-air">
     <div class="table-section-title">iPad Air</div>
     <table style="table-layout:fixed;width:100%;">
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
@@ -276,8 +305,8 @@
     </table>
   </div>
 
-  <div class="table-card">
-    <div class="table-section-title">iPad &amp; iPad mini</div>
+  <div class="table-card" id="section-ipad">
+    <div class="table-section-title">iPad</div>
     <table style="table-layout:fixed;width:100%;">
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
@@ -290,7 +319,16 @@
         <tr><td class="product-sub">256GB Cellular</td><td class="price-col">26,900฿</td><td class="discount-col">800฿</td><td class="final-col">26,100฿</td></tr>
         <tr><td class="product-sub">512GB Cellular</td><td class="price-col">33,900฿</td><td class="discount-col">800฿</td><td class="final-col">33,100฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
+      </tbody>
+    </table>
+  </div>
 
+  <div class="table-card" id="section-mini">
+    <div class="table-section-title">iPad mini</div>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
         <tr><td class="product-main" colspan="4">iPad mini</td></tr>
         <tr><td class="product-sub">128GB Wi-Fi</td><td class="price-col">21,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">20,100฿</td></tr>
         <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">25,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">24,100฿</td></tr>
@@ -299,13 +337,12 @@
         <tr><td class="product-sub">256GB Cellular</td><td class="price-col">31,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">30,100฿</td></tr>
         <tr><td class="product-sub">512GB Cellular</td><td class="price-col">38,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">37,100฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
-
       </tbody>
     </table>
   </div>
 
   <!-- Apple Pencil & Keyboards -->
-  <div class="table-card">
+  <div class="table-card" id="section-acc">
     <div class="table-section-title" data-en="Accessories" data-th="อุปกรณ์เสริม">Accessories</div>
     <table style="table-layout:fixed;width:100%;">
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
@@ -322,24 +359,6 @@
         <tr><td class="product-sub">Air 11" (M4, M3, M2)</td><td class="price-col">9,990฿</td><td class="discount-col">790฿</td><td class="final-col">9,200฿</td></tr>
         <tr><td class="product-sub">Air 13" (M4, M3, M2)</td><td class="price-col">10,990฿</td><td class="discount-col">690฿</td><td class="final-col">10,300฿</td></tr>
         <tr><td class="product-sub">Folio A16, 10th</td><td class="price-col">8,990฿</td><td class="discount-col">800฿</td><td class="final-col">8,190฿</td></tr>
-      </tbody>
-    </table>
-  </div>
-    <table style="table-layout:fixed;width:100%;">
-      <colgroup><col style="width:48%"><col style="width:52%"></colgroup>
-      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th style="text-align:center;" data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
-      <tbody>
-        <tr><td class="product-main" colspan="2">Apple Pencil</td></tr>
-        <tr><td class="product-sub">Pencil Pro</td><td class="span-col">4,490 − 400 = 4,090฿</td></tr>
-        <tr><td class="product-sub">USB-C</td><td class="span-col">2,990 − 400 = 2,590฿</td></tr>
-        <tr><td class="product-sub">2nd Gen</td><td class="span-col">4,490 − 400 = 4,090฿</td></tr>
-        <tr><td class="product-sub">1st Gen</td><td class="span-col">3,990 − 500 = 3,490฿</td></tr>
-        <tr><td class="product-main" colspan="2">Magic Keyboard</td></tr>
-        <tr><td class="product-sub">Pro 11" (M5, M4)</td><td class="span-col">10,990 − 800 = 10,190฿</td></tr>
-        <tr><td class="product-sub">Pro 13" (M5, M4)</td><td class="span-col">12,490 − 800 = 11,690฿</td></tr>
-        <tr><td class="product-sub">Air 11" (M4, M3, M2)</td><td class="span-col">9,990 − 790 = 9,200฿</td></tr>
-        <tr><td class="product-sub">Air 13" (M4, M3, M2)</td><td class="span-col">10,990 − 690 = 10,300฿</td></tr>
-        <tr><td class="product-sub">Folio A16, 10th</td><td class="span-col">8,990 − 800 = 8,190฿</td></tr>
       </tbody>
     </table>
   </div>
@@ -572,7 +591,17 @@
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
     window.scrollTo(0, 0);
+    const subTabs = document.getElementById('ipad-subtabs');
+    subTabs.classList.toggle('visible', id === 'tab-ipad');
     if (id === 'tab-unidays') initQR();
+  }
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const headerH = document.querySelector('.sticky-header').offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
   }
 
   let qrGenerated = false;
@@ -603,6 +632,7 @@
     });
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
+  document.getElementById('ipad-subtabs').classList.add('visible');
   if (currentLang !== 'en') setLang(currentLang);
 </script>
 
