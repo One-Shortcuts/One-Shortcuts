@@ -132,6 +132,9 @@
     text-align: right; font-weight: 700;
     color: var(--green); white-space: nowrap;
   }
+  td.not-available {
+    text-align: center; color: var(--red);
+  }
   td.wifi-col, td.cell-col {
     text-align: center; font-weight: 700;
     color: var(--red); white-space: nowrap;
@@ -246,6 +249,13 @@
       <button class="sub-tab" onclick="scrollToSection('section-se3')">SE 3</button>
       <button class="sub-tab" onclick="scrollToSection('section-s11')">Series 11</button>
       <button class="sub-tab" onclick="scrollToSection('section-ultra3')">Ultra 3</button>
+    </div>
+  </div>
+  <div class="sub-tabs-scroll" id="ac-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-ac-ipad')">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-mac')">Mac</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-watch')">Watch</button>
     </div>
   </div>
 </div>
@@ -501,6 +511,7 @@
         <tr><td class="product-sub">44mm GPS</td><td class="price-col">9,500฿</td><td class="discount-col">600฿</td><td class="final-col">8,900฿</td></tr>
         <tr><td class="product-sub">40mm Cellular</td><td class="price-col">10,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">9,500฿</td></tr>
         <tr><td class="product-sub">44mm Cellular</td><td class="price-col">11,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">10,500฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">1,890฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
         <tr id="section-s11"><td class="product-main" colspan="4">Apple Watch Series 11</td></tr>
         <tr><td class="product-sub">42mm GPS</td><td class="price-col">14,900฿</td><td class="discount-col">1,500฿</td><td class="final-col">13,400฿</td></tr>
@@ -509,10 +520,12 @@
         <tr><td class="product-sub">46mm Cellular</td><td class="price-col">19,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">17,900฿</td></tr>
         <tr><td class="product-sub">42mm Titanium</td><td class="price-col">25,900฿</td><td class="discount-col">2,600฿</td><td class="final-col">23,300฿</td></tr>
         <tr><td class="product-sub">46mm Titanium</td><td class="price-col">27,900฿</td><td class="discount-col">2,600฿</td><td class="final-col">25,300฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
         <tr id="section-ultra3"><td class="product-main" colspan="4">Apple Watch Ultra 3</td></tr>
         <tr><td class="product-sub">Alpine / Ocean / Trail</td><td class="price-col">29,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">26,900฿</td></tr>
         <tr><td class="product-sub">Titanium</td><td class="price-col">33,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">30,900฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,790฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
       </tbody>
     </table>
@@ -526,7 +539,7 @@
 ══════════════════════════════════════ -->
 <div id="tab-ac" class="tab-panel">
 
-  <div class="table-card">
+  <div class="table-card" id="section-ac-ipad">
     <div class="table-section-title">AppleCare+ for iPad</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
@@ -541,7 +554,7 @@
     </table>
   </div>
 
-  <div class="table-card">
+  <div class="table-card" id="section-ac-mac">
     <div class="table-section-title">AppleCare+ for Mac</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
@@ -560,6 +573,20 @@
       </tbody>
     </table>
   </div>
+
+  <div class="table-card" id="section-ac-watch">
+    <div class="table-section-title">AppleCare+ for Apple Watch</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">SE 3</td><td class="price-col">1,890฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">Series 11</td><td class="price-col">2,990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">Ultra 3</td><td class="price-col">3,790฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">* AppleCare+ for Apple Watch is not eligible for education discount</p>
 
 </div><!-- /tab-ac -->
 
@@ -616,6 +643,7 @@
     document.getElementById('ipad-subtabs').classList.toggle('visible', id === 'tab-ipad');
     document.getElementById('mac-subtabs').classList.toggle('visible', id === 'tab-mac');
     document.getElementById('watch-subtabs').classList.toggle('visible', id === 'tab-watch');
+    document.getElementById('ac-subtabs').classList.toggle('visible', id === 'tab-ac');
     if (id === 'tab-unidays') initQR();
   }
 
