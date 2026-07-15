@@ -77,6 +77,27 @@
     overflow: hidden;
     margin-bottom: 16px;
   }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15px; table-layout: fixed; }
+  thead tr { background: var(--surface); }
+  th {
+    padding: 9px 8px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  td { padding: 14px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  td.cat-col { font-weight: 600; color: var(--text2); padding-left: 14px; }
+  th:first-child { padding-left: 14px; width: 22%; }
+  td.eligible-col { font-weight: 600; color: var(--text); }
+  td.promo-col { font-weight: 700; color: var(--green); }
+
+  .promo-hero { padding: 20px 16px 8px; text-align: center; }
+  .promo-hero img { max-width: 100%; height: auto; display: block; margin: 0 auto 12px; }
+  .promo-topic { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); margin-bottom: 4px; }
+  .promo-period { font-size: 14px; color: var(--text2); margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -92,17 +113,48 @@
   </div>
   <div class="header-body">
     <h1 data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</h1>
+    <p style="font-size:14px;color:var(--text2);margin-top:2px;">
+      <span data-en="See terms and conditions of this promo" data-th="ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้">See terms and conditions of this promo</span>
+      <a href="https://www.apple.com/th-edu/shop/back-to-school/terms-conditions" style="color: var(--accent); text-decoration: none; font-weight: 600;" data-en=" here" data-th=" ที่นี่"> here</a>
+    </p>
   </div>
   <div class="tabs-scroll">
     <div class="tabs">
-      <button class="tab active" onclick="showTab('tab-btu')" data-en="Back to University" data-th="Back to University">Back to University</button>
+      <button class="tab active" onclick="showTab('tab-btu')" data-en="Back to School" data-th="Back to School">Back to School</button>
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
 </div>
 
-<!-- TAB: BACK TO UNIVERSITY -->
+<!-- TAB: BACK TO SCHOOL -->
 <div id="tab-btu" class="tab-panel active">
+
+  <div class="table-card">
+    <div class="promo-hero">
+      <img src="back-to-school.jpg" alt="Back to School promo">
+      <div class="promo-topic" data-en="Back to school promo" data-th="Back to school promo">Back to school promo</div>
+      <div class="promo-period" data-en="Promo offer 16 Jul - 27 Aug 2026" data-th="โปรโมชั่น 16 ก.ค. - 27 ส.ค. 2026">Promo offer 16 Jul - 27 Aug 2026</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th data-en="Category" data-th="หมวดหมู่ผลิตภัณฑ์">Category</th>
+          <th data-en="Eligible product" data-th="ผลิตภัณฑ์ที่เข้าเกณฑ์">Eligible product</th>
+          <th data-en="Promo product" data-th="ผลิตภัณฑ์โปรโมชั่น">Promo product</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="cat-col">iPad</td><td class="eligible-col">iPad Air</td><td class="promo-col">Apple Store Gift Card ฿3,400</td></tr>
+        <tr><td class="cat-col">iPad</td><td class="eligible-col">iPad Pro</td><td class="promo-col">Apple Store Gift Card ฿3,400</td></tr>
+        <tr><td class="cat-col">Mac</td><td class="eligible-col">MacBook Air</td><td class="promo-col">Apple Store Gift Card ฿3,400</td></tr>
+        <tr><td class="cat-col">Mac</td><td class="eligible-col">MacBook Pro</td><td class="promo-col">Apple Store Gift Card ฿5,100</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- TAB: UNIDAYS -->
