@@ -132,6 +132,9 @@
     text-align: right; font-weight: 700;
     color: var(--green); white-space: nowrap;
   }
+  td.not-available {
+    text-align: center; color: var(--red);
+  }
   td.wifi-col, td.cell-col {
     text-align: center; font-weight: 700;
     color: var(--red); white-space: nowrap;
@@ -148,12 +151,43 @@
     border-radius: 20px; margin-left: 6px;
     vertical-align: middle; letter-spacing: 0.03em;
   }
+  .bts-label {
+    background: #62d8f9; color: #fff;
+    font-size: inherit; font-weight: 700; padding: 2px 10px;
+    border-radius: 20px; margin-left: 6px;
+    vertical-align: middle; letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
 
   /* Note */
   .note { font-size: 14px; color: var(--red); font-weight: 600; padding: 10px 14px 4px; }
 
   /* Footer */
   .footer { text-align: center; padding: 24px 16px; color: var(--text3); font-size: 12px; }
+
+  /* Sub-tabs (iPad model pills) */
+  .sub-tabs-scroll {
+    display: none;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 16px 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sub-tabs-scroll::-webkit-scrollbar { display: none; }
+  .sub-tabs-scroll.visible { display: block; }
+  .sub-tabs-inner {
+    display: flex; gap: 6px; width: max-content;
+  }
+  .sub-tab {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid rgba(0,113,227,0.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.15s; font-family: var(--font);
+  }
+  .sub-tab:active { background: rgba(0,113,227,0.1); }
 
   /* Responsive — mobile */
   @media (max-width: 480px) {
@@ -197,6 +231,40 @@
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
+  <div class="sub-tabs-scroll" id="ipad-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-pro')">iPad Pro</button>
+      <button class="sub-tab" onclick="scrollToSection('section-air')">iPad Air</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ipad')">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-mini')">iPad mini</button>
+      <button class="sub-tab" onclick="scrollToSection('section-acc')">Accessories</button>
+    </div>
+  </div>
+  <div class="sub-tabs-scroll" id="mac-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-neo')">MacBook Neo</button>
+      <button class="sub-tab" onclick="scrollToSection('section-air13')">MacBook Air</button>
+      <button class="sub-tab" onclick="scrollToSection('section-pro14')">MacBook Pro</button>
+      <button class="sub-tab" onclick="scrollToSection('section-imac')">iMac</button>
+      <button class="sub-tab" onclick="scrollToSection('section-mini2')">Mac mini</button>
+      <button class="sub-tab" onclick="scrollToSection('section-studio')">Mac Studio</button>
+      <button class="sub-tab" onclick="scrollToSection('section-display')">Display</button>
+    </div>
+  </div>
+  <div class="sub-tabs-scroll" id="watch-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-se3')">SE 3</button>
+      <button class="sub-tab" onclick="scrollToSection('section-s11')">Series 11</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ultra3')">Ultra 3</button>
+    </div>
+  </div>
+  <div class="sub-tabs-scroll" id="ac-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab" onclick="scrollToSection('section-ac-ipad')">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-mac')">Mac</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-watch')">Watch</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -204,90 +272,132 @@
 ══════════════════════════════════════ -->
 <div id="tab-ipad" class="tab-panel active">
 
-  <!-- iPad Pro -->
-  <div class="table-card">
+  <div class="table-card" id="section-pro">
     <div class="table-section-title">iPad Pro</div>
-    <table>
-      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Wi-Fi" data-th="Wi-Fi">Wi-Fi</th><th data-en="Cellular" data-th="Cellular">Cellular</th></tr></thead>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="3">iPad Pro 11" M5</td></tr>
-        <tr><td class="product-sub">256GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">512GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">1TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">2TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">1TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">2TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</td><td class="span-col" colspan="2">4,990 − 500 = 4,490฿</td></tr>
-        <tr><td class="product-main" colspan="3">iPad Pro 13" M5</td></tr>
-        <tr><td class="product-sub">256GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">512GB</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">1TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">2TB Standard</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">1TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub">2TB Nano</td><td class="wifi-col">4,000฿</td><td class="cell-col">4,000฿</td></tr>
-        <tr><td class="product-sub" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</td><td class="span-col" colspan="2">5,690 − 600 = 5,090฿</td></tr>
+        <tr><td class="product-main" colspan="4">iPad Pro 11" M5 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">42,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">39,300฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">49,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">46,300฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi</td><td class="price-col">64,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">61,300฿</td></tr>
+        <tr><td class="product-sub">2TB Wi-Fi</td><td class="price-col">83,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">80,300฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi/Nano</td><td class="price-col">68,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">65,300฿</td></tr>
+        <tr><td class="product-sub">2TB Wi-Fi/Nano</td><td class="price-col">87,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">84,300฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">49,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">46,300฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">56,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">53,300฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular</td><td class="price-col">71,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">68,300฿</td></tr>
+        <tr><td class="product-sub">2TB Cellular</td><td class="price-col">90,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">87,300฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular/Nano</td><td class="price-col">75,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">72,300฿</td></tr>
+        <tr><td class="product-sub">2TB Cellular/Nano</td><td class="price-col">94,900฿</td><td class="discount-col">3,600฿</td><td class="final-col">91,300฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,390฿</td><td class="discount-col">500฿</td><td class="final-col">4,890฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">iPad Pro 13" M5 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">54,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">51,200฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">61,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">58,200฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi</td><td class="price-col">76,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">73,200฿</td></tr>
+        <tr><td class="product-sub">2TB Wi-Fi</td><td class="price-col">95,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">92,200฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi/Nano</td><td class="price-col">80,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">77,200฿</td></tr>
+        <tr><td class="product-sub">2TB Wi-Fi/Nano</td><td class="price-col">99,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">96,200฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">61,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">58,200฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">68,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">65,200฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular</td><td class="price-col">83,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">80,200฿</td></tr>
+        <tr><td class="product-sub">2TB Cellular</td><td class="price-col">102,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">99,200฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular/Nano</td><td class="price-col">87,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">84,200฿</td></tr>
+        <tr><td class="product-sub">2TB Cellular/Nano</td><td class="price-col">106,900฿</td><td class="discount-col">3,700฿</td><td class="final-col">103,200฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">6,090฿</td><td class="discount-col">600฿</td><td class="final-col">5,490฿</td></tr>
+
       </tbody>
     </table>
   </div>
 
-  <!-- iPad Air -->
-  <div class="table-card">
+  <div class="table-card" id="section-air">
     <div class="table-section-title">iPad Air</div>
-    <table>
-      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th>Wi-Fi</th><th>Cellular</th></tr></thead>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="3">iPad Air 11" M4 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">128GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
-        <tr><td class="product-sub">256GB</td><td class="wifi-col">1,900฿</td><td class="cell-col">1,900฿</td></tr>
-        <tr><td class="product-sub">512GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
-        <tr><td class="product-sub">1TB</td><td class="wifi-col">3,600฿</td><td class="cell-col">3,700฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,790 − 300 = 2,490฿</td></tr>
-        <tr><td class="product-main" colspan="3">iPad Air 13" M4 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">128GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,800฿</td></tr>
-        <tr><td class="product-sub">256GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,900฿</td></tr>
-        <tr><td class="product-sub">512GB</td><td class="wifi-col">1,800฿</td><td class="cell-col">1,800฿</td></tr>
-        <tr><td class="product-sub">1TB</td><td class="wifi-col">3,600฿</td><td class="cell-col">3,700฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">3,490 − 300 = 3,190฿</td></tr>
+        <tr><td class="product-main" colspan="4">iPad Air 11" M4 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">128GB Wi-Fi</td><td class="price-col">27,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">26,000฿</td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">31,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">30,000฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">38,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">37,000฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi</td><td class="price-col">49,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">48,000฿</td></tr>
+        <tr><td class="product-sub">128GB Cellular</td><td class="price-col">33,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">32,000฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">37,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">36,000฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">44,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">43,000฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular</td><td class="price-col">55,900฿</td><td class="discount-col">1,900฿</td><td class="final-col">54,000฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,190฿</td><td class="discount-col">300฿</td><td class="final-col">2,890฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">iPad Air 13" M4 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">128GB Wi-Fi</td><td class="price-col">34,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">33,100฿</td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">38,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">37,100฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">45,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">44,100฿</td></tr>
+        <tr><td class="product-sub">1TB Wi-Fi</td><td class="price-col">56,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">55,100฿</td></tr>
+        <tr><td class="product-sub">128GB Cellular</td><td class="price-col">40,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">39,100฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">44,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">43,100฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">51,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">50,100฿</td></tr>
+        <tr><td class="product-sub">1TB Cellular</td><td class="price-col">62,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">61,100฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,890฿</td><td class="discount-col">400฿</td><td class="final-col">3,490฿</td></tr>
+
       </tbody>
     </table>
   </div>
 
-  <!-- iPad / iPad mini -->
-  <div class="table-card">
-    <div class="table-section-title">iPad &amp; iPad mini</div>
-    <table>
-      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th>Wi-Fi</th><th>Cellular</th></tr></thead>
+  <div class="table-card" id="section-ipad">
+    <div class="table-section-title">iPad</div>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="3">iPad A16</td></tr>
-        <tr><td class="product-sub">128GB</td><td class="wifi-col">700฿</td><td class="cell-col">800฿</td></tr>
-        <tr><td class="product-sub">256GB</td><td class="wifi-col">800฿</td><td class="cell-col">800฿</td></tr>
-        <tr><td class="product-sub">512GB</td><td class="wifi-col">700฿</td><td class="cell-col">700฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,590 − 300 = 2,290฿</td></tr>
-        <tr><td class="product-main" colspan="3">iPad mini</td></tr>
-        <tr><td class="product-sub" data-en="All models" data-th="ทุกรุ่น">All models</td><td class="wifi-col">2,000฿</td><td class="cell-col">2,000฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="span-col" colspan="2">2,590 − 300 = 2,290฿</td></tr>
+        <tr><td class="product-main" colspan="4">iPad A16</td></tr>
+        <tr><td class="product-sub">128GB Wi-Fi</td><td class="price-col">16,900฿</td><td class="discount-col">800฿</td><td class="final-col">16,100฿</td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">20,900฿</td><td class="discount-col">800฿</td><td class="final-col">20,100฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">27,900฿</td><td class="discount-col">800฿</td><td class="final-col">27,100฿</td></tr>
+        <tr><td class="product-sub">128GB Cellular</td><td class="price-col">22,900฿</td><td class="discount-col">800฿</td><td class="final-col">22,100฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">26,900฿</td><td class="discount-col">800฿</td><td class="final-col">26,100฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">33,900฿</td><td class="discount-col">800฿</td><td class="final-col">33,100฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,990฿</td><td class="discount-col">300฿</td><td class="final-col">2,690฿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-card" id="section-mini">
+    <div class="table-section-title">iPad mini</div>
+    <table style="table-layout:fixed;width:100%;">
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-main" colspan="4">iPad mini</td></tr>
+        <tr><td class="product-sub">128GB Wi-Fi</td><td class="price-col">21,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">20,100฿</td></tr>
+        <tr><td class="product-sub">256GB Wi-Fi</td><td class="price-col">25,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">24,100฿</td></tr>
+        <tr><td class="product-sub">512GB Wi-Fi</td><td class="price-col">32,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">31,100฿</td></tr>
+        <tr><td class="product-sub">128GB Cellular</td><td class="price-col">27,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">26,100฿</td></tr>
+        <tr><td class="product-sub">256GB Cellular</td><td class="price-col">31,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">30,100฿</td></tr>
+        <tr><td class="product-sub">512GB Cellular</td><td class="price-col">38,900฿</td><td class="discount-col">1,800฿</td><td class="final-col">37,100฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,990฿</td><td class="discount-col">300฿</td><td class="final-col">2,690฿</td></tr>
       </tbody>
     </table>
   </div>
 
   <!-- Apple Pencil & Keyboards -->
-  <div class="table-card">
+  <div class="table-card" id="section-acc">
     <div class="table-section-title" data-en="Accessories" data-th="อุปกรณ์เสริม">Accessories</div>
     <table style="table-layout:fixed;width:100%;">
-      <colgroup><col style="width:48%"><col style="width:52%"></colgroup>
-      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th style="text-align:center;" data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="2">Apple Pencil</td></tr>
-        <tr><td class="product-sub">Pencil Pro</td><td class="span-col">4,490 − 400 = 4,090฿</td></tr>
-        <tr><td class="product-sub">USB-C</td><td class="span-col">2,990 − 400 = 2,590฿</td></tr>
-        <tr><td class="product-sub">2nd Gen</td><td class="span-col">4,490 − 400 = 4,090฿</td></tr>
-        <tr><td class="product-sub">1st Gen</td><td class="span-col">3,990 − 500 = 3,490฿</td></tr>
-        <tr><td class="product-main" colspan="2">Magic Keyboard</td></tr>
-        <tr><td class="product-sub">Pro 11" (M5, M4)</td><td class="span-col">10,990 − 800 = 10,190฿</td></tr>
-        <tr><td class="product-sub">Pro 13" (M5, M4)</td><td class="span-col">12,490 − 800 = 11,690฿</td></tr>
-        <tr><td class="product-sub">Air 11" (M4, M3, M2)</td><td class="span-col">9,990 − 790 = 9,200฿</td></tr>
-        <tr><td class="product-sub">Air 13" (M4, M3, M2)</td><td class="span-col">10,990 − 690 = 10,300฿</td></tr>
-        <tr><td class="product-sub">Folio A16, 10th</td><td class="span-col">8,990 − 800 = 8,190฿</td></tr>
+        <tr><td class="product-main" colspan="4">Apple Pencil</td></tr>
+        <tr><td class="product-sub">Pencil Pro</td><td class="price-col">4,490฿</td><td class="discount-col">400฿</td><td class="final-col">4,090฿</td></tr>
+        <tr><td class="product-sub">USB-C</td><td class="price-col">2,990฿</td><td class="discount-col">400฿</td><td class="final-col">2,590฿</td></tr>
+        <tr><td class="product-sub">2nd Gen</td><td class="price-col">4,490฿</td><td class="discount-col">400฿</td><td class="final-col">4,090฿</td></tr>
+        <tr><td class="product-sub">1st Gen</td><td class="price-col">3,990฿</td><td class="discount-col">500฿</td><td class="final-col">3,490฿</td></tr>
+        <tr><td class="product-main" colspan="4">Magic Keyboard</td></tr>
+        <tr><td class="product-sub">Pro 11" (M5, M4)</td><td class="price-col">10,990฿</td><td class="discount-col">800฿</td><td class="final-col">10,190฿</td></tr>
+        <tr><td class="product-sub">Pro 13" (M5, M4)</td><td class="price-col">12,490฿</td><td class="discount-col">800฿</td><td class="final-col">11,690฿</td></tr>
+        <tr><td class="product-sub">Air 11" (M4, M3, M2)</td><td class="price-col">9,990฿</td><td class="discount-col">790฿</td><td class="final-col">9,200฿</td></tr>
+        <tr><td class="product-sub">Air 13" (M4, M3, M2)</td><td class="price-col">10,990฿</td><td class="discount-col">690฿</td><td class="final-col">10,300฿</td></tr>
+        <tr><td class="product-sub">Folio A16, 10th</td><td class="price-col">8,990฿</td><td class="discount-col">800฿</td><td class="final-col">8,190฿</td></tr>
       </tbody>
     </table>
   </div>
@@ -305,44 +415,45 @@
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="4">MacBook Neo <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">256/8GB/20W</td><td class="price-col">19,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">16,900฿</td></tr>
-        <tr><td class="product-sub">512/8GB/20W/Touch ID</td><td class="price-col">22,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">19,900฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
+        <tr id="section-neo"><td class="product-main" colspan="4">MacBook Neo</td></tr>
+        <tr><td class="product-sub">256/8GB/20W</td><td class="price-col">24,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">21,900฿</td></tr>
+        <tr><td class="product-sub">512/8GB/20W/Touch ID</td><td class="price-col">27,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">24,900฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,590฿</td><td class="discount-col">600฿</td><td class="final-col">4,990฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">MacBook Air 13" M5 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">512/16GB/30W</td><td class="price-col">36,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">33,490฿</td></tr>
-        <tr><td class="product-sub">512/24GB/35W Dual</td><td class="price-col">43,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">40,490฿</td></tr>
-        <tr><td class="product-sub">1TB/16GB/70W</td><td class="price-col">43,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">40,490฿</td></tr>
-        <tr><td class="product-sub">1TB/24GB/35W Dual</td><td class="price-col">50,900฿</td><td class="discount-col">3,410฿</td><td class="final-col">47,490฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">6,990฿</td><td class="discount-col">800฿</td><td class="final-col">6,190฿</td></tr>
-
-        <tr><td class="product-main" colspan="4">MacBook Air 15" M5 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">512/16GB/35W Dual</td><td class="price-col">44,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">41,390฿</td></tr>
-        <tr><td class="product-sub">1TB/16GB/35W Dual</td><td class="price-col">51,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">48,390฿</td></tr>
+        <tr id="section-air13"><td class="product-main" colspan="4">MacBook Air 13" M5 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">512/16GB/30W</td><td class="price-col">44,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">41,390฿</td></tr>
+        <tr><td class="product-sub">1TB/16GB/35W Dual</td><td class="price-col">55,400฿</td><td class="discount-col">3,510฿</td><td class="final-col">51,890฿</td></tr>
         <tr><td class="product-sub">512/24GB/70W</td><td class="price-col">51,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">48,390฿</td></tr>
-        <tr><td class="product-sub">1TB/24GB/35W Dual</td><td class="price-col">58,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">55,390฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">7,990฿</td><td class="discount-col">900฿</td><td class="final-col">7,090฿</td></tr>
+        <tr><td class="product-sub">1TB/24GB/35W Dual</td><td class="price-col">62,400฿</td><td class="discount-col">3,510฿</td><td class="final-col">58,890฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">7,590฿</td><td class="discount-col">800฿</td><td class="final-col">6,790฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">MacBook Pro 14" M5 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">M5 1TB/16GB/70W</td><td class="price-col">56,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">53,590฿</td></tr>
-        <tr><td class="product-sub">M5 1TB/16GB/70W Nano</td><td class="price-col">62,150฿</td><td class="discount-col">3,835฿</td><td class="final-col">58,315฿</td></tr>
-        <tr><td class="product-sub">M5 1TB/24GB/70W</td><td class="price-col">63,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">60,590฿</td></tr>
-        <tr><td class="product-sub">M5 1TB/24GB/70W Nano</td><td class="price-col">69,150฿</td><td class="discount-col">3,835฿</td><td class="final-col">65,315฿</td></tr>
-        <tr><td class="product-sub">M5 1TB/32GB/70W</td><td class="price-col">70,900฿</td><td class="discount-col">3,310฿</td><td class="final-col">67,590฿</td></tr>
-        <tr><td class="product-sub">M5 Pro 15C/1TB/24GB/70W</td><td class="price-col">74,900฿</td><td class="discount-col">5,110฿</td><td class="final-col">69,790฿</td></tr>
-        <tr><td class="product-sub">M5 Pro 15C/2TB/24GB/70W</td><td class="price-col">88,900฿</td><td class="discount-col">6,510฿</td><td class="final-col">82,390฿</td></tr>
-        <tr><td class="product-sub">M5 Pro 18C/2TB/24GB/96W</td><td class="price-col">94,900฿</td><td class="discount-col">6,810฿</td><td class="final-col">88,090฿</td></tr>
-        <tr><td class="product-sub">M5 Pro 18C/2TB/48GB/96W</td><td class="price-col">114,150฿</td><td class="discount-col">8,735฿</td><td class="final-col">100,690฿</td></tr>
-        <tr><td class="product-sub">M5 Max 18C/2TB/36GB/96W</td><td class="price-col">124,900฿</td><td class="discount-col">10,410฿</td><td class="final-col">114,490฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">9,990฿</td><td class="discount-col">1,100฿</td><td class="final-col">8,890฿</td></tr>
+        <tr><td class="product-main" colspan="4">MacBook Air 15" M5 <span class="bts-label">BTS get ฿3,400</span></td></tr>
+        <tr><td class="product-sub">512/16GB/35W Dual</td><td class="price-col">54,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">51,290฿</td></tr>
+        <tr><td class="product-sub">1TB/16GB/35W Dual</td><td class="price-col">65,400฿</td><td class="discount-col">3,610฿</td><td class="final-col">61,790฿</td></tr>
+        <tr><td class="product-sub">512/24GB/70W</td><td class="price-col">61,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">58,290฿</td></tr>
+        <tr><td class="product-sub">1TB/24GB/35W Dual</td><td class="price-col">72,400฿</td><td class="discount-col">3,610฿</td><td class="final-col">68,790฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">8,590฿</td><td class="discount-col">900฿</td><td class="final-col">7,690฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">MacBook Pro 16" M5 <span class="new-label">New</span></td></tr>
-        <tr><td class="product-sub">M5 Pro 1TB/24GB/140W</td><td class="price-col">92,900฿</td><td class="discount-col">6,910฿</td><td class="final-col">85,990฿</td></tr>
-        <tr><td class="product-sub">M5 Pro 1TB/48GB/140W</td><td class="price-col">106,900฿</td><td class="discount-col">6,910฿</td><td class="final-col">99,990฿</td></tr>
-        <tr><td class="product-sub">M5 Max 2TB/36GB/140W</td><td class="price-col">134,900฿</td><td class="discount-col">10,410฿</td><td class="final-col">124,490฿</td></tr>
-        <tr><td class="product-sub">M5 Max 2TB/48GB/140W</td><td class="price-col">152,400฿</td><td class="discount-col">10,410฿</td><td class="final-col">141,990฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">13,990฿</td><td class="discount-col">1,500฿</td><td class="final-col">12,490฿</td></tr>
+        <tr id="section-pro14"><td class="product-main" colspan="4">MacBook Pro 14" M5 <span class="bts-label">BTS get ฿5,100</span></td></tr>
+        <tr><td class="product-sub">M5 1TB/16GB/70W</td><td class="price-col">69,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">66,390฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/16GB/Nano/70W</td><td class="price-col">75,150฿</td><td class="discount-col">4,035฿</td><td class="final-col">71,115฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/24GB/70W</td><td class="price-col">76,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">73,390฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/24GB//Nano/70W</td><td class="price-col">82,150฿</td><td class="discount-col">4,035฿</td><td class="final-col">78,115฿</td></tr>
+        <tr><td class="product-sub">M5 1TB/32GB/70W</td><td class="price-col">83,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">80,390฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 15C/1TB/24GB/70W</td><td class="price-col">87,900฿</td><td class="discount-col">5,310฿</td><td class="final-col">82,590฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 15C/2TB/24GB/70W</td><td class="price-col">105,400฿</td><td class="discount-col">7,060฿</td><td class="final-col">98,340฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 18C/20C/2TB/24GB/96W</td><td class="price-col">114,900฿</td><td class="discount-col">7,210฿</td><td class="final-col">107,690฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 18C/20C/2TB/48GB/Nano/96W</td><td class="price-col">141,150฿</td><td class="discount-col">9,835฿</td><td class="final-col">131,315฿</td></tr>
+        <tr><td class="product-sub">M5 Max 18C/32C/2TB/36GB/96W</td><td class="price-col">144,900฿</td><td class="discount-col">10,610฿</td><td class="final-col">134,290฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">10,590฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,490฿</td></tr>
+
+        <tr><td class="product-main" colspan="4">MacBook Pro 16" M5 <span class="bts-label">BTS get ฿5,100</span></td></tr>
+        <tr><td class="product-sub">M5 Pro 1TB/24GB/140W</td><td class="price-col">104,900฿</td><td class="discount-col">7,010฿</td><td class="final-col">97,890฿</td></tr>
+        <tr><td class="product-sub">M5 Pro 1TB/48GB/140W</td><td class="price-col">125,900฿</td><td class="discount-col">7,010฿</td><td class="final-col">118,890฿</td></tr>
+        <tr><td class="product-sub">M5 Max 18C/32C/2TB/36GB/140W</td><td class="price-col">154,900฿</td><td class="discount-col">10,610฿</td><td class="final-col">144,290฿</td></tr>
+        <tr><td class="product-sub">M5 Max 18C/40C/2TB/48GB/140W</td><td class="price-col">174,900฿</td><td class="discount-col">10,610฿</td><td class="final-col">164,290฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">14,590฿</td><td class="discount-col">1,500฿</td><td class="final-col">13,090฿</td></tr>
+
       </tbody>
     </table>
   </div>
@@ -353,37 +464,39 @@
       <colgroup><col style="width:42%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="4">iMac</td></tr>
-        <tr><td class="product-sub">256/16GB</td><td class="price-col">44,900฿</td><td class="discount-col">1,750฿</td><td class="final-col">43,150฿</td></tr>
-        <tr><td class="product-sub">256/16GB/4 Port</td><td class="price-col">51,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">48,400฿</td></tr>
-        <tr><td class="product-sub">256/16GB/4 Port/Nano</td><td class="price-col">58,900฿</td><td class="discount-col">4,200฿</td><td class="final-col">54,700฿</td></tr>
-        <tr><td class="product-sub">512/16GB/4 Port</td><td class="price-col">58,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">55,400฿</td></tr>
-        <tr><td class="product-sub">512/24GB/4 Port</td><td class="price-col">65,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">62,400฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+        <tr id="section-imac"><td class="product-main" colspan="4">iMac</td></tr>
+        <tr><td class="product-sub">256/16GB</td><td class="price-col">52,900฿</td><td class="discount-col">1,810฿</td><td class="final-col">51,090฿</td></tr>
+        <tr><td class="product-sub">256/16GB/4 Port</td><td class="price-col">59,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">56,390฿</td></tr>
+        <tr><td class="product-sub">256/16GB/4 Port/Nano</td><td class="price-col">66,900฿</td><td class="discount-col">4,210฿</td><td class="final-col">62,690฿</td></tr>
+        <tr><td class="product-sub">512/16GB/4 Port</td><td class="price-col">66,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">63,390฿</td></tr>
+        <tr><td class="product-sub">512/24GB/4 Port</td><td class="price-col">73,900฿</td><td class="discount-col">3,510฿</td><td class="final-col">70,390฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">6,490฿</td><td class="discount-col">700฿</td><td class="final-col">5,790฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">Mac mini</td></tr>
-        <tr><td class="product-sub">M4 256/16GB</td><td class="price-col">20,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">17,400฿</td></tr>
-        <tr><td class="product-sub">M4 512/16GB</td><td class="price-col">27,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">24,400฿</td></tr>
-        <tr><td class="product-sub">M4 512/24GB</td><td class="price-col">34,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">31,400฿</td></tr>
-        <tr><td class="product-sub">M4 Pro 512/24GB</td><td class="price-col">49,900฿</td><td class="discount-col">3,500฿</td><td class="final-col">46,400฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,900฿</td><td class="discount-col">410฿</td><td class="final-col">3,490฿</td></tr>
+        <tr id="section-mini2"><td class="product-main" colspan="4">Mac mini</td></tr>
+        <tr><td class="product-sub">M4 256/16GB</td><td class="price-col">28,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">25,290฿</td></tr>
+        <tr><td class="product-sub">M4 512/16GB</td><td class="price-col">35,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">32,290฿</td></tr>
+        <tr><td class="product-sub">M4 512/24GB</td><td class="price-col">42,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">39,290฿</td></tr>
+        <tr><td class="product-sub">M4 Pro 12C/16C/512/24GB</td><td class="price-col">57,900฿</td><td class="discount-col">3,610฿</td><td class="final-col">54,290฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">4,290฿</td><td class="discount-col">400฿</td><td class="final-col">3,890฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">Mac Studio</td></tr>
-        <tr><td class="product-sub">M4 Max 512/36GB</td><td class="price-col">69,900฿</td><td class="discount-col">7,000฿</td><td class="final-col">62,900฿</td></tr>
-        <tr><td class="product-sub">M3 Ultra 1TB/96GB</td><td class="price-col">139,900฿</td><td class="discount-col">14,000฿</td><td class="final-col">111,900฿</td></tr>
-        <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+        <tr id="section-studio"><td class="product-main" colspan="4">Mac Studio</td></tr>
+        <tr><td class="product-sub">M4 Max 14C/32C/512/36GB</td><td class="price-col">89,900฿</td><td class="discount-col">7,210฿</td><td class="final-col">82,690฿</td></tr>
+        <tr><td class="product-sub">M4 Max 16C/40C/512/64GB</td><td class="price-col">124,900฿</td><td class="discount-col">10,710฿</td><td class="final-col">114,190฿</td></tr>
+        <tr><td class="product-sub">M3 Ultra 28C/60C/1TB/96GB</td><td class="price-col">189,900฿</td><td class="discount-col">14,310฿</td><td class="final-col">175,590฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">6,490฿</td><td class="discount-col">700฿</td><td class="final-col">5,790฿</td></tr>
 
-        <tr><td class="product-main" colspan="4">Studio Display</td></tr>
+        <tr id="section-display"><td class="product-main" colspan="4">Studio Display</td></tr>
         <tr><td class="product-sub">Standard+Tilt</td><td class="price-col">52,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">49,600฿</td></tr>
-        <tr><td class="product-sub">Standard+Tilt&amp;Height</td><td class="price-col">64,900฿</td><td class="discount-col">3,200฿</td><td class="final-col">61,700฿</td></tr>
+        <tr><td class="product-sub">Standard+Tilt&Height</td><td class="price-col">64,900฿</td><td class="discount-col">3,200฿</td><td class="final-col">61,700฿</td></tr>
         <tr><td class="product-sub">Nano+Tilt</td><td class="price-col">62,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">59,600฿</td></tr>
-        <tr><td class="product-sub">Nano+Tilt&amp;Height</td><td class="price-col">74,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">71,600฿</td></tr>
+        <tr><td class="product-sub">Nano+Tilt&Height</td><td class="price-col">74,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">71,600฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">5,290฿</td><td class="discount-col">600฿</td><td class="final-col">4,690฿</td></tr>
 
         <tr><td class="product-main" colspan="4">Studio Display XDR</td></tr>
-        <tr><td class="product-sub">Standard+Tilt&amp;Height</td><td class="price-col">109,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">106,600฿</td></tr>
-        <tr><td class="product-sub">Nano+Tilt&amp;Height</td><td class="price-col">119,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">116,600฿</td></tr>
+        <tr><td class="product-sub">Standard+Tilt&Height</td><td class="price-col">109,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">106,600฿</td></tr>
+        <tr><td class="product-sub">Nano+Tilt&Height</td><td class="price-col">119,900฿</td><td class="discount-col">3,300฿</td><td class="final-col">116,600฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">10,490฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,390฿</td></tr>
+
       </tbody>
     </table>
   </div>
@@ -400,23 +513,27 @@
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-main" colspan="4">Apple Watch SE 3</td></tr>
+        <tr id="section-se3"><td class="product-main" colspan="4">Apple Watch SE 3</td></tr>
         <tr><td class="product-sub">40mm GPS</td><td class="price-col">8,500฿</td><td class="discount-col">600฿</td><td class="final-col">7,900฿</td></tr>
         <tr><td class="product-sub">44mm GPS</td><td class="price-col">9,500฿</td><td class="discount-col">600฿</td><td class="final-col">8,900฿</td></tr>
-        <tr><td class="product-sub">40mm Cellular</td><td class="price-col">10,500฿</td><td class="discount-col">1,600฿</td><td class="final-col">8,900฿</td></tr>
-        <tr><td class="product-sub">44mm Cellular</td><td class="price-col">11,500฿</td><td class="discount-col">1,600฿</td><td class="final-col">9,900฿</td></tr>
+        <tr><td class="product-sub">40mm Cellular</td><td class="price-col">10,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">9,500฿</td></tr>
+        <tr><td class="product-sub">44mm Cellular</td><td class="price-col">11,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">10,500฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">1,890฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
-        <tr><td class="product-main" colspan="4">Apple Watch Series 11</td></tr>
-        <tr><td class="product-sub">42mm GPS</td><td class="price-col">14,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">12,900฿</td></tr>
-        <tr><td class="product-sub">46mm GPS</td><td class="price-col">15,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">13,900฿</td></tr>
+        <tr id="section-s11"><td class="product-main" colspan="4">Apple Watch Series 11</td></tr>
+        <tr><td class="product-sub">42mm GPS</td><td class="price-col">14,900฿</td><td class="discount-col">1,500฿</td><td class="final-col">13,400฿</td></tr>
+        <tr><td class="product-sub">46mm GPS</td><td class="price-col">15,900฿</td><td class="discount-col">1,500฿</td><td class="final-col">14,400฿</td></tr>
         <tr><td class="product-sub">42mm Cellular</td><td class="price-col">18,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">16,900฿</td></tr>
         <tr><td class="product-sub">46mm Cellular</td><td class="price-col">19,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">17,900฿</td></tr>
-        <tr><td class="product-sub">42mm Titanium</td><td class="price-col">25,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">22,900฿</td></tr>
-        <tr><td class="product-sub">46mm Titanium</td><td class="price-col">27,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">24,900฿</td></tr>
+        <tr><td class="product-sub">42mm Titanium</td><td class="price-col">25,900฿</td><td class="discount-col">2,600฿</td><td class="final-col">23,300฿</td></tr>
+        <tr><td class="product-sub">46mm Titanium</td><td class="price-col">27,900฿</td><td class="discount-col">2,600฿</td><td class="final-col">25,300฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
-        <tr><td class="product-main" colspan="4">Apple Watch Ultra 3</td></tr>
+        <tr id="section-ultra3"><td class="product-main" colspan="4">Apple Watch Ultra 3</td></tr>
         <tr><td class="product-sub">Alpine / Ocean / Trail</td><td class="price-col">29,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">26,900฿</td></tr>
-        <tr><td class="product-sub">Titanium</td><td class="price-col">33,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">30,400฿</td></tr>
+        <tr><td class="product-sub">Titanium</td><td class="price-col">33,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">30,900฿</td></tr>
+        <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,790฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+
       </tbody>
     </table>
     <p class="note" data-en="* AppleCare+ for Apple Watch is not eligible for education discount" data-th="* AppleCare+ สำหรับ Apple Watch ไม่มีส่วนลดการศึกษา">* AppleCare+ for Apple Watch is not eligible for education discount</p>
@@ -429,40 +546,54 @@
 ══════════════════════════════════════ -->
 <div id="tab-ac" class="tab-panel">
 
-  <div class="table-card">
+  <div class="table-card" id="section-ac-ipad">
     <div class="table-section-title">AppleCare+ for iPad</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-sub">iPad</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
-        <tr><td class="product-sub">iPad mini</td><td class="price-col">2,590฿</td><td class="discount-col">300฿</td><td class="final-col">2,290฿</td></tr>
-        <tr><td class="product-sub">iPad Air 11"</td><td class="price-col">2,790฿</td><td class="discount-col">300฿</td><td class="final-col">2,490฿</td></tr>
-        <tr><td class="product-sub">iPad Air 13"</td><td class="price-col">3,490฿</td><td class="discount-col">300฿</td><td class="final-col">3,190฿</td></tr>
-        <tr><td class="product-sub">iPad Pro 11"</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
-        <tr><td class="product-sub">iPad Pro 13"</td><td class="price-col">5,690฿</td><td class="discount-col">600฿</td><td class="final-col">5,090฿</td></tr>
+        <tr><td class="product-sub">iPad</td><td class="price-col">2,990฿</td><td class="discount-col">300฿</td><td class="final-col">2,690฿</td></tr>
+        <tr><td class="product-sub">iPad mini</td><td class="price-col">2,990฿</td><td class="discount-col">300฿</td><td class="final-col">2,690฿</td></tr>
+        <tr><td class="product-sub">iPad Air 11"</td><td class="price-col">3,190฿</td><td class="discount-col">300฿</td><td class="final-col">2,890฿</td></tr>
+        <tr><td class="product-sub">iPad Air 13"</td><td class="price-col">3,890฿</td><td class="discount-col">400฿</td><td class="final-col">3,490฿</td></tr>
+        <tr><td class="product-sub">iPad Pro 11"</td><td class="price-col">5,390฿</td><td class="discount-col">500฿</td><td class="final-col">4,890฿</td></tr>
+        <tr><td class="product-sub">iPad Pro 13"</td><td class="price-col">6,090฿</td><td class="discount-col">600฿</td><td class="final-col">5,490฿</td></tr>
       </tbody>
     </table>
   </div>
 
-  <div class="table-card">
+  <div class="table-card" id="section-ac-mac">
     <div class="table-section-title">AppleCare+ for Mac</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr><td class="product-sub">MacBook Neo</td><td class="price-col">4,990฿</td><td class="discount-col">500฿</td><td class="final-col">4,490฿</td></tr>
-        <tr><td class="product-sub">MacBook Air 13"</td><td class="price-col">6,990฿</td><td class="discount-col">800฿</td><td class="final-col">6,190฿</td></tr>
-        <tr><td class="product-sub">MacBook Air 15"</td><td class="price-col">7,990฿</td><td class="discount-col">900฿</td><td class="final-col">7,090฿</td></tr>
-        <tr><td class="product-sub">MacBook Pro 14"</td><td class="price-col">9,990฿</td><td class="discount-col">1,100฿</td><td class="final-col">8,890฿</td></tr>
-        <tr><td class="product-sub">MacBook Pro 16"</td><td class="price-col">13,990฿</td><td class="discount-col">1,500฿</td><td class="final-col">12,490฿</td></tr>
-        <tr><td class="product-sub">iMac</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
-        <tr><td class="product-sub">Mac mini</td><td class="price-col">3,900฿</td><td class="discount-col">410฿</td><td class="final-col">3,490฿</td></tr>
-        <tr><td class="product-sub">Mac Studio</td><td class="price-col">5,900฿</td><td class="discount-col">610฿</td><td class="final-col">5,290฿</td></tr>
+        <tr><td class="product-sub">MacBook Neo</td><td class="price-col">5,590฿</td><td class="discount-col">600฿</td><td class="final-col">4,990฿</td></tr>
+        <tr><td class="product-sub">MacBook Air 13"</td><td class="price-col">7,590฿</td><td class="discount-col">800฿</td><td class="final-col">6,790฿</td></tr>
+        <tr><td class="product-sub">MacBook Air 15"</td><td class="price-col">8,590฿</td><td class="discount-col">900฿</td><td class="final-col">7,690฿</td></tr>
+        <tr><td class="product-sub">MacBook Pro 14"</td><td class="price-col">10,590฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,490฿</td></tr>
+        <tr><td class="product-sub">MacBook Pro 16"</td><td class="price-col">14,590฿</td><td class="discount-col">1,500฿</td><td class="final-col">13,090฿</td></tr>
+        <tr><td class="product-sub">iMac</td><td class="price-col">6,490฿</td><td class="discount-col">700฿</td><td class="final-col">5,790฿</td></tr>
+        <tr><td class="product-sub">Mac mini</td><td class="price-col">4,290฿</td><td class="discount-col">400฿</td><td class="final-col">3,890฿</td></tr>
+        <tr><td class="product-sub">Mac Studio</td><td class="price-col">6,490฿</td><td class="discount-col">700฿</td><td class="final-col">5,790฿</td></tr>
         <tr><td class="product-sub">Mac Pro</td><td class="price-col">17,900฿</td><td class="discount-col">1,810฿</td><td class="final-col">16,090฿</td></tr>
         <tr><td class="product-sub">Studio Display</td><td class="price-col">5,290฿</td><td class="discount-col">600฿</td><td class="final-col">4,690฿</td></tr>
         <tr><td class="product-sub">Studio Display XDR</td><td class="price-col">10,490฿</td><td class="discount-col">1,100฿</td><td class="final-col">9,390฿</td></tr>
       </tbody>
     </table>
   </div>
+
+  <div class="table-card" id="section-ac-watch">
+    <div class="table-section-title">AppleCare+ for Apple Watch</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">SE 3</td><td class="price-col">1,890฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">Series 11</td><td class="price-col">2,990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">Ultra 3</td><td class="price-col">3,790฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">* AppleCare+ for Apple Watch is not eligible for education discount</p>
 
 </div><!-- /tab-ac -->
 
@@ -516,7 +647,19 @@
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
     window.scrollTo(0, 0);
+    document.getElementById('ipad-subtabs').classList.toggle('visible', id === 'tab-ipad');
+    document.getElementById('mac-subtabs').classList.toggle('visible', id === 'tab-mac');
+    document.getElementById('watch-subtabs').classList.toggle('visible', id === 'tab-watch');
+    document.getElementById('ac-subtabs').classList.toggle('visible', id === 'tab-ac');
     if (id === 'tab-unidays') initQR();
+  }
+
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const headerH = document.querySelector('.sticky-header').offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
   }
 
   let qrGenerated = false;
@@ -547,7 +690,8 @@
     });
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
-  if (currentLang !== 'en') setLang(currentLang);
+  document.getElementById('ipad-subtabs').classList.add('visible');
+if (currentLang !== 'en') setLang(currentLang);
 </script>
 
 </body>

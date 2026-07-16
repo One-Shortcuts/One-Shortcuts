@@ -16,6 +16,11 @@ html_files=(
   edu-price.html
   vat-refund.html
   belkin-claim.html
+  tax-invoice.html
+  back-to-school.jpg
+  bank-transfer.jpg
+  favicon.png
+  apple-touch-icon.png
 )
 
 if ! command -v gh >/dev/null 2>&1; then

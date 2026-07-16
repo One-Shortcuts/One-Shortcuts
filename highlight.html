@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
-<title>Today's Highlight</title>
+<title>Back to School</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
   :root {
@@ -77,6 +77,27 @@
     overflow: hidden;
     margin-bottom: 16px;
   }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15px; table-layout: fixed; }
+  thead tr { background: var(--surface); }
+  th {
+    padding: 9px 8px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  td { padding: 14px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  th:first-child { padding-left: 14px; }
+  td.eligible-col { padding-left: 14px; }
+  td.eligible-col { font-weight: 600; color: var(--text); }
+  td.promo-col { font-weight: 700; color: var(--green); text-align: center; }
+  th:last-child { text-align: center; }
+
+  .promo-hero { padding: 8px 16px 4px; text-align: center; }
+  .promo-hero img { max-width: 35%; height: auto; display: block; margin: 0 auto 6px; }
+  .promo-period { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -84,25 +105,54 @@
 <div class="sticky-header">
   <div class="header-top">
     <a class="back-btn" onclick="event.preventDefault();goHome()">‹</a>
-    <span class="screen-label" data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</span>
+    <span class="screen-label" data-en="Back to School" data-th="Back to School">Back to School</span>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('th')">TH</button>
     </div>
   </div>
   <div class="header-body">
-    <h1 data-en="Today's Highlight" data-th="ไฮไลต์วันนี้">Today's Highlight</h1>
+    <h1 data-en="Back to School" data-th="Back to School">Back to School</h1>
+    <p style="font-size:14px;color:var(--text2);margin-top:2px;">
+      <span data-en="See terms and conditions of this promo" data-th="ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้">See terms and conditions of this promo</span>
+      <a href="https://www.apple.com/th-edu/shop/back-to-school/terms-conditions" style="color: var(--accent); text-decoration: none; font-weight: 600;" data-en=" here" data-th=" ที่นี่"> here</a>
+    </p>
   </div>
   <div class="tabs-scroll">
     <div class="tabs">
-      <button class="tab active" onclick="showTab('tab-btu')" data-en="Back to University" data-th="Back to University">Back to University</button>
+      <button class="tab active" onclick="showTab('tab-btu')" data-en="Back to School" data-th="Back to School">Back to School</button>
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
 </div>
 
-<!-- TAB: BACK TO UNIVERSITY -->
+<!-- TAB: BACK TO SCHOOL -->
 <div id="tab-btu" class="tab-panel active">
+
+  <div class="table-card">
+    <div class="promo-hero">
+      <img src="back-to-school.jpg" alt="Back to School promo">
+      <div class="promo-period" data-en="Promo offer 16 Jul - 27 Aug 2026" data-th="โปรโมชั่น 16 ก.ค. - 27 ส.ค. 2026">Promo offer 16 Jul - 27 Aug 2026</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th data-en="Eligible product" data-th="ผลิตภัณฑ์ที่เข้าเกณฑ์">Eligible product</th>
+          <th data-en="Apple Store Gift Card" data-th="Apple Store Gift Card">Apple Store Gift Card</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="eligible-col">iPad Air</td><td class="promo-col">฿3,400</td></tr>
+        <tr><td class="eligible-col">iPad Pro</td><td class="promo-col">฿3,400</td></tr>
+        <tr><td class="eligible-col">MacBook Air</td><td class="promo-col">฿3,400</td></tr>
+        <tr><td class="eligible-col">MacBook Pro</td><td class="promo-col">฿5,100</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- TAB: UNIDAYS -->
