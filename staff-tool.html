@@ -210,9 +210,11 @@
   body.lang-th .lang-btn { font-family: var(--font-en); }
 
   /* Home header top bar */
-  .home-topbar { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 20px 0; }
+  .home-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 0; }
+  .home-topbar h1 { margin: 0; }
   .home-topbar-left { display: flex; flex-direction: column; }
   .home-header-body { padding: 2px 20px 20px; }
+  #app-version { width: 100%; }
 </style>
 </head>
 <body>
@@ -226,14 +228,13 @@
 <!-- Home -->
 <div id="screen-home" class="screen active">
   <div class="home-topbar">
-    <div class="home-topbar-left">
-      <h1>EasyPlay+</h1>
-      <p id="app-version" style="font-size:11px;color:var(--text3);margin-top:2px;"></p>
-    </div>
+    <h1>EasyPlay+</h1>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('th')">TH</button>
     </div>
+  </div>
+  <p id="app-version" style="font-size:11px;color:var(--text3);margin-top:2px;padding:0 20px;"></p>
   </div>
   <div class="home-header-body">
   <div class="section-list">
