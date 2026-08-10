@@ -69,7 +69,7 @@ The script publishes only deployable HTML files into the public `One-Shortcuts/O
 
 ## Version
 
-Current version stamp: `2026.08.08` (set in `staff-tool.html` via `document.getElementById('app-version').innerHTML`, as a `<br>`-separated changelog)
+Current version stamp: `2026.08.10` (set in `staff-tool.html` via `document.getElementById('app-version').innerHTML`, as a `<br>`-separated changelog)
 Update this value whenever changes are deployed.
 
 ## Font conventions
