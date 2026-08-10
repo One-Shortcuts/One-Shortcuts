@@ -17,6 +17,7 @@ html_files=(
   vat-refund.html
   belkin-claim.html
   tax-invoice.html
+  case-simulator.html
   back-to-school.jpg
   bank-transfer.jpg
   favicon.png

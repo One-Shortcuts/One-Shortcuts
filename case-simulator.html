@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Case Match</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+  :root {
+    --bg: #ffffff;
+    --surface: #f5f5f7;
+    --surface2: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --text3: #a1a1a6;
+    --accent: #0071e3;
+    --radius: 12px;
+    --font-en: Helvetica, "Helvetica Neue", Arial, sans-serif;
+    --font: Helvetica, "Helvetica Neue", Arial, "Sukhumvit Set", "Noto Sans Thai", sans-serif;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .sticky-header {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: sticky; isolation: isolate; top: 0; z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top { display: flex; align-items: center; padding: 16px 16px 10px; gap: 10px; }
+  .header-body { padding: 2px 16px 10px; }
+  .header-body h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 4px; }
+
+  .back-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 50%; cursor: pointer; color: var(--accent);
+    font-size: 32px; line-height: 1; padding-bottom: 2px;
+    flex-shrink: 0; transition: background 0.1s; text-decoration: none;
+  }
+  .back-btn:active { background: #e8e8ed; }
+  .screen-label { font-size: 13px; color: var(--text2); }
+
+  .lang-toggle { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px; margin-left: auto; flex-shrink: 0; }
+  .lang-btn { background: transparent; border: none; border-radius: 16px; padding: 4px 10px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text3); transition: all 0.15s; letter-spacing: 0.02em; font-family: var(--font-en); }
+  .lang-btn.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+
+  /* no text-transform: "iPhone" must keep its own casing, and Apple never sets it as IPHONE */
+  .row-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em; color: var(--text3); padding: 0 16px 5px; }
+  .tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 0 16px 10px; }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+  .tabs { display: flex; gap: 6px; width: max-content; }
+  .tab { background: var(--surface); color: var(--text2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font); }
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* case colour chips */
+  .swatch { display: flex; align-items: center; gap: 7px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px 5px 5px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; white-space: nowrap; font-family: var(--font); transition: all 0.15s; }
+  .swatch img { width: 22px; height: 22px; border-radius: 50%; display: block; object-fit: cover; background: var(--surface); }
+  .swatch.noimg { padding-left: 14px; }
+  .swatch.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  main { padding: 14px 16px 40px; }
+
+  .stage {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+    overflow: hidden; margin-bottom: 14px;
+  }
+  .stage-title { padding: 13px 16px 0; }
+  .stage-title .ct { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+  .stage-title .cs { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  .frame { position: relative; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
+  .frame img { width: 100%; height: 100%; object-fit: contain; display: block; opacity: 0; transition: opacity 0.18s ease; cursor: zoom-in; }
+  .frame img.ok { opacity: 1; }
+  .frame .skel { position: absolute; inset: 12%; border-radius: 18px; background: linear-gradient(100deg, #f1f1f4 30%, #e6e6eb 50%, #f1f1f4 70%); background-size: 220% 100%; animation: shim 1.1s linear infinite; }
+  @keyframes shim { from { background-position: 140% 0; } to { background-position: -40% 0; } }
+
+  .note { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; gap: 8px; }
+  .note .glyph { width: 46px; height: 46px; border-radius: 50%; border: 1.5px dashed var(--text3); color: var(--text3); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .note .t1 { font-size: 14px; font-weight: 600; color: var(--text2); }
+  .note .t2 { font-size: 12.5px; color: var(--text3); line-height: 1.45; max-width: 260px; }
+  .note button { margin-top: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); border-radius: 16px; padding: 5px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: var(--font); }
+
+  /* lives in the sticky header now, so it scrolls sideways like the other picker rows
+     instead of wrapping — a wrapping row would change the header height as you switch model */
+  .pc-list { display: flex; gap: 6px; width: max-content; }
+  .pc {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 5px 12px; font-size: 12.5px; font-weight: 500; color: var(--text2);
+    cursor: pointer; font-family: var(--font); transition: all 0.15s; white-space: nowrap;
+  }
+  .pc .dot { width: 13px; height: 13px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.18); flex-shrink: 0; }
+  .pc.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pc.off { opacity: 0.45; cursor: default; }
+  .pc.off .lbl { text-decoration: line-through; }
+  .pc .tag { font-size: 10.5px; color: var(--text3); }
+  .pc.active .tag { color: rgba(255,255,255,0.8); }
+
+  .actions { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 14px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font); }
+  .pill:disabled { opacity: 0.4; cursor: default; }
+  .pill svg { width: 15px; height: 15px; }
+
+  .foot { font-size: 11.5px; color: var(--text3); line-height: 1.55; padding: 0 2px; }
+  .banner { display: none; background: #fff8f0; border: 1px solid #f0d9bf; color: #8a5a20; border-radius: 10px; padding: 9px 12px; font-size: 12.5px; margin-bottom: 12px; }
+  .banner.show { display: block; }
+
+  #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 200; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; padding: 20px; }
+  #lightbox.show { display: flex; }
+  #lightbox img { max-width: 100%; max-height: 78vh; object-fit: contain; }
+  #lightbox .cap { color: #fff; font-size: 14px; }
+  #lightbox .x { position: absolute; top: 16px; right: 18px; width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.16); color: #fff; border: none; font-size: 20px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <div class="header-top">
+    <a class="back-btn" onclick="event.preventDefault();goHome()">‹</a>
+    <span class="screen-label" data-en="Case Match" data-th="ลองเคส">Case Match</span>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('th')">TH</button>
+    </div>
+  </div>
+  <div class="row-label" data-en="Model" data-th="รุ่น">Model</div>
+  <div class="tabs-scroll"><div class="tabs" id="models"></div></div>
+  <div class="row-label" data-en="Case Type" data-th="ประเภทเคส">Case Type</div>
+  <div class="tabs-scroll"><div class="tabs" id="families"></div></div>
+  <div class="row-label" data-en="Case Colour" data-th="สีเคส">Case Colour</div>
+  <div class="tabs-scroll"><div class="tabs" id="colors"></div></div>
+  <div class="row-label" data-en="iPhone Colour" data-th="สีตัวเครื่อง">iPhone Colour</div>
+  <div class="tabs-scroll"><div class="pc-list" id="pcs"></div></div>
+</div>
+
+<main>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" data-en="Real Apple photos of each case on each iPhone colour." data-th="ภาพจริงจาก Apple ของเคสแต่ละสีบนตัวเครื่องแต่ละสี">Real Apple photos of each case on each iPhone colour.</p>
+
+  <div class="banner" id="offline" data-en="No internet — photos are loaded from Apple's server." data-th="ไม่มีอินเทอร์เน็ต รูปภาพโหลดจากเซิร์ฟเวอร์ของ Apple">No internet — photos are loaded from Apple's server.</div>
+
+  <div class="actions">
+    <button class="pill" id="prep" onclick="prepare()"><span id="prep-lbl" data-en="Prepare image" data-th="เตรียมรูป">Prepare image</span></button>
+    <button class="pill" id="share" onclick="doShare()" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V3M12 3l-4 4M12 3l4 4"/><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg>
+      <span data-en="Share" data-th="แชร์">Share</span>
+    </button>
+  </div>
+
+  <div class="stage">
+    <div class="stage-title">
+      <div class="ct" id="ct"></div>
+      <div class="cs" id="cs"></div>
+    </div>
+    <div class="frame" id="frame"></div>
+  </div>
+
+  <p class="foot">
+    <span data-en="Photos load live from Apple and are © Apple Inc. Needs an internet connection. On-screen colours may vary." data-th="รูปภาพโหลดสดจาก Apple และเป็นลิขสิทธิ์ของ Apple Inc. ต้องต่ออินเทอร์เน็ต สีบนหน้าจออาจคลาดเคลื่อน">Photos load live from Apple and are © Apple Inc. Needs an internet connection. On-screen colours may vary.</span>
+    <br><span id="vfoot"></span>
+  </p>
+</main>
+
+<div id="lightbox" onclick="closeBox(event)">
+  <button class="x" onclick="closeBox(event,1)">✕</button>
+  <img id="lb-img" alt="" crossorigin="anonymous">
+  <div class="cap" id="lb-cap"></div>
+</div>
+
+<script>
+/* ---- catalog (generated; AV index -> phone body colour is hand-verified per SKU) ---- */
+const VERIFIED = "2026-08-08";
+
+const MODELS = [
+  { key:"iphone-17", label:"iPhone 17" },
+  { key:"iphone-17-pro", label:"iPhone 17 Pro" },
+  { key:"iphone-17-pro-max", label:"iPhone 17 Pro Max" },
+  { key:"iphone-air", label:"iPhone Air" },
+  { key:"iphone-17e", label:"iPhone 17e" },
+];
+
+const PHONE_COLORS = {
+  "iphone-17": [{ key:"lavender", en:"Lavender", th:"ลาเวนเดอร์" }, { key:"sage", en:"Sage", th:"เขียวเสจ" }, { key:"mistblue", en:"Mist Blue", th:"ฟ้าหมอก" }, { key:"white", en:"White", th:"ขาว" }, { key:"black", en:"Black", th:"ดำ" }],
+  "iphone-17-pro": [{ key:"cosmicorange", en:"Cosmic Orange", th:"ส้มคอสมิก" }, { key:"deepblue", en:"Deep Blue", th:"น้ำเงินเข้ม" }, { key:"silver", en:"Silver", th:"เงิน" }],
+  "iphone-17-pro-max": [{ key:"cosmicorange", en:"Cosmic Orange", th:"ส้มคอสมิก" }, { key:"deepblue", en:"Deep Blue", th:"น้ำเงินเข้ม" }, { key:"silver", en:"Silver", th:"เงิน" }],
+  "iphone-air": [{ key:"skyblue", en:"Sky Blue", th:"สกายบลู" }, { key:"lightgold", en:"Light Gold", th:"ทองอ่อน" }, { key:"cloudwhite", en:"Cloud White", th:"ขาวปุยเมฆ" }, { key:"spaceblack", en:"Space Black", th:"ดำสเปซแบล็ค" }],
+  "iphone-17e": [{ key:"white", en:"White", th:"สีขาว" }, { key:"softpink", en:"Light Pink", th:"สีชมพูอ่อน" }, { key:"black", en:"Black", th:"สีดำ" }],
+};
+
+const FAMILIES = [
+  { key:"silicone", en:"Silicone Case", th:"เคสซิลิโคน" },
+  { key:"techwoven", en:"TechWoven Case", th:"เคสผ้า TechWoven" },
+  { key:"clear", en:"Clear Case", th:"เคสใส" },
+  { key:"bumper", en:"Bumper", th:"กรอบกันกระแทก" },
+  { key:"case", en:"Case with MagSafe", th:"เคสพร้อม MagSafe" },
+];
+
+const CASES = [
+  { base:"MGEW4", sku:"MGEW4FE/A", model:"iphone-17", family:"silicone", en:"Anchor Blue", th:"สีน้ำเงินแองเคอร์บลู", swatch:true, shots:{"lavender": 1, "sage": 2, "mistblue": 0, "white": 3, "black": 4} },
+  { base:"MGF14", sku:"MGF14FE/A", model:"iphone-17", family:"silicone", en:"Black", th:"สีดำ", swatch:true, shots:{"lavender": 1, "sage": 2, "mistblue": 3, "white": 4, "black": 0} },
+  { base:"MHVQ4", sku:"MHVQ4FE/A", model:"iphone-17", family:"silicone", en:"Bright Guava", th:"สีชมพูสดกวาวา", swatch:true, shots:{"lavender": 1, "sage": 2, "mistblue": 3, "white": 0, "black": 4} },
+  { base:"MHVT4", sku:"MHVT4FE/A", model:"iphone-17", family:"silicone", en:"Electric Lavender", th:"สีอิเล็คทริคลาเวนเดอร์", swatch:true, shots:{"lavender": 0, "sage": 2, "mistblue": 3, "white": 1, "black": 4} },
+  { base:"MGEX4", sku:"MGEX4FE/A", model:"iphone-17", family:"silicone", en:"Light Moss", th:"สีเขียวอ่อนมอส", swatch:true, shots:{"lavender": 1, "sage": 0, "mistblue": 2, "white": 3, "black": 4} },
+  { base:"MHVM4", sku:"MHVM4FE/A", model:"iphone-17", family:"silicone", en:"Vanilla", th:"สีวานิลลา", swatch:true, shots:{"lavender": 1, "sage": 2, "mistblue": 3, "white": 0, "black": 4} },
+  { base:"MGF24", sku:"MGF24FE/A", model:"iphone-17", family:"clear", en:"Clear", th:"ใส", swatch:false, shots:{"lavender": 4, "sage": 2, "mistblue": 3, "white": 1, "black": 0} },
+  { base:"MGFK4", sku:"MGFK4FE/A", model:"iphone-17-pro", family:"silicone", en:"Black", th:"สีดำ", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MHW04", sku:"MHW04FE/A", model:"iphone-17-pro", family:"silicone", en:"Bright Guava", th:"สีชมพูสดกวาวา", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFH4", sku:"MGFH4FE/A", model:"iphone-17-pro", family:"silicone", en:"Midnight", th:"สีมิดไนท์", swatch:true, shots:{"cosmicorange": 1, "deepblue": 0, "silver": 2} },
+  { base:"MGFF4", sku:"MGFF4FE/A", model:"iphone-17-pro", family:"silicone", en:"Neon Yellow", th:"สีเหลืองนีออน", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFE4", sku:"MGFE4FE/A", model:"iphone-17-pro", family:"silicone", en:"Orange", th:"สีส้ม", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MGFG4", sku:"MGFG4FE/A", model:"iphone-17-pro", family:"silicone", en:"Smoked Violet", th:"สีม่วงควันหมอก", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFJ4", sku:"MGFJ4FE/A", model:"iphone-17-pro", family:"silicone", en:"Terracotta", th:"สีน้ำตาลเทอราคอตต้า", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MHVX4", sku:"MHVX4FE/A", model:"iphone-17-pro", family:"silicone", en:"Vanilla", th:"สีวานิลลา", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF34", sku:"MGF34FE/A", model:"iphone-17-pro", family:"techwoven", en:"Black", th:"สีดำ", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF44", sku:"MGF44FE/A", model:"iphone-17-pro", family:"techwoven", en:"Blue", th:"สีน้ำเงิน", swatch:true, shots:{"cosmicorange": 2, "deepblue": 0, "silver": 1} },
+  { base:"MGF74", sku:"MGF74FE/A", model:"iphone-17-pro", family:"techwoven", en:"Green", th:"สีเขียว", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF54", sku:"MGF54FE/A", model:"iphone-17-pro", family:"techwoven", en:"Purple", th:"สีม่วง", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF64", sku:"MGF64FE/A", model:"iphone-17-pro", family:"techwoven", en:"Sienna", th:"สีน้ำตาลเซียนนา", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MGFT4", sku:"MGFT4FE/A", model:"iphone-17-pro", family:"clear", en:"Clear", th:"ใส", swatch:false, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFR4", sku:"MGFR4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Black", th:"สีดำ", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MHW64", sku:"MHW64FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Bright Guava", th:"สีชมพูสดกวาวา", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFP4", sku:"MGFP4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Midnight", th:"สีมิดไนท์", swatch:true, shots:{"cosmicorange": 2, "deepblue": 0, "silver": 1} },
+  { base:"MGFM4", sku:"MGFM4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Neon Yellow", th:"สีเหลืองนีออน", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFL4", sku:"MGFL4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Orange", th:"สีส้ม", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MGFN4", sku:"MGFN4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Smoked Violet", th:"สีม่วงควันหมอก", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFQ4", sku:"MGFQ4FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Terracotta", th:"สีน้ำตาลเทอราคอตต้า", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MHW54", sku:"MHW54FE/A", model:"iphone-17-pro-max", family:"silicone", en:"Vanilla", th:"สีวานิลลา", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF84", sku:"MGF84FE/A", model:"iphone-17-pro-max", family:"techwoven", en:"Black", th:"สีดำ", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGF94", sku:"MGF94FE/A", model:"iphone-17-pro-max", family:"techwoven", en:"Blue", th:"สีน้ำเงิน", swatch:true, shots:{"cosmicorange": 2, "deepblue": 0, "silver": 1} },
+  { base:"MGFD4", sku:"MGFD4FE/A", model:"iphone-17-pro-max", family:"techwoven", en:"Green", th:"สีเขียว", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFA4", sku:"MGFA4FE/A", model:"iphone-17-pro-max", family:"techwoven", en:"Purple", th:"สีม่วง", swatch:true, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MGFC4", sku:"MGFC4FE/A", model:"iphone-17-pro-max", family:"techwoven", en:"Sienna", th:"สีน้ำตาลเซียนนา", swatch:true, shots:{"cosmicorange": 0, "deepblue": 2, "silver": 1} },
+  { base:"MGFW4", sku:"MGFW4FE/A", model:"iphone-17-pro-max", family:"clear", en:"Clear", th:"ใส", swatch:false, shots:{"cosmicorange": 1, "deepblue": 2, "silver": 0} },
+  { base:"MH004", sku:"MH004FE/A", model:"iphone-air", family:"bumper", en:"Black", th:"สีดำ", swatch:true, shots:{"skyblue": 1, "lightgold": 2, "cloudwhite": 3, "spaceblack": 0} },
+  { base:"MH024", sku:"MH024FE/A", model:"iphone-air", family:"bumper", en:"Light Blue", th:"สีฟ้าอ่อน", swatch:true, shots:{"skyblue": 0, "lightgold": 1, "cloudwhite": 2, "spaceblack": 3} },
+  { base:"MH014", sku:"MH014FE/A", model:"iphone-air", family:"bumper", en:"Light Grey", th:"สีเทาอ่อน", swatch:true, shots:{"skyblue": 1, "lightgold": 2, "cloudwhite": 0, "spaceblack": 3} },
+  { base:"MH044", sku:"MH044FE/A", model:"iphone-air", family:"bumper", en:"Tan", th:"สีแทน", swatch:true, shots:{"skyblue": 1, "lightgold": 0, "cloudwhite": 2, "spaceblack": 3} },
+  { base:"MGH34", sku:"MGH34FE/A", model:"iphone-air", family:"case", en:"Ice", th:"สีเกล็ดน้ำแข็ง", swatch:true, shots:{"skyblue": 1, "lightgold": 2, "cloudwhite": 0, "spaceblack": 3} },
+  { base:"MGH24", sku:"MGH24FE/A", model:"iphone-air", family:"case", en:"Shadow", th:"สีเทาแชโดว์", swatch:true, shots:{"skyblue": 1, "lightgold": 2, "cloudwhite": 3, "spaceblack": 0} },
+  { base:"MHWE4", sku:"MHWE4FE/A", model:"iphone-17e", family:"silicone", en:"Anchor Blue", th:"สีน้ำเงินแองเคอร์บลู", swatch:true, shots:{"white": 1, "softpink": 0, "black": 2} },
+  { base:"MHWD4", sku:"MHWD4FE/A", model:"iphone-17e", family:"silicone", en:"Black", th:"สีดำ", swatch:true, shots:{"white": 2, "softpink": 1, "black": 0} },
+  { base:"MHWH4", sku:"MHWH4FE/A", model:"iphone-17e", family:"silicone", en:"Bright Guava", th:"สีชมพูสดกวาวา", swatch:true, shots:{"white": 1, "softpink": 0, "black": 2} },
+  { base:"MHWF4", sku:"MHWF4FE/A", model:"iphone-17e", family:"silicone", en:"Light Moss", th:"สีเขียวอ่อนมอส", swatch:true, shots:{"white": 0, "softpink": 1, "black": 2} },
+  { base:"MHWJ4", sku:"MHWJ4FE/A", model:"iphone-17e", family:"silicone", en:"Light Pink", th:"สีชมพูอ่อน", swatch:true, shots:{"white": 1, "softpink": 0, "black": 2} },
+  { base:"MHWG4", sku:"MHWG4FE/A", model:"iphone-17e", family:"silicone", en:"Vanilla", th:"สีวานิลลา", swatch:true, shots:{"white": 0, "softpink": 1, "black": 2} },
+  { base:"MHWC4", sku:"MHWC4FE/A", model:"iphone-17e", family:"clear", en:"Clear", th:"ใส", swatch:false, shots:{"white": 1, "softpink": 0, "black": 2} },
+];
+
+
+/* ---- Apple image CDN ---- */
+var CDN = 'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/';
+/* av 0 = Apple's bare {BASE} image code (no _AV suffix). It is a real, distinct shot:
+   for every SKU it is the one phone colour the _AV series omits. */
+function shotURL(base, av, w) {
+  return CDN + base + (av ? '_AV' + av : '') + '?wid=' + w + '&hei=' + w + '&fmt=jpeg&qlt=90';
+}
+function swatchURL(base) { return CDN + base + '_SW_COLOR?wid=64&hei=64&fmt=jpeg&qlt=90'; }
+
+/* swatch dots for the iPhone colour chips */
+var DOT = {
+  lavender:'#cdc3dd', sage:'#c3ccb4', mistblue:'#c6d7e6', white:'#f2f2f0', black:'#3a3c3e',
+  cosmicorange:'#e07b46', deepblue:'#454b63', silver:'#dcdcdc',
+  skyblue:'#d6e6f2', lightgold:'#efe4cd', cloudwhite:'#f2f2f2', spaceblack:'#2a2a2a',
+  softpink:'#f4dcdb'
+};
+
+var currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
+var S = { model: null, family: null, base: null, phone: null };
+var sheetBlob = null, sheetName = '';
+
+function L(o) { return currentLang === 'th' ? (o.th || o.en) : o.en; }
+function casesFor(model, family) {
+  return CASES.filter(function(c){ return c.model === model && (!family || c.family === family); });
+}
+function famsFor(model) {
+  return FAMILIES.filter(function(f){ return casesFor(model, f.key).length > 0; });
+}
+function cur() { return CASES.filter(function(c){ return c.base === S.base; })[0]; }
+
+var _imgCache = {};
+function loadImg(url) {
+  if (_imgCache[url]) return _imgCache[url];
+  _imgCache[url] = new Promise(function(res, rej){
+    var im = new Image();
+    im.crossOrigin = 'anonymous';           // required or the canvas taints and toBlob throws
+    im.onload = function(){ res(im); };
+    im.onerror = function(){ rej(new Error('load ' + url)); };
+    im.src = url;
+  });
+  return _imgCache[url];
+}
+
+/* ---------- selection ---------- */
+function selectModel(k) {
+  S.model = k;
+  var fams = famsFor(k);
+  // never default to a fixed family: coverage is ragged (iPhone Air has no silicone at all)
+  var keep = fams.filter(function(f){ return f.key === S.family; })[0];
+  S.family = keep ? keep.key : (fams[0] ? fams[0].key : null);
+  selectFamily(S.family, true);
+}
+function selectFamily(k, quiet) {
+  S.family = k;
+  var list = casesFor(S.model, k);
+  var keep = list.filter(function(c){ return c.base === S.base; })[0];
+  S.base = keep ? keep.base : (list[0] ? list[0].base : null);
+  selectColor(S.base, true);
+  if (!quiet) renderAll();
+}
+function selectColor(base, quiet) {
+  S.base = base;
+  var c = cur();
+  // every case currently has a real photo for every colour of its model, but keep the
+  // guard: it is what makes a future gap render as an honest "no photo" instead of a crash
+  if (!c || c.shots[S.phone] === undefined) {
+    var first = (PHONE_COLORS[c ? c.model : ''] || [])[0];
+    S.phone = first ? first.key : null;
+  }
+  invalidateSheet();
+  if (!quiet) renderAll();
+}
+function selectPhone(k) { S.phone = k; invalidateSheet(); renderAll(); }
+
+/* ---------- render ---------- */
+function renderAll() { renderModels(); renderFamilies(); renderColors(); renderStage(); renderFoot(); }
+
+function renderModels() {
+  document.getElementById('models').innerHTML = MODELS.map(function(m){
+    return '<button class="tab' + (m.key === S.model ? ' active' : '') + '" onclick="selectModel(\'' + m.key + '\');renderAll()">' + m.label + '</button>';
+  }).join('');
+}
+function renderFamilies() {
+  document.getElementById('families').innerHTML = famsFor(S.model).map(function(f){
+    return '<button class="tab' + (f.key === S.family ? ' active' : '') + '" onclick="selectFamily(\'' + f.key + '\')">' + esc(L(f)) + '</button>';
+  }).join('');
+}
+function renderColors() {
+  document.getElementById('colors').innerHTML = casesFor(S.model, S.family).map(function(c){
+    var img = c.swatch
+      ? '<img src="' + swatchURL(c.base) + '" alt="" onerror="this.parentNode.classList.add(\'noimg\');this.remove()">'
+      : '';
+    return '<button class="swatch' + (c.swatch ? '' : ' noimg') + (c.base === S.base ? ' active' : '') +
+           '" onclick="selectColor(\'' + c.base + '\')">' + img + '<span>' + esc(L(c)) + '</span></button>';
+  }).join('');
+}
+
+function renderStage() {
+  var c = cur(), frame = document.getElementById('frame');
+  var fam = FAMILIES.filter(function(f){ return f.key === S.family; })[0];
+  if (!c) {
+    document.getElementById('ct').textContent = '';
+    document.getElementById('cs').textContent = '';
+    frame.innerHTML = noteHTML('?', tr('No cases listed for this model','ไม่มีเคสสำหรับรุ่นนี้'), '');
+    document.getElementById('pcs').innerHTML = '';
+    return;
+  }
+  document.getElementById('ct').textContent = (fam ? L(fam) + ' — ' : '') + L(c);
+  document.getElementById('cs').textContent = c.sku;
+
+  var av = c.shots[S.phone];
+  if (av !== undefined) {
+    frame.innerHTML = '<div class="skel"></div><img alt="" src="' + shotURL(c.base, av, 1000) + '" ' +
+      'onload="this.classList.add(\'ok\');var s=this.parentNode.querySelector(\'.skel\');if(s)s.remove()" ' +
+      'onerror="shotFailed(this)" onclick="openBox()">';
+  } else {
+    frame.innerHTML = noteHTML('?', tr('No photo published','ไม่มีรูปจาก Apple'),
+      tr('Apple does not publish a photo of this case on this iPhone colour.',
+         'Apple ไม่ได้เผยแพร่ภาพเคสสีนี้บนตัวเครื่องสีนี้'));
+  }
+
+  var colors = PHONE_COLORS[S.model] || [];
+  document.getElementById('pcs').innerHTML = colors.map(function(p){
+    var has = c.shots[p.key] !== undefined;
+    var dot = '<span class="dot" style="background:' + (DOT[p.key] || '#ddd') + '"></span>';
+    var tag = has ? '' : ' <span class="tag">' + tr('no photo','ไม่มีรูป') + '</span>';
+    return '<button class="pc' + (has ? '' : ' off') + (p.key === S.phone ? ' active' : '') + '"' +
+           (has ? ' onclick="selectPhone(\'' + p.key + '\')"' : ' disabled') + '>' +
+           dot + '<span class="lbl">' + esc(L(p)) + '</span>' + tag + '</button>';
+  }).join('');
+
+  preload();
+}
+function noteHTML(g, t1, t2) {
+  return '<div class="note"><div class="glyph">' + g + '</div><div class="t1">' + esc(t1) + '</div>' +
+         (t2 ? '<div class="t2">' + esc(t2) + '</div>' : '') + '</div>';
+}
+/* network/404 failure is a DIFFERENT fact from "no photo published" — say so differently */
+function shotFailed(img) {
+  var f = img.parentNode;
+  f.innerHTML = noteHTML('!', tr('Image unavailable','โหลดรูปไม่สำเร็จ'),
+    tr('Could not load this photo from Apple.','ไม่สามารถโหลดรูปจาก Apple ได้')) +
+    '';
+  var b = document.createElement('button');
+  b.textContent = tr('Try again','ลองใหม่');
+  b.onclick = renderStage;
+  f.querySelector('.note').appendChild(b);
+}
+function preload() {
+  var c = cur(); if (!c) return;
+  Object.keys(c.shots).forEach(function(k){
+    if (k !== S.phone) { var i = new Image(); i.crossOrigin = 'anonymous'; i.src = shotURL(c.base, c.shots[k], 1000); }
+  });
+}
+function renderFoot() {
+  document.getElementById('vfoot').textContent =
+    tr('Every view is an unedited Apple photograph. Colour mapping last checked: ',
+       'ทุกภาพเป็นภาพถ่ายจริงจาก Apple ไม่มีการตัดต่อ ตรวจสอบการจับคู่สีล่าสุด: ') + VERIFIED;
+}
+
+/* ---------- lightbox ---------- */
+function openBox() {
+  var c = cur(); if (!c || !S.phone) return;
+  var p = (PHONE_COLORS[S.model] || []).filter(function(x){ return x.key === S.phone; })[0];
+  document.getElementById('lb-cap').textContent = L(c) + ' · ' + (p ? L(p) : '');
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('lb-img').src = shotURL(c.base, c.shots[S.phone], 2000);
+}
+function closeBox(e, force) {
+  if (!force && e && e.target.tagName === 'IMG') return;
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeBox(null, 1); });
+
+/* ---------- share: prepare (may await) then share (no await before navigator.share) ---------- */
+function invalidateSheet() {
+  sheetBlob = null;
+  var s = document.getElementById('share'); if (s) s.disabled = true;
+  var l = document.getElementById('prep-lbl');
+  if (l) l.textContent = tr('Prepare image','เตรียมรูป');
+}
+function prepare() {
+  var c = cur(); if (!c || !S.phone) return;
+  var p = (PHONE_COLORS[S.model] || []).filter(function(x){ return x.key === S.phone; })[0];
+  var lbl = document.getElementById('prep-lbl');
+  lbl.textContent = tr('Preparing…','กำลังเตรียม…');
+  fetch(shotURL(c.base, c.shots[S.phone], 2000)).then(function(r){ return r.blob(); })
+    .then(function(b){
+      if (!b) throw new Error('no blob');
+      sheetBlob = b;
+      sheetName = (c.en + '-on-' + (p ? p.en : ''))
+                  .replace(/[^A-Za-z0-9]+/g, '-') + '.jpg';
+      lbl.textContent = tr('Ready — tap Share','พร้อมแล้ว กด แชร์');
+      document.getElementById('share').disabled = false;
+    })
+    ['catch'](function(){ lbl.textContent = tr('Could not prepare','เตรียมรูปไม่สำเร็จ'); });
+}
+function doShare() {
+  if (!sheetBlob) return;
+  var file = new File([sheetBlob], sheetName, { type: 'image/jpeg' });
+  var title = document.getElementById('ct').textContent;
+  try {
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: title })['catch'](shareErr);
+    } else if (navigator.share) {
+      navigator.share({ title: title, url: location.href })['catch'](shareErr);
+    }
+  } catch (e) { shareErr(e); }
+}
+function shareErr(e) { if (e && e.name !== 'AbortError') console.error(e); }
+
+/* ---------- misc ---------- */
+function tr(en, th) { return currentLang === 'th' ? th : en; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function goHome() { window.location.href = 'staff-tool.html'; }
+
+function setLang(lang) {
+  currentLang = lang;
+  try { localStorage.setItem('one_shortcut_lang', lang); } catch(e) {}
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    var val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+    if (el.children.length === 0) el.textContent = val;
+  });
+  document.querySelectorAll('.lang-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+  // the data-en walk above resets the Prepare label; keep it truthful if a blob is already held
+  if (sheetBlob) document.getElementById('prep-lbl').textContent = tr('Ready — tap Share','พร้อมแล้ว กด แชร์');
+  renderAll();   // the pickers/stage are JS-rendered, so setLang's DOM walk cannot reach them
+}
+
+/* no Web Share API (desktop, or file://) -> hide the whole row; Prepare alone does nothing */
+if (!navigator.share) { document.querySelector('.actions').style.display = 'none'; }
+
+function netCheck() { document.getElementById('offline').classList.toggle('show', navigator.onLine === false); }
+window.addEventListener('online', netCheck);
+window.addEventListener('offline', netCheck);
+
+selectModel(MODELS[0].key);
+if (currentLang !== 'en') setLang(currentLang); else renderAll();
+netCheck();
+</script>
+</body>
+</html>
