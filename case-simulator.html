@@ -25,7 +25,13 @@
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  /* the picker rows below collapse by shrinking layout height (max-height), which shrinks
+     the page's total scrollable range; without slack the browser claws scrollY back toward 0
+     as soon as it collapses, which the scroll listener reads as "scrolled up" and re-expands —
+     a feedback loop that looks like shaking. Reserve slack (> the 320px collapse cap) so
+     collapsing can never make the document shorter than one viewport. */
+  html { overflow-anchor: none; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: calc(100vh + 340px); }
 
   .sticky-header {
     background: rgba(255,255,255,0.92);
@@ -37,6 +43,12 @@
   .header-top { display: flex; align-items: center; padding: 16px 16px 10px; gap: 10px; }
   .header-body { padding: 2px 16px 10px; }
   .header-body h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 4px; }
+
+  /* picker rows retract on scroll-down so the photo gets more room on small screens.
+     max-height is a generous fixed cap (real content is ~230px) rather than a measured
+     value, so it keeps working if a row's content height changes slightly later. */
+  .picker-rows { overflow: hidden; overflow-anchor: none; max-height: 320px; opacity: 1; transition: max-height 0.28s ease, opacity 0.2s ease; }
+  .picker-rows.collapsed { max-height: 0; opacity: 0; transition: max-height 0.28s ease, opacity 0.15s ease; }
 
   .back-btn {
     display: flex; align-items: center; justify-content: center;
@@ -133,14 +145,16 @@
       <button class="lang-btn" onclick="setLang('th')">TH</button>
     </div>
   </div>
-  <div class="row-label" data-en="Model" data-th="รุ่น">Model</div>
-  <div class="tabs-scroll"><div class="tabs" id="models"></div></div>
-  <div class="row-label" data-en="Case Type" data-th="ประเภทเคส">Case Type</div>
-  <div class="tabs-scroll"><div class="tabs" id="families"></div></div>
-  <div class="row-label" data-en="Case Colour" data-th="สีเคส">Case Colour</div>
-  <div class="tabs-scroll"><div class="tabs" id="colors"></div></div>
-  <div class="row-label" data-en="iPhone Colour" data-th="สีตัวเครื่อง">iPhone Colour</div>
-  <div class="tabs-scroll"><div class="pc-list" id="pcs"></div></div>
+  <div class="picker-rows" id="pickerRows">
+    <div class="row-label" data-en="Model" data-th="รุ่น">Model</div>
+    <div class="tabs-scroll"><div class="tabs" id="models"></div></div>
+    <div class="row-label" data-en="Case Type" data-th="ประเภทเคส">Case Type</div>
+    <div class="tabs-scroll"><div class="tabs" id="families"></div></div>
+    <div class="row-label" data-en="Case Colour" data-th="สีเคส">Case Colour</div>
+    <div class="tabs-scroll"><div class="tabs" id="colors"></div></div>
+    <div class="row-label" data-en="iPhone Colour" data-th="สีตัวเครื่อง">iPhone Colour</div>
+    <div class="tabs-scroll"><div class="pc-list" id="pcs"></div></div>
+  </div>
 </div>
 
 <main>
@@ -488,6 +502,30 @@ function setLang(lang) {
   if (sheetBlob) document.getElementById('prep-lbl').textContent = tr('Ready — tap Share','พร้อมแล้ว กด แชร์');
   renderAll();   // the pickers/stage are JS-rendered, so setLang's DOM walk cannot reach them
 }
+
+/* ---------- picker rows retract on scroll-down, expand on scroll-up or near top ----------
+   Decided from absolute scrollY with a hysteresis band, not from scroll delta: collapsing
+   shrinks the page's own scroll height, so a delta-based listener would read the browser's
+   own scrollY correction (after the page just got shorter) as "user scrolled up" and
+   immediately re-expand — a feedback loop that looks like shaking. A fixed collapse/expand
+   band is immune to that because it doesn't care *why* scrollY moved, only where it landed;
+   pairing it with guaranteed scroll slack (see body min-height) keeps scrollY from ever being
+   forced below the expand threshold by the collapse itself. */
+(function () {
+  var rows = document.getElementById('pickerRows');
+  if (!rows) return;
+  var COLLAPSE_AT = 120, EXPAND_AT = 60;
+  var ticking = false;
+  function update() {
+    var y = window.scrollY || 0;
+    if (y > COLLAPSE_AT) rows.classList.add('collapsed');
+    else if (y < EXPAND_AT) rows.classList.remove('collapsed');
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+})();
 
 /* no Web Share API (desktop, or file://) -> hide the whole row; Prepare alone does nothing */
 if (!navigator.share) { document.querySelector('.actions').style.display = 'none'; }
