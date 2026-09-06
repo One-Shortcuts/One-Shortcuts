@@ -14,6 +14,7 @@ html_files=(
   support.html
   other.html
   edu-price.html
+  today-at-apple.html
   vat-refund.html
   belkin-claim.html
   tax-invoice.html
@@ -47,6 +48,17 @@ for file in "${html_files[@]}"; do
   fi
 done
 
+data_files=(
+  data/sessions-iconsiam.json
+)
+
+for file in "${data_files[@]}"; do
+  if [[ ! -f "$repo_root/$file" ]]; then
+    printf 'Missing deployable file: %s\n' "$file" >&2
+    exit 1
+  fi
+done
+
 if ! gh repo view "$deploy_repo" >/dev/null 2>&1; then
   gh repo create "$deploy_repo" --public --description "$description" --disable-issues --disable-wiki
 fi
@@ -60,6 +72,11 @@ cd "$workdir"
 git checkout -B "$branch" >/dev/null 2>&1
 
 for file in "${html_files[@]}"; do
+  cp "$repo_root/$file" "$workdir/$file"
+done
+
+for file in "${data_files[@]}"; do
+  mkdir -p "$workdir/$(dirname "$file")"
   cp "$repo_root/$file" "$workdir/$file"
 done
 

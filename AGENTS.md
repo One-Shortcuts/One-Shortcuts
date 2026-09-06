@@ -10,7 +10,7 @@ Supporting files:
 
 - `deploy_ShortcutTools.sh` publishes deployable `.html` files to the public `i3udokai/One-Shortcut` GitHub Pages repo and enables Pages from the repo root when needed.
 - `price-battle.html` is a same-site production page opened by the launcher.
-- `education-price.html`, `vat-refund.html`, `belkin-claim.html`, `highlight.html`, `support.html`, `other.html`, and `edu-price.html` are deployable standalone/reference pages. Keep `noindex` tags in public HTML.
+- `education-price.html`, `vat-refund.html`, `belkin-claim.html`, `highlight.html`, `support.html`, `other.html`, `edu-price.html`, and `today-at-apple.html` are deployable standalone/reference pages. Keep `noindex` tags in public HTML.
 - `README.md` and `CLAUDE.md` document workflow.
 - `.gist-id-shortcut` is a legacy Gist artifact and is not part of the current deployment flow.
 
