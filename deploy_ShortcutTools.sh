@@ -21,6 +21,8 @@ html_files=(
   case-simulator.html
   back-to-school.jpg
   bank-transfer.jpg
+  kiosk-icon.png
+  kiosk-qr.jpeg
   favicon.png
   apple-touch-icon.png
 )
