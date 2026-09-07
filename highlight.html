@@ -101,7 +101,12 @@
   .qr-card { padding: 24px 20px; text-align: center; }
   .qr-card-title { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); margin-bottom: 4px; }
   .qr-card-subtitle { font-size: 14px; color: var(--text2); margin-bottom: 22px; }
-  .qr-image { display: block; width: min(100%, 280px); height: auto; margin: 0 auto 24px; border-radius: 10px; }
+  .store-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 12px; }
+  .store-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 22px; }
+  .store-option { min-height: 38px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text2); font-family: var(--font); font-size: 13px; font-weight: 700; cursor: pointer; }
+  .store-option.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-sm); }
+  .qr-code { display: inline-block; padding: 12px; margin-bottom: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); }
+  .qr-code canvas, .qr-code img { width: 220px !important; height: 220px !important; display: block; }
   .primary-link { display: block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: var(--font-en); }
 </style>
 </head>
@@ -110,15 +115,18 @@
 <div class="sticky-header">
   <div class="header-top">
     <a class="back-btn" onclick="event.preventDefault();goHome()">‹</a>
-    <span class="screen-label" data-en="College Student Offer" data-th="College Student Offer">College Student Offer</span>
+    <span class="screen-label" data-en="Menu" data-th="Menu">Menu</span>
     <div class="lang-toggle">
       <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('th')">TH</button>
     </div>
   </div>
   <div class="header-body">
-    <h1 data-en="College Student Offer" data-th="College Student Offer">College Student Offer</h1>
-    <p style="font-size:14px;color:var(--text2);margin-top:2px;">
+    <h1 id="page-title" data-en="Kiosk" data-th="Kiosk">Kiosk</h1>
+    <p id="page-subtitle" style="font-size:14px;color:var(--text2);margin-top:2px;">
+      <span data-en="Kiosk for online order" data-th="Kiosk for online order">Kiosk for online order</span>
+    </p>
+    <p id="college-subtitle" style="display:none;font-size:14px;color:var(--text2);margin-top:2px;">
       <span data-en="See terms and conditions of this promo" data-th="ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้">See terms and conditions of this promo</span>
       <a href="https://www.apple.com/th-edu/shop/back-to-school/terms-conditions" style="color: var(--accent); text-decoration: none; font-weight: 600;" data-en=" here" data-th=" ที่นี่"> here</a>
     </p>
@@ -136,9 +144,14 @@
 <div id="tab-kiosk" class="tab-panel active">
   <div class="table-card qr-card">
     <div class="qr-card-title">Kiosk</div>
-    <div class="qr-card-subtitle" data-en="Scan QR code to open the Kiosk page" data-th="สแกน QR code เพื่อเปิดหน้า Kiosk">Scan QR code to open the Kiosk page</div>
-    <img class="qr-image" src="kiosk-qr.jpeg" alt="Kiosk QR code">
-    <a class="primary-link" href="https://www.apple.com/th_kiosk_804887/store" data-en="Open this website" data-th="เปิดเว็บไซต์">Open this website</a>
+    <div class="qr-card-subtitle" data-en="Kiosk for online order" data-th="Kiosk for online order">Kiosk for online order</div>
+    <div id="kiosk-store-name" class="store-name">Apple Iconsiam</div>
+    <div class="store-toggle" aria-label="Choose Apple Store">
+      <button class="store-option active" onclick="setKioskStore('iconsiam', true)" data-store-option="iconsiam">Iconsiam</button>
+      <button class="store-option" onclick="setKioskStore('centralworld', true)" data-store-option="centralworld">Central World</button>
+    </div>
+    <div id="kiosk-qr" class="qr-code"></div>
+    <a id="kiosk-open-link" class="primary-link" href="https://www.apple.com/th_kiosk_804887/store" data-en="Open this website" data-th="เปิดเว็บไซต์">Open this website</a>
   </div>
 </div>
 
@@ -184,13 +197,67 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
+  const TAB_META = {
+    'tab-kiosk': {
+      title: 'Kiosk',
+      subtitle: 'Kiosk for online order',
+      subtitleTh: 'Kiosk for online order',
+      showCollegeSubtitle: false
+    },
+    'tab-btu': {
+      title: 'College',
+      subtitle: 'See terms and conditions of this promo',
+      subtitleTh: 'ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้',
+      showCollegeSubtitle: true
+    },
+    'tab-unidays': {
+      title: 'Unidays',
+      subtitle: 'Scan QR code to open verification page',
+      subtitleTh: 'สแกน QR code เพื่อเปิดหน้ายืนยันตัวตน',
+      showCollegeSubtitle: false
+    }
+  };
+
+  const KIOSK_STORES = {
+    iconsiam: {
+      name: 'Apple Iconsiam',
+      url: 'https://www.apple.com/th_kiosk_804887/store',
+      lat: 13.7265607,
+      lng: 100.5080682
+    },
+    centralworld: {
+      name: 'Apple Central World',
+      url: 'https://www.apple.com/th_kiosk_804887/store',
+      lat: 13.7457937,
+      lng: 100.5365402
+    }
+  };
+
   function showTab(id) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
+    updateHeader(id);
     window.scrollTo(0, 0);
     if (id === 'tab-unidays') initQR();
+    if (id === 'tab-kiosk') renderKioskQR();
+  }
+
+  function updateHeader(id) {
+    const meta = TAB_META[id] || TAB_META['tab-kiosk'];
+    const title = document.getElementById('page-title');
+    const subtitle = document.getElementById('page-subtitle');
+    const subtitleText = subtitle.querySelector('span');
+    const collegeSubtitle = document.getElementById('college-subtitle');
+    title.setAttribute('data-en', meta.title);
+    title.setAttribute('data-th', meta.title);
+    title.textContent = meta.title;
+    subtitle.style.display = meta.showCollegeSubtitle ? 'none' : '';
+    collegeSubtitle.style.display = meta.showCollegeSubtitle ? '' : 'none';
+    subtitleText.setAttribute('data-en', meta.subtitle);
+    subtitleText.setAttribute('data-th', meta.subtitleTh);
+    subtitleText.textContent = currentLang === 'th' ? meta.subtitleTh : meta.subtitle;
   }
 
   let qrGenerated = false;
@@ -204,6 +271,62 @@
       colorDark: '#1d1d1f',
       colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  function renderKioskQR() {
+    setKioskStore('iconsiam', false);
+  }
+
+  function setKioskStore(storeKey, remember) {
+    const store = KIOSK_STORES[storeKey] || KIOSK_STORES.iconsiam;
+    document.querySelectorAll('.store-option').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-store-option') === storeKey);
+    });
+    document.getElementById('kiosk-store-name').textContent = store.name;
+    document.getElementById('kiosk-open-link').href = store.url;
+
+    const qrNode = document.getElementById('kiosk-qr');
+    if (!qrNode || typeof QRCode === 'undefined') return;
+    qrNode.innerHTML = '';
+    new QRCode(qrNode, {
+      text: store.url,
+      width: 220,
+      height: 220,
+      colorDark: '#1d1d1f',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  function distanceMeters(lat1, lng1, lat2, lng2) {
+    const radius = 6371000;
+    const toRad = value => value * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLng = toRad(lng2 - lng1);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function requestNearestKioskStore() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const nearest = Object.keys(KIOSK_STORES).reduce((bestKey, key) => {
+        const best = KIOSK_STORES[bestKey];
+        const store = KIOSK_STORES[key];
+        const bestDistance = distanceMeters(lat, lng, best.lat, best.lng);
+        const storeDistance = distanceMeters(lat, lng, store.lat, store.lng);
+        return storeDistance < bestDistance ? key : bestKey;
+      }, 'iconsiam');
+      setKioskStore(nearest, true);
+    }, function() {}, {
+      enableHighAccuracy: true,
+      timeout: 7000,
+      maximumAge: 300000
     });
   }
 
@@ -221,6 +344,9 @@
     });
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
+  renderKioskQR();
+  requestNearestKioskStore();
+  updateHeader('tab-kiosk');
   if (currentLang !== 'en') setLang(currentLang);
 </script>
 </body>
