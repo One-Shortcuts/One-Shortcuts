@@ -2,7 +2,7 @@ name: Update Apple Iconsiam Schedule
 
 on:
   schedule:
-    - cron: "0 18 * * *"
+    - cron: "10 18 * * *"
   workflow_dispatch:
 
 permissions:
