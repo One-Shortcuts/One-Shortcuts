@@ -99,7 +99,6 @@
   .promo-hero img { max-width: 35%; height: auto; display: block; margin: 0 auto 6px; }
   .promo-period { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
   .qr-card { padding: 24px 20px; text-align: center; }
-  .store-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 12px; }
   .store-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 22px; }
   .store-option { min-height: 38px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text2); font-family: var(--font); font-size: 13px; font-weight: 700; cursor: pointer; }
   .store-option.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-sm); }
@@ -141,7 +140,6 @@
 <!-- TAB: KIOSK -->
 <div id="tab-kiosk" class="tab-panel active">
   <div class="table-card qr-card">
-    <div id="kiosk-store-name" class="store-name">Apple Iconsiam</div>
     <div class="store-toggle" aria-label="Choose Apple Store">
       <button class="store-option active" onclick="setKioskStore('iconsiam', true)" data-store-option="iconsiam">Iconsiam</button>
       <button class="store-option" onclick="setKioskStore('centralworld', true)" data-store-option="centralworld">Central World</button>
@@ -216,13 +214,11 @@
 
   const KIOSK_STORES = {
     iconsiam: {
-      name: 'Apple Iconsiam',
       url: 'https://www.apple.com/th_kiosk_804887/store',
       lat: 13.7265607,
       lng: 100.5080682
     },
     centralworld: {
-      name: 'Apple Central World',
       url: 'https://www.apple.com/th_kiosk_804887/store',
       lat: 13.7457937,
       lng: 100.5365402
@@ -279,7 +275,6 @@
     document.querySelectorAll('.store-option').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-store-option') === storeKey);
     });
-    document.getElementById('kiosk-store-name').textContent = store.name;
     document.getElementById('kiosk-open-link').href = store.url;
 
     const qrNode = document.getElementById('kiosk-qr');
