@@ -7,7 +7,9 @@ import re
 import sys
 import urllib.request
 from collections import OrderedDict
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 
 HTML_PATH = Path(os.environ.get("HTML_PATH", "today-at-apple.html"))
@@ -78,6 +80,47 @@ def extract_json_object(source: str, marker: str) -> dict:
     raise ValueError(f"Could not find object end after {marker}")
 
 
+def extract_json_array(source: str, marker: str) -> list:
+    marker_index = source.find(marker)
+    if marker_index < 0:
+        raise ValueError(f"Could not find {marker}")
+
+    start = source.find("[", marker_index + len(marker) - 2)
+    if start < 0:
+        raise ValueError(f"Could not find array start after {marker}")
+
+    depth = 0
+    in_string = False
+    escaped = False
+    for index in range(start, len(source)):
+        char = source[index]
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = True
+            continue
+        if char == '"':
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if char == "[":
+            depth += 1
+        elif char == "]":
+            depth -= 1
+            if depth == 0:
+                raw = source[start : index + 1]
+                unescaped = (
+                    raw.replace('\\\\\"', "__ESCAPED_BACKSLASH_QUOTE__")
+                    .replace('\\"', '"')
+                    .replace("__ESCAPED_BACKSLASH_QUOTE__", '\\\\"')
+                )
+                return json.loads(unescaped)
+
+    raise ValueError(f"Could not find array end after {marker}")
+
+
 def thai_weekday_short(display_date: dict) -> str:
     label = clean_text(
         (display_date.get("weekdayLong") or {}).get("lower")
@@ -97,6 +140,27 @@ def thai_weekday_short(display_date: dict) -> str:
         if needle in label:
             return short
     return ""
+
+
+def thai_date_label(calendar_date: dict) -> str:
+    start_date = calendar_date.get("startDate")
+    if start_date:
+        date = datetime.fromtimestamp(start_date / 1000, ZoneInfo("Asia/Bangkok")).date()
+        today = datetime.now(ZoneInfo("Asia/Bangkok")).date()
+        if date == today:
+            return "วันนี้"
+        if (date - today).days == 1:
+            return "พรุ่งนี้"
+
+    full_date = clean_text(calendar_date.get("fullDate"))
+    return re.sub(r"\s+\d{4}$", "", full_date)
+
+
+def date_key_from_calendar_date(calendar_date: dict) -> str:
+    start_date = calendar_date.get("startDate")
+    if not start_date:
+        return ""
+    return datetime.fromtimestamp(start_date / 1000, ZoneInfo("Asia/Bangkok")).date().isoformat()
 
 
 def build_event_url(course: dict, schedule_id: str, store: dict) -> str:
@@ -123,10 +187,25 @@ def build_card(schedule: dict, course: dict, store: dict) -> str:
 
 
 def build_store_panel(store: dict, calendar_html: str, is_active: bool) -> str:
+    calendar_dates = extract_json_array(calendar_html, '\\"calendarDates\\":[')
     courses = extract_json_object(calendar_html, '\\"courses\\":{')
     schedules = extract_json_object(calendar_html, '\\"schedules\\":{')
 
     grouped: OrderedDict[str, dict] = OrderedDict()
+    for calendar_date in calendar_dates:
+        date_key = date_key_from_calendar_date(calendar_date)
+        if not date_key:
+            continue
+        grouped.setdefault(
+            date_key,
+            {
+                "weekday": clean_text(calendar_date.get("day")),
+                "day": str(calendar_date.get("date") or ""),
+                "label": thai_date_label(calendar_date),
+                "items": [],
+            },
+        )
+
     for schedule in sorted(schedules.values(), key=lambda item: item.get("startTime", 0)):
         display_date = (schedule.get("displayDate") or [{}])[0]
         date_key = clean_text(schedule.get("displayStartTime", ""))[:10]
@@ -161,7 +240,7 @@ def build_store_panel(store: dict, calendar_html: str, is_active: bool) -> str:
         day_sections.append(
             f'''      <div class="schedule-day{hidden}" data-schedule-day="{safe_date}">
         <div class="schedule-day-title">{html.escape(group['label'])}</div>
-{chr(10).join(group["items"])}
+{chr(10).join(group["items"]) or '        <div class="session-card"><div class="session-title">ไม่พบเซสชั่น</div><div class="session-desc">โปรดดูตารางทั้งหมดบน Apple หรือกลับมาใหม่ภายหลัง</div></div>'}
       </div>'''
         )
 
