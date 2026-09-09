@@ -69,6 +69,14 @@
   .tab { background: var(--surface); color: var(--text2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-family: var(--font); text-align: center; }
   .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
+  /* Support article sub-tabs */
+  .sub-tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 12px 14px; margin: -16px -14px 14px; position: sticky; top: var(--support-header-offset, 132px); z-index: 80; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
+  .sub-tabs-scroll::-webkit-scrollbar { display: none; }
+  .sub-tabs-inner { display: flex; gap: 6px; width: max-content; }
+  .sub-tab { background: rgba(255,255,255,0.65); color: var(--text2); border: 1px solid var(--border); border-radius: 999px; padding: 7px 13px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: var(--shadow-sm); font-family: var(--font); }
+  .sub-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .sub-tab:active { background: rgba(0,113,227,0.1); color: var(--text2); }
+
   /* Tab panels */
   .tab-panel { display: none; padding: 16px 14px 48px; }
   .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
@@ -83,6 +91,8 @@
   #search-clear { background: var(--surface3, #e8e8ed); border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; color: var(--text2); cursor: pointer; display: none; align-items: center; justify-content: center; flex-shrink: 0; }
 
   /* Article list */
+  .article-section { scroll-margin-top: var(--article-scroll-offset, 184px); margin-bottom: 16px; }
+  .article-section-title { font-size: 13px; font-weight: 700; color: var(--text2); margin: 0 0 8px 4px; }
   .article-list { display: flex; flex-direction: column; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; }
   .article-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 18px; text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
   .article-item:last-child { border-bottom: none; }
@@ -356,6 +366,16 @@
 
 <!-- TAB: SUPPORT ARTICLE -->
 <div id="tab-article" class="tab-panel">
+  <div class="sub-tabs-scroll" id="article-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab active" onclick="scrollToArticleSection('article-iphone', this)" data-en="iPhone" data-th="iPhone">iPhone</button>
+      <button class="sub-tab" onclick="scrollToArticleSection('article-ipad', this)" data-en="iPad" data-th="iPad">iPad</button>
+      <button class="sub-tab" onclick="scrollToArticleSection('article-mac', this)" data-en="Mac" data-th="Mac">Mac</button>
+      <button class="sub-tab" onclick="scrollToArticleSection('article-watch', this)" data-en="Watch" data-th="Watch">Watch</button>
+      <button class="sub-tab" onclick="scrollToArticleSection('article-airpods', this)" data-en="AirPods" data-th="AirPods">AirPods</button>
+      <button class="sub-tab" onclick="scrollToArticleSection('article-other', this)" data-en="Other" data-th="Other">Other</button>
+    </div>
+  </div>
   <div class="search-wrap">
     <div class="search-box">
       <span class="search-icon">🔍</span>
@@ -363,81 +383,137 @@
       <button id="search-clear" style="display:none;">✕</button>
     </div>
   </div>
-  <div class="article-list">
+  <div class="article-sections">
+    <section class="article-section" id="article-iphone">
+      <h2 class="article-section-title" data-en="iPhone" data-th="iPhone">iPhone</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://www.apple.com/iphone/cellular/">
+          <span class="article-title" data-en="iPhone Cellular Model" data-th="iPhone รุ่น Cellular">iPhone Cellular Model</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://www.apple.com/ios/feature-availability/">
+          <span class="article-title" data-en="iOS and iPadOS 26 Feature Availability" data-th="ความพร้อมฟีเจอร์ iOS และ iPadOS 26">iOS and iPadOS 26 Feature Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
 
-    <a class="article-item" href="https://al-support.apple.com/#/kbase">
-      <span class="article-title" data-en="Turn off Activation Lock" data-th="ปิด Activation Lock">Turn off Activation Lock</span>
-      <span class="article-ext">↗</span>
-    </a>
+    <section class="article-section" id="article-ipad">
+      <h2 class="article-section-title" data-en="iPad" data-th="iPad">iPad</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://www.apple.com/ipad/cellular/networks/">
+          <span class="article-title" data-en="iPad Cellular Model" data-th="iPad รุ่น Cellular">iPad Cellular Model</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://www.apple.com/ios/feature-availability/">
+          <span class="article-title" data-en="iOS and iPadOS 26 Feature Availability" data-th="ความพร้อมฟีเจอร์ iOS และ iPadOS 26">iOS and iPadOS 26 Feature Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
 
+    <section class="article-section" id="article-mac">
+      <h2 class="article-section-title" data-en="Mac" data-th="Mac">Mac</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://www.apple.com/macos/feature-availability/">
+          <span class="article-title" data-en="macOS Tahoe Feature Availability" data-th="ความพร้อมฟีเจอร์ macOS Tahoe">macOS Tahoe Feature Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="article-section" id="article-watch">
+      <h2 class="article-section-title" data-en="Watch" data-th="Watch">Watch</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://www.apple.com/watch/cellular/">
+          <span class="article-title" data-en="Apple Watch Cellular Model" data-th="Apple Watch รุ่น Cellular">Apple Watch Cellular Model</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://www.apple.com/watchos/feature-availability/">
+          <span class="article-title" data-en="watchOS 26 Feature Availability" data-th="ความพร้อมฟีเจอร์ watchOS 26">watchOS 26 Feature Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://support.apple.com/en-gb/109036">
+          <span class="article-title" data-en="Set up Apple Watch for a family member" data-th="ตั้งค่า Apple Watch สำหรับสมาชิกในครอบครัว">Set up Apple Watch for a family member</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="article-section" id="article-airpods">
+      <h2 class="article-section-title" data-en="AirPods" data-th="AirPods">AirPods</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://support.apple.com/en-us/123185">
+          <span class="article-title" data-en="Live Translation with AirPods" data-th="Live Translation กับ AirPods">Live Translation with AirPods</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://www.apple.com/airpods-pro/feature-availability/">
+          <span class="article-title" data-en="AirPods Hearing Health Feature Availability" data-th="ความพร้อมฟีเจอร์สุขภาพการได้ยิน AirPods">AirPods Hearing Health Feature Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="article-section" id="article-other">
+      <h2 class="article-section-title" data-en="Other" data-th="Other">Other</h2>
+      <div class="article-list">
+        <a class="article-item" href="https://al-support.apple.com/#/kbase">
+          <span class="article-title" data-en="Turn off Activation Lock" data-th="ปิด Activation Lock">Turn off Activation Lock</span>
+          <span class="article-ext">↗</span>
+        </a>
         <a class="article-item" href="https://support.apple.com/en-us/101569?choose-a-country-or-region=united-states">
-      <span class="article-title" data-en="eSIM Carrier Support" data-th="eSIM รองรับผู้ให้บริการ">eSIM Carrier Support</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/iphone/cellular/">
-      <span class="article-title" data-en="iPhone Cellular Model" data-th="iPhone รุ่น Cellular">iPhone Cellular Model</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/ipad/cellular/networks/">
-      <span class="article-title" data-en="iPad Cellular Model" data-th="iPad รุ่น Cellular">iPad Cellular Model</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/watch/cellular/">
-      <span class="article-title" data-en="Apple Watch Cellular Model" data-th="Apple Watch รุ่น Cellular">Apple Watch Cellular Model</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://support.apple.com/en-us/123185">
-      <span class="article-title" data-en="Live Translation with AirPods" data-th="Live Translation กับ AirPods">Live Translation with AirPods</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://support.apple.com/en-us/121115">
-      <span class="article-title" data-en="Apple Intelligence Availability" data-th="ความพร้อมใช้งาน Apple Intelligence">Apple Intelligence Availability</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/ios/feature-availability/">
-      <span class="article-title" data-en="iOS and iPadOS 26 Feature Availability" data-th="ความพร้อมฟีเจอร์ iOS และ iPadOS 26">iOS and iPadOS 26 Feature Availability</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/macos/feature-availability/">
-      <span class="article-title" data-en="macOS Tahoe Feature Availability" data-th="ความพร้อมฟีเจอร์ macOS Tahoe">macOS Tahoe Feature Availability</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/watchos/feature-availability/">
-      <span class="article-title" data-en="watchOS 26 Feature Availability" data-th="ความพร้อมฟีเจอร์ watchOS 26">watchOS 26 Feature Availability</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://www.apple.com/airpods-pro/feature-availability/">
-      <span class="article-title" data-en="AirPods Hearing Health Feature Availability" data-th="ความพร้อมฟีเจอร์สุขภาพการได้ยิน AirPods">AirPods Hearing Health Feature Availability</span>
-      <span class="article-ext">↗</span>
-    </a>
-
-    <a class="article-item" href="https://support.apple.com/en-gb/109036">
-      <span class="article-title" data-en="Set up Apple Watch for a family member" data-th="ตั้งค่า Apple Watch สำหรับสมาชิกในครอบครัว">Set up Apple Watch for a family member</span>
-      <span class="article-ext">↗</span>
-    </a>
-
+          <span class="article-title" data-en="eSIM Carrier Support" data-th="eSIM รองรับผู้ให้บริการ">eSIM Carrier Support</span>
+          <span class="article-ext">↗</span>
+        </a>
+        <a class="article-item" href="https://support.apple.com/en-us/121115">
+          <span class="article-title" data-en="Apple Intelligence Availability" data-th="ความพร้อมใช้งาน Apple Intelligence">Apple Intelligence Availability</span>
+          <span class="article-ext">↗</span>
+        </a>
+      </div>
+    </section>
+  </div>
+  <div id="article-empty" class="placeholder" style="display:none;">
+    <div class="placeholder-title" data-en="No article found" data-th="ไม่พบบทความ">No article found</div>
+    <div class="placeholder-sub" data-en="Try another keyword or category." data-th="ลองค้นหาคำอื่นหรือเลือกหมวดอื่น">Try another keyword or category.</div>
   </div>
 </div>
 
 <script>
+  function updateStickyMetrics() {
+    var header = document.querySelector('.sticky-header');
+    var subtabs = document.getElementById('article-subtabs');
+    var headerHeight = header ? header.offsetHeight : 0;
+    var subtabsHeight = subtabs ? subtabs.offsetHeight : 0;
+    document.documentElement.style.setProperty('--support-header-offset', headerHeight + 'px');
+    document.documentElement.style.setProperty('--article-scroll-offset', (headerHeight + subtabsHeight + 10) + 'px');
+  }
+
   function showTab(id, btn) {
     document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
     document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
+    updateStickyMetrics();
+    if (id === 'tab-article') { filterArticles(); }
     window.scrollTo(0, 0);
   }
 
+  function scrollToArticleSection(sectionId, btn) {
+    document.querySelectorAll('#article-subtabs .sub-tab').forEach(function(tab) {
+      tab.classList.remove('active');
+    });
+    btn.classList.add('active');
+    var section = document.getElementById(sectionId);
+    updateStickyMetrics();
+    if (section) {
+      var offset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--article-scroll-offset')) || 184;
+      var targetTop = section.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
+    }
+  }
+
   window.addEventListener('load', function() {
+    updateStickyMetrics();
     document.querySelectorAll('.product-item, .article-item').forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -451,34 +527,49 @@
 
     if (searchInput) {
       searchInput.addEventListener('input', function() {
-        filterArticles(searchInput.value);
+        filterArticles();
       });
     }
     if (clearBtn) {
       clearBtn.addEventListener('click', function() {
         searchInput.value = '';
-        filterArticles('');
+        filterArticles();
         searchInput.focus();
         clearBtn.style.display = 'none';
       });
     }
+    filterArticles();
   });
 
-  function filterArticles(query) {
-    var q = query.toLowerCase().trim();
+  window.addEventListener('resize', updateStickyMetrics);
+
+  function filterArticles() {
+    var searchInput = document.getElementById('article-search');
+    var q = searchInput ? searchInput.value.toLowerCase().trim() : '';
     var clearBtn = document.getElementById('search-clear');
+    var visibleCount = 0;
     if (clearBtn) { clearBtn.style.display = q.length > 0 ? 'flex' : 'none'; }
     document.querySelectorAll('.article-item').forEach(function(item) {
       var titleEl = item.querySelector('.article-title');
       var title = titleEl ? titleEl.textContent.toLowerCase() : '';
-      item.style.display = (q === '' || title.indexOf(q) !== -1) ? 'flex' : 'none';
+      var visible = q === '' || title.indexOf(q) !== -1;
+      item.style.display = visible ? 'flex' : 'none';
+      if (visible) { visibleCount += 1; }
     });
+    document.querySelectorAll('.article-section').forEach(function(section) {
+      var hasVisibleItem = Array.prototype.some.call(section.querySelectorAll('.article-item'), function(item) {
+        return item.style.display !== 'none';
+      });
+      section.style.display = hasVisibleItem ? '' : 'none';
+    });
+    var empty = document.getElementById('article-empty');
+    if (empty) { empty.style.display = visibleCount === 0 ? 'block' : 'none'; }
   }
 
   function clearSearch() {
     var input = document.getElementById('article-search');
     if (input) { input.value = ''; }
-    filterArticles('');
+    filterArticles();
   }
   var currentLang = (function(){ try { return localStorage.getItem('one_shortcut_lang') || 'en'; } catch(e) { return 'en'; } })();
   function setLang(lang) {

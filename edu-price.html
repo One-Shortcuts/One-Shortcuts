@@ -169,7 +169,7 @@
   .sub-tabs-scroll {
     display: none;
     overflow-x: auto; scrollbar-width: none;
-    padding: 0 16px 10px;
+    padding: 0 16px 12px;
     -webkit-overflow-scrolling: touch;
   }
   .sub-tabs-scroll::-webkit-scrollbar { display: none; }
@@ -178,16 +178,18 @@
     display: flex; gap: 6px; width: max-content;
   }
   .sub-tab {
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid rgba(0,113,227,0.3);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 12px; font-weight: 600;
+    background: rgba(255,255,255,0.65);
+    color: var(--text2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-size: 12px; font-weight: 700;
     cursor: pointer; white-space: nowrap;
     transition: all 0.15s; font-family: var(--font);
+    box-shadow: var(--shadow-sm);
   }
-  .sub-tab:active { background: rgba(0,113,227,0.1); }
+  .sub-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .sub-tab:active { background: rgba(0,113,227,0.1); color: var(--text2); }
 
   /* Responsive — mobile */
   @media (max-width: 480px) {
@@ -660,12 +662,20 @@
     document.getElementById('mac-subtabs').classList.toggle('visible', id === 'tab-mac');
     document.getElementById('watch-subtabs').classList.toggle('visible', id === 'tab-watch');
     document.getElementById('ac-subtabs').classList.toggle('visible', id === 'tab-ac');
+    document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+    const visibleSubtab = document.querySelector('.sub-tabs-scroll.visible .sub-tab');
+    if (visibleSubtab) visibleSubtab.classList.add('active');
     if (id === 'tab-unidays') initQR();
   }
 
 function scrollToSection(id) {
     const el = document.getElementById(id);
     if (!el) return;
+    const activeSubtab = document.activeElement;
+    if (activeSubtab && activeSubtab.classList.contains('sub-tab')) {
+      document.querySelectorAll('.sub-tabs-scroll.visible .sub-tab').forEach(t => t.classList.remove('active'));
+      activeSubtab.classList.add('active');
+    }
     const headerH = document.querySelector('.sticky-header').offsetHeight;
     const top = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
     window.scrollTo({ top, behavior: 'smooth' });
