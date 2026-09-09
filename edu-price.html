@@ -228,7 +228,7 @@
     <div class="tabs">
       <button class="tab active" onclick="showTab('tab-ipad')" data-en="iPad" data-th="iPad">iPad</button>
       <button class="tab" onclick="showTab('tab-mac')" data-en="Mac" data-th="Mac">Mac</button>
-      <button class="tab" onclick="showTab('tab-watch')" data-en="Watch" data-th="Watch">Watch</button>
+      <button class="tab" onclick="showTab('tab-watch')" data-en="Watch" data-th="Watch">Watch</button>
       <button class="tab" onclick="showTab('tab-ac')" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</button>
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
@@ -264,7 +264,10 @@
     <div class="sub-tabs-inner">
       <button class="sub-tab" onclick="scrollToSection('section-ac-ipad')">iPad</button>
       <button class="sub-tab" onclick="scrollToSection('section-ac-mac')">Mac</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-watch')">Watch</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-watch')">Watch</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-airpods')">AirPods</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-tv')">Apple TV</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-homepod')">HomePod</button>
     </div>
   </div>
 </div>
@@ -520,18 +523,18 @@
 <div id="tab-watch" class="tab-panel">
 
   <div class="table-card">
-    <div class="table-section-title">Apple Watch</div>
+    <div class="table-section-title">Watch</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
-        <tr id="section-se3"><td class="product-main" colspan="4">Apple Watch SE 3</td></tr>
+        <tr id="section-se3"><td class="product-main" colspan="4">Watch SE 3</td></tr>
         <tr><td class="product-sub">40mm GPS</td><td class="price-col">8,500฿</td><td class="discount-col">600฿</td><td class="final-col">7,900฿</td></tr>
         <tr><td class="product-sub">44mm GPS</td><td class="price-col">9,500฿</td><td class="discount-col">600฿</td><td class="final-col">8,900฿</td></tr>
         <tr><td class="product-sub">40mm Cellular</td><td class="price-col">10,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">9,500฿</td></tr>
         <tr><td class="product-sub">44mm Cellular</td><td class="price-col">11,500฿</td><td class="discount-col">1,000฿</td><td class="final-col">10,500฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">1,890฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
-        <tr id="section-s11"><td class="product-main" colspan="4">Apple Watch Series 11</td></tr>
+        <tr id="section-s11"><td class="product-main" colspan="4">Watch Series 11</td></tr>
         <tr><td class="product-sub">42mm GPS</td><td class="price-col">14,900฿</td><td class="discount-col">1,500฿</td><td class="final-col">13,400฿</td></tr>
         <tr><td class="product-sub">46mm GPS</td><td class="price-col">15,900฿</td><td class="discount-col">1,500฿</td><td class="final-col">14,400฿</td></tr>
         <tr><td class="product-sub">42mm Cellular</td><td class="price-col">18,900฿</td><td class="discount-col">2,000฿</td><td class="final-col">16,900฿</td></tr>
@@ -540,14 +543,14 @@
         <tr><td class="product-sub">46mm Titanium</td><td class="price-col">27,900฿</td><td class="discount-col">2,600฿</td><td class="final-col">25,300฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">2,990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
-        <tr id="section-ultra3"><td class="product-main" colspan="4">Apple Watch Ultra 3</td></tr>
+        <tr id="section-ultra3"><td class="product-main" colspan="4">Watch Ultra 3</td></tr>
         <tr><td class="product-sub">Alpine / Ocean / Trail</td><td class="price-col">29,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">26,900฿</td></tr>
         <tr><td class="product-sub">Titanium</td><td class="price-col">33,900฿</td><td class="discount-col">3,000฿</td><td class="final-col">30,900฿</td></tr>
         <tr><td class="product-sub">AppleCare+</td><td class="price-col">3,790฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
 
       </tbody>
     </table>
-    <p class="note" data-en="* AppleCare+ for Apple Watch is not eligible for education discount" data-th="* AppleCare+ สำหรับ Apple Watch ไม่มีส่วนลดการศึกษา">* AppleCare+ for Apple Watch is not eligible for education discount</p>
+    <p class="note" data-en="* AppleCare+ for Watch is not eligible for education discount" data-th="* AppleCare+ สำหรับ Watch ไม่มีส่วนลดการศึกษา">* AppleCare+ for Watch is not eligible for education discount</p>
   </div>
 
 </div><!-- /tab-watch -->
@@ -593,7 +596,7 @@
   </div>
 
   <div class="table-card" id="section-ac-watch">
-    <div class="table-section-title">AppleCare+ for Apple Watch</div>
+    <div class="table-section-title">AppleCare+ for Watch</div>
     <table>
       <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
       <tbody>
@@ -604,7 +607,40 @@
     </table>
   </div>
 
-  <p class="note">* AppleCare+ for Apple Watch is not eligible for education discount</p>
+  <div class="table-card" id="section-ac-airpods">
+    <div class="table-section-title">AppleCare+ for AirPods</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">AirPods 4, Beats</td><td class="price-col">1,090฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">AirPods Pro 3</td><td class="price-col">1,490฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">AirPods Max 2</td><td class="price-col">2,290฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-card" id="section-ac-tv">
+    <div class="table-section-title">AppleCare+ for Apple TV</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">Apple TV</td><td class="price-col">990฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-card" id="section-ac-homepod">
+    <div class="table-section-title">AppleCare+ for HomePod</div>
+    <table>
+      <thead><tr><th data-en="Model" data-th="รุ่น">Model</th><th data-en="Retail" data-th="ราคาปกติ">Retail</th><th data-en="Discount" data-th="ส่วนลด">Discount</th><th data-en="EDU Price" data-th="ราคา EDU">EDU Price</th></tr></thead>
+      <tbody>
+        <tr><td class="product-sub">HomePod mini</td><td class="price-col">600฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+        <tr><td class="product-sub">HomePod</td><td class="price-col">1,500฿</td><td class="discount-col not-available">-</td><td class="final-col not-available">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">* AppleCare+ for Watch, AirPods, Apple TV, and HomePod is not eligible for education discount</p>
 
 </div><!-- /tab-ac -->
 
