@@ -413,14 +413,19 @@
     });
   }
 
+  let currentKioskStoreKey = 'iconsiam';
+  let userSelectedKioskStore = false;
+
   function renderKioskQR() {
-    setKioskStore('iconsiam', false);
+    setKioskStore(currentKioskStoreKey, false);
   }
 
   function setKioskStore(storeKey, remember) {
     const store = KIOSK_STORES[storeKey] || KIOSK_STORES.iconsiam;
+    currentKioskStoreKey = KIOSK_STORES[storeKey] ? storeKey : 'iconsiam';
+    if (remember) userSelectedKioskStore = true;
     document.querySelectorAll('.store-option').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-store-option') === storeKey);
+      btn.classList.toggle('active', btn.getAttribute('data-store-option') === currentKioskStoreKey);
     });
     document.getElementById('kiosk-open-link').href = store.url;
 
@@ -451,6 +456,7 @@
   function requestNearestKioskStore() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(position => {
+      if (userSelectedKioskStore) return;
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
       const nearest = Object.keys(KIOSK_STORES).reduce((bestKey, key) => {
@@ -460,7 +466,7 @@
         const storeDistance = distanceMeters(lat, lng, store.lat, store.lng);
         return storeDistance < bestDistance ? key : bestKey;
       }, 'iconsiam');
-      setKioskStore(nearest, true);
+      setKioskStore(nearest, false);
     }, function() {}, {
       enableHighAccuracy: true,
       timeout: 7000,
