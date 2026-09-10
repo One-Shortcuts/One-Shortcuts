@@ -105,6 +105,24 @@
   .qr-code { display: inline-block; padding: 12px; margin-bottom: 24px; background: #fff; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-sm); }
   .qr-code canvas, .qr-code img { width: 220px !important; height: 220px !important; display: block; }
   .primary-link { display: block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: var(--font-en); }
+  .sub-tabs-scroll { overflow-x: auto; scrollbar-width: none; padding: 12px 16px; margin: -12px -12px 16px; position: sticky; top: var(--highlight-header-offset, 128px); z-index: 80; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); }
+  .sub-tabs-scroll::-webkit-scrollbar { display: none; }
+  .sub-tabs-inner { display: flex; gap: 6px; width: max-content; }
+  .sub-tab { background: rgba(255,255,255,0.65); color: var(--text2); border: 1px solid var(--border); border-radius: 999px; padding: 7px 13px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: var(--shadow-sm); font-family: var(--font); }
+  .sub-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .sub-tab:active { background: rgba(0,113,227,0.1); color: var(--text2); }
+  .npi-section { scroll-margin-top: var(--npi-scroll-offset, 184px); margin-bottom: 16px; }
+  .npi-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; color: var(--text); margin: 0 4px 8px; }
+  .npi-image { width: 100%; display: block; border-radius: var(--radius); cursor: zoom-in; }
+  .image-viewer { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.9); color: #fff; }
+  .image-viewer.open { display: flex; flex-direction: column; }
+  .viewer-toolbar { display: flex; align-items: center; gap: 8px; padding: 12px; background: rgba(0,0,0,0.58); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
+  .viewer-title { flex: 1; font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .viewer-btn { min-width: 38px; min-height: 38px; border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; background: rgba(255,255,255,0.13); color: #fff; font-family: var(--font); font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 0 13px; }
+  .viewer-btn:active { background: rgba(255,255,255,0.24); }
+  .viewer-body { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; display: flex; align-items: flex-start; justify-content: flex-start; padding: 14px; }
+  .viewer-image { width: 100%; max-width: none; height: auto; display: block; margin: auto; border-radius: 8px; transform-origin: top left; }
+  body.viewer-open { overflow: hidden; }
 </style>
 </head>
 <body>
@@ -119,9 +137,9 @@
     </div>
   </div>
   <div class="header-body">
-    <h1 id="page-title" data-en="Kiosk" data-th="Kiosk">Kiosk</h1>
+    <h1 id="page-title" data-en="NPI" data-th="NPI">NPI</h1>
     <p id="page-subtitle" style="font-size:14px;color:var(--text2);margin-top:2px;">
-      <span data-en="Kiosk for online order" data-th="Kiosk for online order">Kiosk for online order</span>
+      <span data-en="Summarize of new products" data-th="Summarize of new products">Summarize of new products</span>
     </p>
     <p id="college-subtitle" style="display:none;font-size:14px;color:var(--text2);margin-top:2px;">
       <span data-en="See terms and conditions of this promo" data-th="ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้">See terms and conditions of this promo</span>
@@ -130,15 +148,73 @@
   </div>
   <div class="tabs-scroll">
     <div class="tabs">
-      <button class="tab active" onclick="showTab('tab-kiosk')">Kiosk</button>
+      <button class="tab active" onclick="showTab('tab-npi')">NPI</button>
+      <button class="tab" onclick="showTab('tab-kiosk')">Kiosk</button>
       <button class="tab" onclick="showTab('tab-btu')" data-en="College" data-th="College">College</button>
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
 </div>
 
+<!-- TAB: NPI -->
+<div id="tab-npi" class="tab-panel active">
+  <div class="sub-tabs-scroll" id="npi-subtabs">
+    <div class="sub-tabs-inner">
+      <button class="sub-tab active" onclick="scrollToNpiSection('npi-iphone-duo', this)">iPhone Duo</button>
+      <button class="sub-tab" onclick="scrollToNpiSection('npi-iphone-18-pro', this)">iPhone 18 Pro</button>
+      <button class="sub-tab" onclick="scrollToNpiSection('npi-watch-12', this)">Watch 12</button>
+      <button class="sub-tab" onclick="scrollToNpiSection('npi-watch-ultra-4', this)">Watch Ultra 4</button>
+      <button class="sub-tab" onclick="scrollToNpiSection('npi-health-app', this)">Health app</button>
+      <button class="sub-tab" onclick="scrollToNpiSection('npi-airpods-5', this)">AirPods 5</button>
+    </div>
+  </div>
+
+  <section class="npi-section" id="npi-iphone-duo">
+    <h2 class="npi-title">iPhone Duo</h2>
+    <div class="table-card"><img class="npi-image" src="iphone-duo-bento.JPG" alt="iPhone Duo summary" onclick="openImageViewer(this)"></div>
+  </section>
+
+  <section class="npi-section" id="npi-iphone-18-pro">
+    <h2 class="npi-title">iPhone 18 Pro</h2>
+    <div class="table-card"><img class="npi-image" src="iphone-18-pro-bento.jpeg" alt="iPhone 18 Pro summary" onclick="openImageViewer(this)"></div>
+  </section>
+
+  <section class="npi-section" id="npi-watch-12">
+    <h2 class="npi-title">Watch 12</h2>
+    <div class="table-card"><img class="npi-image" src="apple-watch-12-bento.jpeg" alt="Apple Watch 12 summary" onclick="openImageViewer(this)"></div>
+  </section>
+
+  <section class="npi-section" id="npi-watch-ultra-4">
+    <h2 class="npi-title">Watch Ultra 4</h2>
+    <div class="table-card"><img class="npi-image" src="apple-watch-ultra-4-bento.jpeg" alt="Apple Watch Ultra 4 summary" onclick="openImageViewer(this)"></div>
+  </section>
+
+  <section class="npi-section" id="npi-health-app">
+    <h2 class="npi-title">Health app</h2>
+    <div class="table-card"><img class="npi-image" src="health-app-bento.jpeg" alt="Health app summary" onclick="openImageViewer(this)"></div>
+  </section>
+
+  <section class="npi-section" id="npi-airpods-5">
+    <h2 class="npi-title">AirPods 5</h2>
+    <div class="table-card"><img class="npi-image" src="airpods-5-bento.jpg" alt="AirPods 5 summary" onclick="openImageViewer(this)"></div>
+  </section>
+</div>
+
+<div class="image-viewer" id="image-viewer" aria-hidden="true">
+  <div class="viewer-toolbar">
+    <button class="viewer-btn" onclick="closeImageViewer()" aria-label="Close">×</button>
+    <div class="viewer-title" id="viewer-title">Image</div>
+    <button class="viewer-btn" onclick="setViewerZoom(-0.25)" aria-label="Zoom out">−</button>
+    <button class="viewer-btn" onclick="setViewerZoom(0.25)" aria-label="Zoom in">+</button>
+    <a class="viewer-btn" id="viewer-save" href="#" download data-en="Save image" data-th="บันทึกรูป">Save image</a>
+  </div>
+  <div class="viewer-body" id="viewer-body" onclick="if (event.target === this) closeImageViewer()">
+    <img class="viewer-image" id="viewer-image" src="" alt="">
+  </div>
+</div>
+
 <!-- TAB: KIOSK -->
-<div id="tab-kiosk" class="tab-panel active">
+<div id="tab-kiosk" class="tab-panel">
   <div class="table-card qr-card">
     <div class="store-toggle" aria-label="Choose Apple Store">
       <button class="store-option active" onclick="setKioskStore('iconsiam', true)" data-store-option="iconsiam">Iconsiam</button>
@@ -192,6 +268,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
   const TAB_META = {
+    'tab-npi': {
+      title: 'NPI',
+      subtitle: 'Summarize of new products',
+      subtitleTh: 'Summarize of new products',
+      showCollegeSubtitle: false
+    },
     'tab-kiosk': {
       title: 'Kiosk',
       subtitle: 'Kiosk for online order',
@@ -225,16 +307,81 @@
     }
   };
 
+  function updateStickyMetrics() {
+    const header = document.querySelector('.sticky-header');
+    const subtabs = document.getElementById('npi-subtabs');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const subtabsHeight = subtabs ? subtabs.offsetHeight : 0;
+    document.documentElement.style.setProperty('--highlight-header-offset', headerHeight + 'px');
+    document.documentElement.style.setProperty('--npi-scroll-offset', (headerHeight + subtabsHeight + 10) + 'px');
+  }
+
   function showTab(id) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
     updateHeader(id);
+    updateStickyMetrics();
     window.scrollTo(0, 0);
     if (id === 'tab-unidays') initQR();
     if (id === 'tab-kiosk') renderKioskQR();
   }
+
+  function scrollToNpiSection(sectionId, btn) {
+    document.querySelectorAll('#npi-subtabs .sub-tab').forEach(tab => tab.classList.remove('active'));
+    btn.classList.add('active');
+    const section = document.getElementById(sectionId);
+    updateStickyMetrics();
+    if (section) {
+      const offset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--npi-scroll-offset')) || 184;
+      const top = section.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    }
+  }
+
+  let viewerZoom = 1;
+  function updateViewerZoom() {
+    const image = document.getElementById('viewer-image');
+    if (image) image.style.width = (viewerZoom * 100) + '%';
+  }
+
+  function openImageViewer(sourceImage) {
+    const viewer = document.getElementById('image-viewer');
+    const image = document.getElementById('viewer-image');
+    const title = document.getElementById('viewer-title');
+    const save = document.getElementById('viewer-save');
+    if (!viewer || !image || !sourceImage) return;
+    viewerZoom = 1;
+    image.src = sourceImage.currentSrc || sourceImage.src;
+    image.alt = sourceImage.alt || '';
+    updateViewerZoom();
+    if (title) title.textContent = sourceImage.alt || 'Image';
+    if (save) {
+      save.href = sourceImage.currentSrc || sourceImage.src;
+      save.download = (sourceImage.getAttribute('src') || 'image').split('/').pop();
+    }
+    viewer.classList.add('open');
+    viewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('viewer-open');
+  }
+
+  function closeImageViewer() {
+    const viewer = document.getElementById('image-viewer');
+    if (!viewer) return;
+    viewer.classList.remove('open');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('viewer-open');
+  }
+
+  function setViewerZoom(delta) {
+    viewerZoom = Math.min(3, Math.max(0.75, viewerZoom + delta));
+    updateViewerZoom();
+  }
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeImageViewer();
+  });
 
   function updateHeader(id) {
     const meta = TAB_META[id] || TAB_META['tab-kiosk'];
@@ -335,9 +482,12 @@
     });
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
+  window.addEventListener('load', updateStickyMetrics);
+  window.addEventListener('resize', updateStickyMetrics);
   renderKioskQR();
   requestNearestKioskStore();
-  updateHeader('tab-kiosk');
+  updateStickyMetrics();
+  updateHeader('tab-npi');
   if (currentLang !== 'en') setLang(currentLang);
 </script>
 </body>
