@@ -226,49 +226,49 @@
   </div>
   <div class="tabs-scroll">
     <div class="tabs">
-      <button class="tab active" onclick="showTab('tab-ipad')" data-en="iPad" data-th="iPad">iPad</button>
-      <button class="tab" onclick="showTab('tab-mac')" data-en="Mac" data-th="Mac">Mac</button>
-      <button class="tab" onclick="showTab('tab-watch')" data-en="Watch" data-th="Watch">Watch</button>
-      <button class="tab" onclick="showTab('tab-ac')" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</button>
-      <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
+      <button class="tab active" onclick="showTab('tab-ipad', this)" data-en="iPad" data-th="iPad">iPad</button>
+      <button class="tab" onclick="showTab('tab-mac', this)" data-en="Mac" data-th="Mac">Mac</button>
+      <button class="tab" onclick="showTab('tab-watch', this)" data-en="Watch" data-th="Watch">Watch</button>
+      <button class="tab" onclick="showTab('tab-ac', this)" data-en="AppleCare+" data-th="AppleCare+">AppleCare+</button>
+      <button class="tab" onclick="showTab('tab-unidays', this)">Unidays</button>
     </div>
   </div>
   <div class="sub-tabs-scroll" id="ipad-subtabs">
     <div class="sub-tabs-inner">
-      <button class="sub-tab" onclick="scrollToSection('section-pro')">iPad Pro</button>
-      <button class="sub-tab" onclick="scrollToSection('section-air')">iPad Air</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ipad')">iPad</button>
-      <button class="sub-tab" onclick="scrollToSection('section-mini')">iPad mini</button>
-      <button class="sub-tab" onclick="scrollToSection('section-acc')">Accessories</button>
+      <button class="sub-tab" onclick="scrollToSection('section-pro', this)">iPad Pro</button>
+      <button class="sub-tab" onclick="scrollToSection('section-air', this)">iPad Air</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ipad', this)">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-mini', this)">iPad mini</button>
+      <button class="sub-tab" onclick="scrollToSection('section-acc', this)">Accessories</button>
     </div>
   </div>
   <div class="sub-tabs-scroll" id="mac-subtabs">
     <div class="sub-tabs-inner">
-      <button class="sub-tab" onclick="scrollToSection('section-neo')">MacBook Neo</button>
-      <button class="sub-tab" onclick="scrollToSection('section-air13')">MacBook Air</button>
-      <button class="sub-tab" onclick="scrollToSection('section-pro14')">MacBook Pro</button>
-      <button class="sub-tab" onclick="scrollToSection('section-imac')">iMac</button>
-      <button class="sub-tab" onclick="scrollToSection('section-mini2')">Mac mini</button>
-      <button class="sub-tab" onclick="scrollToSection('section-studio')">Mac Studio</button>
-      <button class="sub-tab" onclick="scrollToSection('section-display')">Display</button>
+      <button class="sub-tab" onclick="scrollToSection('section-neo', this)">MacBook Neo</button>
+      <button class="sub-tab" onclick="scrollToSection('section-air13', this)">MacBook Air</button>
+      <button class="sub-tab" onclick="scrollToSection('section-pro14', this)">MacBook Pro</button>
+      <button class="sub-tab" onclick="scrollToSection('section-imac', this)">iMac</button>
+      <button class="sub-tab" onclick="scrollToSection('section-mini2', this)">Mac mini</button>
+      <button class="sub-tab" onclick="scrollToSection('section-studio', this)">Mac Studio</button>
+      <button class="sub-tab" onclick="scrollToSection('section-display', this)">Display</button>
     </div>
   </div>
   <div class="sub-tabs-scroll" id="watch-subtabs">
     <div class="sub-tabs-inner">
-      <button class="sub-tab" onclick="scrollToSection('section-se3')">SE 3</button>
-      <button class="sub-tab" onclick="scrollToSection('section-s11')">Series 11</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ultra3')">Ultra 3</button>
+      <button class="sub-tab" onclick="scrollToSection('section-se3', this)">SE 3</button>
+      <button class="sub-tab" onclick="scrollToSection('section-s11', this)">Series 11</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ultra3', this)">Ultra 3</button>
     </div>
   </div>
   <div class="sub-tabs-scroll" id="ac-subtabs">
     <div class="sub-tabs-inner">
-      <button class="sub-tab" onclick="scrollToSection('section-ac-iphone')">iPhone</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-ipad')">iPad</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-mac')">Mac</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-watch')">Watch</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-airpods')">AirPods</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-tv')">Apple TV</button>
-      <button class="sub-tab" onclick="scrollToSection('section-ac-homepod')">HomePod</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-iphone', this)">iPhone</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-ipad', this)">iPad</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-mac', this)">Mac</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-watch', this)">Watch</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-airpods', this)">AirPods</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-tv', this)">Apple TV</button>
+      <button class="sub-tab" onclick="scrollToSection('section-ac-homepod', this)">HomePod</button>
     </div>
   </div>
 </div>
@@ -705,11 +705,11 @@
   }
 </script>
 <script>
-  function showTab(id) {
+  function showTab(id, trigger) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    if (trigger) trigger.classList.add('active');
     window.scrollTo(0, 0);
     document.getElementById('ipad-subtabs').classList.toggle('visible', id === 'tab-ipad');
     document.getElementById('mac-subtabs').classList.toggle('visible', id === 'tab-mac');
@@ -721,10 +721,10 @@
     if (id === 'tab-unidays') initQR();
   }
 
-function scrollToSection(id) {
+function scrollToSection(id, trigger) {
     const el = document.getElementById(id);
     if (!el) return;
-    const activeSubtab = document.activeElement;
+    const activeSubtab = trigger && trigger.classList && trigger.classList.contains('sub-tab') ? trigger : document.activeElement;
     if (activeSubtab && activeSubtab.classList.contains('sub-tab')) {
       document.querySelectorAll('.sub-tabs-scroll.visible .sub-tab').forEach(t => t.classList.remove('active'));
       activeSubtab.classList.add('active');
@@ -763,6 +763,8 @@ function scrollToSection(id) {
   }
   function goHome() { window.location.href = 'staff-tool.html'; }
   document.getElementById('ipad-subtabs').classList.add('visible');
+  const initialSubtab = document.querySelector('#ipad-subtabs .sub-tab');
+  if (initialSubtab) initialSubtab.classList.add('active');
 if (currentLang !== 'en') setLang(currentLang);
 </script>
 
