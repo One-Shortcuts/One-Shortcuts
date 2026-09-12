@@ -112,7 +112,8 @@
   .sub-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   .sub-tab:active { background: rgba(0,113,227,0.1); color: var(--text2); }
   .npi-section { scroll-margin-top: var(--npi-scroll-offset, 184px); margin-bottom: 16px; }
-  .npi-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; color: var(--text); margin: 0 4px 8px; }
+  .npi-title { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; color: var(--text); margin: 0 4px 8px; line-height: 1.25; overflow-wrap: anywhere; }
+  .npi-title .npi-date { font-weight: 400; }
   .npi-image { width: 100%; display: block; border-radius: var(--radius); cursor: zoom-in; }
   .image-viewer { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.9); color: #fff; }
   .image-viewer.open { display: flex; flex-direction: column; }
@@ -170,22 +171,22 @@
   </div>
 
   <section class="npi-section" id="npi-iphone-duo">
-    <h2 class="npi-title">iPhone Duo</h2>
+    <h2 class="npi-title">iPhone Duo<span class="npi-date">: Pre-order 16 Oct 19.00 | In-store 23 Oct</span></h2>
     <div class="table-card"><img class="npi-image" src="iphone-duo-bento.JPG" alt="iPhone Duo summary" onclick="openImageViewer(this)"></div>
   </section>
 
   <section class="npi-section" id="npi-iphone-18-pro">
-    <h2 class="npi-title">iPhone 18 Pro</h2>
+    <h2 class="npi-title">iPhone 18 Pro<span class="npi-date">: Pre-order 12 Sep 19.00 | In-store 18 Sep</span></h2>
     <div class="table-card"><img class="npi-image" src="iphone-18-pro-bento.jpeg" alt="iPhone 18 Pro summary" onclick="openImageViewer(this)"></div>
   </section>
 
   <section class="npi-section" id="npi-watch-12">
-    <h2 class="npi-title">Watch 12</h2>
+    <h2 class="npi-title">Watch 12<span class="npi-date"> : Waiting for announce later</span></h2>
     <div class="table-card"><img class="npi-image" src="apple-watch-12-bento.jpeg" alt="Apple Watch 12 summary" onclick="openImageViewer(this)"></div>
   </section>
 
   <section class="npi-section" id="npi-watch-ultra-4">
-    <h2 class="npi-title">Watch Ultra 4</h2>
+    <h2 class="npi-title">Watch Ultra 4<span class="npi-date"> : Waiting for announce later</span></h2>
     <div class="table-card"><img class="npi-image" src="apple-watch-ultra-4-bento.jpeg" alt="Apple Watch Ultra 4 summary" onclick="openImageViewer(this)"></div>
   </section>
 
@@ -195,7 +196,7 @@
   </section>
 
   <section class="npi-section" id="npi-airpods-5">
-    <h2 class="npi-title">AirPods 5</h2>
+    <h2 class="npi-title">AirPods 5<span class="npi-date"> : Waiting for announce later</span></h2>
     <div class="table-card"><img class="npi-image" src="airpods-5-bento.jpg" alt="AirPods 5 summary" onclick="openImageViewer(this)"></div>
   </section>
 </div>
