@@ -69,7 +69,7 @@ The script publishes only deployable HTML files into the public `One-Shortcuts/O
 
 ## Version
 
-Current version stamp: `2026.08.10` (set in `staff-tool.html` via `document.getElementById('app-version').innerHTML`, as a `<br>`-separated changelog)
+Current version stamp: `2026.09.24` (set in `staff-tool.html` via `document.getElementById('app-version').innerHTML`, as a `<br>`-separated changelog)
 Update this value whenever changes are deployed.
 
 ## Font conventions
@@ -110,37 +110,46 @@ and `{CODE}` is one of:
 | `{BASE}_SW_COLOR` | the case colour swatch (64×64); also a cheap SKU existence oracle |
 
 **The bare `{BASE}` code is the shot the `_AV` series omits.** This was the finding
-that closed the catalogue: for these 48 SKUs the `_AV` run covers all but one of the
+that closed the catalogue: for these 46 SKUs the `_AV` run covers all but one of the
 model's phone colours, and the bare code is that missing one. In `CASES` it is stored
 as `av: 0`, and `shotURL()` emits no `_AV` suffix for 0.
 
 Be precise about how strongly that is established, because it reads stronger than it is:
-- *Verified mechanically:* every one of the 48 `_AV` runs omits **exactly one** colour,
-  and all 164 URLs return 200.
-- *Verified only visually:* which colour each bare shot actually shows. Deriving it
-  "from the omission" is **not** independent evidence — it assumes the very rule being
-  tested. The colour identities rest on the plateau read alone.
+- *Verified mechanically:* every one of the 46 `_AV` runs omits **exactly one** colour
+  (the shot indices are exactly 0..n-1), and all 184 URLs return 200.
+- *Independent source (found 2026-09-24):* each product page's gallery thumbnails carry
+  Apple's own `alt` text naming the phone colour in that shot ("… attached to iPhone 18
+  Pro in glacier color, visible through camera cutout"). It does not depend on the
+  omission rule, and it agrees with every `shots` entry. The 26 iPhone 18 Pro / Pro Max
+  SKUs were also read by eye and pixel-sampled on the camera plateau; the 20 older SKUs
+  were only compared against the alt text that day (their visual read is 2026-08-08).
+  Alt text is Apple's description, not ground truth — still look at the photo.
 - *Known counter-example to the rule:* Beats was excluded partly because its bare
   case-back shot is sometimes not even the right colour. So the bare code is **not**
-  universally the omitted-colour shot; it holds across these 48 and must be re-read
-  visually for any SKU added later.
+  universally the omitted-colour shot; it holds across these 46 and must be re-checked
+  (alt text and by eye) for any SKU added later.
 
 **The single rule that matters:** the `_AV{n}` index encodes *which iPhone body
 colour the case is photographed on*, and it varies **per SKU** — Apple picks a
 phone colour that flatters each case colour. On iPhone 17, `AV3` is Mist Blue for
 some cases and White for others; `AV1` is Lavender for most but White for MHVT4.
-It also differs per model (iPhone 17 `AV1` = Lavender, iPhone 17 Pro `AV1` =
-Cosmic Orange). Some slots are not colour shots at all (screen-on, or a generic
-dark detail shot that is not even the selected colour).
+It also differs per model (iPhone 17 `AV1` = Lavender; iPhone 18 Pro `AV1` = Burgundy
+for 8 of 13 cases, Glacier for the Burgundy, Magenta and Mulberry cases and Clear).
+Some slots are not colour shots at all (side view, screen-on, or a generic dark detail
+shot that is not even the selected colour — iPhone 18 Pro `AV4`/`AV5`, where present,
+are a side view and a bottom detail; Pro Max stops at `AV3`).
 
 Therefore the `shots` map in `CASES` is **hand-verified data and must never be
 computed**. A wrong entry does not throw — it silently shows a customer the wrong
-thing. `VERIFIED` records when it was last checked and is surfaced in the footer.
+thing. `VERIFIED` records when it was last checked and is surfaced in the footer. It is
+one global date, so only bump it after every SKU has been re-checked (an alt-text
+comparison across all SKUs counts, as on 2026-09-24).
 
-Coverage: **48 SKUs, 164 combinations, 100% real Apple photography — no
-compositing, no recolouring, no gaps.** Across iPhone 17 / 17 Pro / 17 Pro Max /
-Air / 17e, in Silicone, TechWoven, Clear, Bumper and Case-with-MagSafe. Every
-image URL was re-probed and returns 200.
+Coverage: **46 SKUs, 184 combinations, 100% real Apple photography — no
+compositing, no recolouring, no gaps.** Across iPhone 18 Pro / 18 Pro Max / Air /
+17 / 17e, in Silicone, TechWoven, Clear, Bumper and Case-with-MagSafe. Every
+image URL was re-probed on 2026-09-24 and returns 200. The `MODELS` order is the tab
+order (newest first) and its first entry is also the model shown on load.
 
 **Beats and Tech21 are deliberately excluded** — Apple publishes no
 case-on-phone-colour photography for them (their image slots are lifestyle scenes,
@@ -165,15 +174,27 @@ non-CORS response would taint one later, despite `ACAO: *` — the attribute is
 cheap and removing it would fail silently much later.
 
 Ruled out as image sources (do not re-investigate):
-- Higher `_AV` indices — probed AV1–AV16, nothing beyond what is mapped.
-- Other Apple regions — US `MGF24LL` / `MGFT4LL` / `MGFW4LL` share the same 5-char
-  base as the TH SKUs, so the CDN serves identical images.
+- Higher `_AV` indices — probed AV1–AV16, nothing beyond what is mapped. Re-probed for
+  the 26 iPhone 18 Pro / Pro Max SKUs on 2026-09-24: the CDN's indices match each page's
+  gallery exactly; the only unmapped ones are Pro `AV4`/`AV5` (side view, bottom detail —
+  not colour shots), and every Pro Max SKU stops at `AV3`.
+- Other Apple regions — US `MGF24LL` and the `ZM/A` SKUs on apple.com/shop
+  (`MKDU4ZM/A`, `MK8W4ZM/A`, `MKD54ZM/A`) share the same 5-char base as the TH `FE/A`
+  SKUs; the ZM pages have identical image codes and alt text, so the CDN serves
+  identical images. `CASES` always stores the Thai `FE/A` SKU (shown under the title).
 - Apple's bare-phone `iphone-*-finish-*` images — a two-phone composition at
   completely different framing, not usable alongside the case shots.
 
 To refresh the catalogue, re-derive from Apple's sitemap
-(`https://www.apple.com/th/shop/sitemaps/product.xml`) and re-verify the shot
-mapping visually.
+(`https://www.apple.com/th/shop/sitemaps/product.xml`; the `th-en` sitemap gives the
+English names, keyed by the same SKU), read the phone colour per image code from each
+product page's gallery `<img alt>`, and confirm it against the photos by eye. Generate
+the `CASES` lines from that data rather than typing them, and assert one shot per phone
+colour for every SKU. Gotchas hit on 2026-09-24: Apple's titles contain non-breaking
+spaces (`iPhone 18 Pro Max`), so normalise whitespace before matching; TechWoven titles
+use an en dash; a few alts omit "back exterior" and the Air pages say "bottom view", so
+exclude bottom/side detail shots explicitly; Clear cases have no `_SW_COLOR` (404, use
+`swatch:false`).
 
 ## Behavioral expectations
 
