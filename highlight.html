@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
-<title>College Student Offer</title>
+<title>Highlight</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
   :root {
@@ -142,16 +142,11 @@
     <p id="page-subtitle" style="font-size:14px;color:var(--text2);margin-top:2px;">
       <span data-en="Summarize of new products" data-th="Summarize of new products">Summarize of new products</span>
     </p>
-    <p id="college-subtitle" style="display:none;font-size:14px;color:var(--text2);margin-top:2px;">
-      <span data-en="See terms and conditions of this promo" data-th="ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้">See terms and conditions of this promo</span>
-      <a href="https://www.apple.com/th-edu/shop/back-to-school/terms-conditions" style="color: var(--accent); text-decoration: none; font-weight: 600;" data-en=" here" data-th=" ที่นี่"> here</a>
-    </p>
   </div>
   <div class="tabs-scroll">
     <div class="tabs">
       <button class="tab active" onclick="showTab('tab-npi')">NPI</button>
       <button class="tab" onclick="showTab('tab-kiosk')">Kiosk</button>
-      <button class="tab" onclick="showTab('tab-btu')" data-en="College" data-th="College">College</button>
       <button class="tab" onclick="showTab('tab-unidays')">Unidays</button>
     </div>
   </div>
@@ -226,35 +221,6 @@
   </div>
 </div>
 
-<!-- TAB: BACK TO SCHOOL -->
-<div id="tab-btu" class="tab-panel">
-
-  <div class="table-card">
-    <div class="promo-hero">
-      <img src="back-to-school.jpg" alt="Back to School promo">
-      <div class="promo-period" data-en="Promo offer 16 Jul - 24 Sep 2026" data-th="โปรโมชั่น 16 ก.ค. - 24 ก.ย. 2026">Promo offer 16 Jul - 24 Sep 2026</div>
-    </div>
-  </div>
-
-  <div class="table-card">
-    <table>
-      <thead>
-        <tr>
-          <th data-en="Eligible product" data-th="ผลิตภัณฑ์ที่เข้าเกณฑ์">Eligible product</th>
-          <th data-en="Apple Store Gift Card" data-th="Apple Store Gift Card">Apple Store Gift Card</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="eligible-col">iPad Air</td><td class="promo-col">฿3,400</td></tr>
-        <tr><td class="eligible-col">iPad Pro</td><td class="promo-col">฿3,400</td></tr>
-        <tr><td class="eligible-col">MacBook Air</td><td class="promo-col">฿3,400</td></tr>
-        <tr><td class="eligible-col">MacBook Pro</td><td class="promo-col">฿5,100</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
 <!-- TAB: UNIDAYS -->
 <div id="tab-unidays" class="tab-panel">
   <div class="table-card" style="padding: 32px 20px; text-align: center;">
@@ -272,26 +238,17 @@
     'tab-npi': {
       title: 'NPI',
       subtitle: 'Summarize of new products',
-      subtitleTh: 'Summarize of new products',
-      showCollegeSubtitle: false
+      subtitleTh: 'Summarize of new products'
     },
     'tab-kiosk': {
       title: 'Kiosk',
       subtitle: 'Kiosk for online order',
-      subtitleTh: 'Kiosk for online order',
-      showCollegeSubtitle: false
-    },
-    'tab-btu': {
-      title: 'College',
-      subtitle: 'See terms and conditions of this promo',
-      subtitleTh: 'ดูข้อกำหนดและเงื่อนไขของโปรโมชั่นนี้',
-      showCollegeSubtitle: true
+      subtitleTh: 'Kiosk for online order'
     },
     'tab-unidays': {
       title: 'Unidays',
       subtitle: 'Scan QR code to open verification page',
-      subtitleTh: 'สแกน QR code เพื่อเปิดหน้ายืนยันตัวตน',
-      showCollegeSubtitle: false
+      subtitleTh: 'สแกน QR code เพื่อเปิดหน้ายืนยันตัวตน'
     }
   };
 
@@ -389,12 +346,10 @@
     const title = document.getElementById('page-title');
     const subtitle = document.getElementById('page-subtitle');
     const subtitleText = subtitle.querySelector('span');
-    const collegeSubtitle = document.getElementById('college-subtitle');
     title.setAttribute('data-en', meta.title);
     title.setAttribute('data-th', meta.title);
     title.textContent = meta.title;
-    subtitle.style.display = meta.showCollegeSubtitle ? 'none' : '';
-    collegeSubtitle.style.display = meta.showCollegeSubtitle ? '' : 'none';
+    subtitle.style.display = '';
     subtitleText.setAttribute('data-en', meta.subtitle);
     subtitleText.setAttribute('data-th', meta.subtitleTh);
     subtitleText.textContent = currentLang === 'th' ? meta.subtitleTh : meta.subtitle;
