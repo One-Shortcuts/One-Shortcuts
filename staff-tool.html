@@ -456,7 +456,7 @@
 </div>
 
 <script>
-  document.getElementById('app-version').innerHTML = '2026.10.26<br>\u2022 Add new iPad mini A20 Pro education price<br>\u2022 Updated new education price of Watch<br>\u2022 Kiosk available & Today at Apple session<br>\u2022 Case Match picker rows now collapse on scroll for a bigger photo view';
+  document.getElementById('app-version').innerHTML = '2026.10.28<br>\u2022 Add new iMac and MacBook Pro 14" M6 education price<br>\u2022 Add new iPad mini A20 Pro education price<br>\u2022 Case Match picker rows now collapse on scroll for a bigger photo view';
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -527,17 +527,24 @@
         { label: '512/24GB/70W', price: 61900, eduPrice: 58290, acPlus: 8590, acEdu: 7690 },
         { label: '1TB/24GB/35W Dual', price: 72400, eduPrice: 68790, acPlus: 8590, acEdu: 7690 },
       ]},
+      { name: 'MacBook Pro 14" M6', options: [
+        { label: 'M6 1TB/16GB/70W', price: 69900, eduPrice: 65000, acPlus: 11990, acEdu: 10790 },
+        { label: 'M6 1TB/16GB/Nano/70W', price: 75150, eduPrice: 70625, acPlus: 11990, acEdu: 10790 },
+        { label: 'M6 1TB/24GB/70W', price: 76900, eduPrice: 72900, acPlus: 11990, acEdu: 10790 },
+        { label: 'M6 1TB/24GB//Nano/70W', price: 82150, eduPrice: 77625, acPlus: 11990, acEdu: 10790 },
+        { label: 'M6 1TB/32GB/70W', price: 83900, eduPrice: 79900, acPlus: 11990, acEdu: 10790 },
+      ]},
       { name: 'MacBook Pro 14" M5', options: [
-        { label: 'M5 1TB/16GB/70W', price: 69900, eduPrice: 66390, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 1TB/16GB/Nano/70W', price: 75150, eduPrice: 71115, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 1TB/24GB/70W', price: 76900, eduPrice: 73390, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 1TB/24GB//Nano/70W', price: 82150, eduPrice: 78115, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 1TB/32GB/70W', price: 83900, eduPrice: 80390, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 Pro 15C/1TB/24GB/70W', price: 87900, eduPrice: 82590, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 Pro 15C/2TB/24GB/70W', price: 105400, eduPrice: 98340, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 Pro 18C/20C/2TB/24GB/96W', price: 114900, eduPrice: 107690, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 Pro 18C/20C/2TB/48GB/Nano/96W', price: 141150, eduPrice: 131315, acPlus: 10590, acEdu: 9490 },
-        { label: 'M5 Max 18C/32C/2TB/36GB/96W', price: 144900, eduPrice: 134290, acPlus: 10590, acEdu: 9490 },
+        { label: 'M5 1TB/16GB/70W', price: 69900, eduPrice: 66390, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 1TB/16GB/Nano/70W', price: 75150, eduPrice: 71115, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 1TB/24GB/70W', price: 76900, eduPrice: 73390, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 1TB/24GB//Nano/70W', price: 82150, eduPrice: 78115, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 1TB/32GB/70W', price: 83900, eduPrice: 80390, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 Pro 15C/1TB/24GB/70W', price: 87900, eduPrice: 82590, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 Pro 15C/2TB/24GB/70W', price: 105400, eduPrice: 98340, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 Pro 18C/20C/2TB/24GB/96W', price: 114900, eduPrice: 107690, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 Pro 18C/20C/2TB/48GB/Nano/96W', price: 141150, eduPrice: 131315, acPlus: 11990, acEdu: 10790 },
+        { label: 'M5 Max 18C/32C/2TB/36GB/96W', price: 144900, eduPrice: 134290, acPlus: 11990, acEdu: 10790 },
       ]},
       { name: 'MacBook Pro 16" M5', options: [
         { label: 'M5 Pro 1TB/24GB/140W', price: 104900, eduPrice: 97890, acPlus: 14590, acEdu: 13090 },
@@ -547,12 +554,19 @@
       ]},
     ],
     'Mac Desktop': [
-      { name: 'iMac', options: [
-        { label: '256/16GB', price: 52900, eduPrice: 51090, acPlus: 6490, acEdu: 5790 },
-        { label: '256/16GB/4 Port', price: 59900, eduPrice: 56390, acPlus: 6490, acEdu: 5790 },
-        { label: '256/16GB/4 Port/Nano', price: 66900, eduPrice: 62690, acPlus: 6490, acEdu: 5790 },
-        { label: '512/16GB/4 Port', price: 66900, eduPrice: 63390, acPlus: 6490, acEdu: 5790 },
-        { label: '512/24GB/4 Port', price: 73900, eduPrice: 70390, acPlus: 6490, acEdu: 5790 },
+      { name: 'iMac M6', options: [
+        { label: '256/16GB', price: 52900, eduPrice: 50900, acPlus: 7490, acEdu: 6790 },
+        { label: '256/16GB/4 Port', price: 59900, eduPrice: 55900, acPlus: 7490, acEdu: 6790 },
+        { label: '256/16GB/4 Port/Nano', price: 66900, eduPrice: 62200, acPlus: 7490, acEdu: 6790 },
+        { label: '512/16GB/4 Port', price: 66900, eduPrice: 62900, acPlus: 7490, acEdu: 6790 },
+        { label: '512/24GB/4 Port', price: 73900, eduPrice: 69900, acPlus: 7490, acEdu: 6790 },
+      ]},
+      { name: 'iMac M4', options: [
+        { label: '256/16GB', price: 52900, eduPrice: 51090, acPlus: 7490, acEdu: 6790 },
+        { label: '256/16GB/4 Port', price: 59900, eduPrice: 56390, acPlus: 7490, acEdu: 6790 },
+        { label: '256/16GB/4 Port/Nano', price: 66900, eduPrice: 62690, acPlus: 7490, acEdu: 6790 },
+        { label: '512/16GB/4 Port', price: 66900, eduPrice: 63390, acPlus: 7490, acEdu: 6790 },
+        { label: '512/24GB/4 Port', price: 73900, eduPrice: 70390, acPlus: 7490, acEdu: 6790 },
       ]},
       { name: 'Mac mini', options: [
         { label: 'M4 256/16GB', price: 28900, eduPrice: 25290, acPlus: 4290, acEdu: 3890 },
