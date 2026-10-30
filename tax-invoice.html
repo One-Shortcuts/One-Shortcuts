@@ -844,6 +844,13 @@
       </div>
     </section>
   </main>
+  <script>
+    // This document is a reference example only, not an editable form.
+    document.querySelectorAll('[contenteditable]').forEach(function (field) {
+      field.removeAttribute('contenteditable');
+      field.setAttribute('aria-readonly', 'true');
+    });
+  </script>
 </body>
 
 </html>
